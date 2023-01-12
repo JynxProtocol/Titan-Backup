@@ -1,0 +1,63 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using TitanAPIConnection
+@using Titan.Stock.Controllers
+@model LocationDetailsDTO
+
+@using (Html.BeginForm(nameof(StockTakeController.SubmitAmount), typeof(StockTakeController).ControllerName(), FormMethod.Post, new { @class="flexlayout" }))
+{
+    <table class="table table-bordered table-repsonsive table-hover table-striped">
+        <tbody>
+            <tr>
+                <td style="text-align: center;">
+                    <h4>Code: @Html.DisplayFor(LocationDetails => LocationDetails.Code)</h4>
+                    @Html.HiddenFor(LocationDetails => LocationDetails.Code)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">
+                    <h5>Name: @Html.DisplayFor(LocationDetails => LocationDetails.Name)</h5>
+                </td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+                <td style="text-align: center;">
+                    <h4>Location:</h4>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Location:</span>
+                        </div>
+
+                        <select id="Location" name="Location" style="text-align: center;" class="form-control ">
+                            @foreach (var Location in Model.Locations)
+                            {
+                                <option value="@(Location)" selected="selected">
+                                    @Html.Raw(@Html.Encode(Location))
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">
+                    <h4>Amount in bin:</h4>
+
+                    <div class="input-group">
+                        <input class="form-control " id="Amount" name="Amount" type="number" min="0" step="any" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;" class="input-group">
+                    @Html.ActionLink("Cancel", "", typeof(StockTakeController).ControllerName(), new { }, new { @class = "btn btn-danger form-control" })
+                    <input type="submit" class="btn btn-success form-control" value="Enter" />
+                </td>
+            </tr>
+        </tbody>
+    </table> 
+}

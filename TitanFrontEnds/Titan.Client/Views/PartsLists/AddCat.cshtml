@@ -1,0 +1,32 @@
+﻿@model PartsListCatItem
+
+@{
+    ViewBag.Title = "Add Cat Number";
+}
+
+<h2>Add Cat Number</h2>
+
+@using (Html.BeginForm(
+    nameof(PartsListsController.AddCat),
+    typeof(PartsListsController).ControllerName(),
+    new { PLHID = Model.Plhid },
+    FormMethod.Post))
+{
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.CatNumber)</span>
+    
+        @Html.EditorFor(Model => Model.CatNumber,
+            new { htmlAttributes = 
+                new { @class = "form-control stock-code-autocomplete", 
+                    data_callback = "GetPartCodeInformation" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.Description)</span>
+    
+        @Html.EditorFor(Model => Model.Description,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <input type="submit" class="btn btn-success" value="Add Cat" />
+}

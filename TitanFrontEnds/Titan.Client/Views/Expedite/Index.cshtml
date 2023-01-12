@@ -1,0 +1,116 @@
+﻿@model ExpediteStatusDTO
+
+@{
+    ViewBag.Title = "Expedite";
+}
+
+<h2>Expedite</h2>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">Time last completed</span>
+    
+    @Html.EditorFor(Model => Model.LastComplete,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">Expedite status</span>
+    
+    @Html.EditorFor(Model => Model.Status,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">Expedite progress</span>
+    
+    @Html.EditorFor(Model => Model.Progress,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<hr />
+<div class="input-group mb-3">
+    <span class="input-group-text">Latest report</span>
+    
+    @Html.TextArea("Report",
+        new { 
+            @class = "form-control",
+            @readonly = "",
+            style = "white-space:pre-wrap;"
+        } 
+    )
+</div>
+
+<hr />
+<div>
+    <div class="RunExpedite" colspan="2">
+        <button onclick="RunExpedite(); return false;" class="btn btn-danger">
+            Run
+        </button>
+    </div>
+    <div class="AlreadyRan" colspan="2" style="display:none">
+        Expedite running
+    </div>
+</div>
+
+<script>
+    var timeout = setTimeout(UpdateData, 100);
+    var waiting = false;
+
+    function UpdateData() {
+        if (!waiting) {
+            waiting = true;
+            $.ajax({
+                url: "@Url.Action(nameof(ExpediteController.Status))",
+                type: "GET",
+                cache: false,
+                error: function (xhr) {
+                    HandleXHRError(xhr);
+                    timeout = setTimeout(UpdateData, 100);
+                },
+                success: HandleDataReturn
+            });
+        }
+        else {
+            timeout = setTimeout(UpdateData, 100);
+        }
+    }
+
+    function HandleDataReturn(result) {
+        waiting = false;
+        $(".LastComplete").html(result.lastComplete);
+        $(".Status").html(result.status);
+        $(".Progress").html(result.progress);
+        $(".Report").hide();
+
+        if (result.status == "Resting" || result.status == "Never ran" 
+                || result.status == "ERRORED") {
+            $(".RunExpedite").show();
+
+            if (result.skippedRecords) {
+                $("#Report").html(result.skippedRecords);
+                $(".Report").show();
+            }
+
+            $(".AlreadyRan").hide();
+
+            timeout = setTimeout(UpdateData, 1000);
+        }
+        else {
+            $(".RunExpedite").hide();
+            $(".AlreadyRan").show();
+            timeout = setTimeout(UpdateData, 100);
+        }
+    }
+
+    function RunExpedite() {
+        $.ajax({
+            url: "@Url.Action(nameof(ExpediteController.Run))",
+            type: "POST",
+            cache: false,
+            error: function (xhr) {
+                HandleXHRError(xhr);
+                timeout = setTimeout(UpdateData, 100);
+            }
+        });
+    }
+</script>

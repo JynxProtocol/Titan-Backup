@@ -1,0 +1,1807 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Titan.API.Administration",
+    "description": "An ASP.NET Core Web API for managing authentication within Titan",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Auth/JWT": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Gets a list of features and feature areas that can be added to a JWT",
+        "operationId": "GetCurrentAvaliableFeatures",
+        "responses": {
+          "200": {
+            "description": "Returns the information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewRole"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Creates a JWT with the specified values",
+        "operationId": "GenerateAuthToken",
+        "requestBody": {
+          "description": "The values to give the JWT",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJWT"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJWT"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJWT"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJWT"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJWT"
+              }
+            },
+            "application/*+xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateJWT"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the JWTResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JWTResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Model state is invalid"
+          },
+          "422": {
+            "description": "A requested feature is invalid"
+          }
+        }
+      }
+    },
+    "/api/Login": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Log in a user using a username and password",
+        "operationId": "Login",
+        "requestBody": {
+          "description": "The username and password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            },
+            "application/*+xml": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the LoginResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid (e.g. invalid password)"
+          }
+        }
+      }
+    },
+    "/api/Login/Pin": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Log in a user using a pin code",
+        "operationId": "PinLogin",
+        "requestBody": {
+          "description": "The pin of the user to log in",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/*+xml": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the LoginResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid (e.g. invalid pin)"
+          }
+        }
+      }
+    },
+    "/api/UpdateJWT": {
+      "get": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Updates a users JWT to persist their session, keeping thier claims",
+        "operationId": "UpdateJWT",
+        "responses": {
+          "200": {
+            "description": "Returns the updated JWT",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid"
+          }
+        }
+      }
+    },
+    "/api/Password/{id}": {
+      "delete": {
+        "tags": [
+          "Password"
+        ],
+        "summary": "Initiate a password reset on a user as admin",
+        "operationId": "AdminPasswordReset",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The user id to initiate a password reset on",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful reset request"
+          },
+          "400": {
+            "description": "The user id is invalid"
+          }
+        }
+      }
+    },
+    "/api/Password/email/{emailAddress}": {
+      "delete": {
+        "tags": [
+          "Password"
+        ],
+        "summary": "Start a user password reset by sending a token to their email",
+        "operationId": "StartPasswordReset",
+        "parameters": [
+          {
+            "name": "emailAddress",
+            "in": "path",
+            "description": "The email address of the user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful reset request"
+          },
+          "400": {
+            "description": "The request is invalid for any reason (e.g. invalid email address)"
+          }
+        }
+      }
+    },
+    "/api/Password": {
+      "post": {
+        "tags": [
+          "Password"
+        ],
+        "summary": "Change a users password using the token delivered in an email",
+        "operationId": "ResetPasswordUsingToken",
+        "requestBody": {
+          "description": "The token, and new password provided by the user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenChangePasswordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenChangePasswordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenChangePasswordRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenChangePasswordRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenChangePasswordRequest"
+              }
+            },
+            "application/*+xml": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenChangePasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful password change by user"
+          },
+          "400": {
+            "description": "The request is invalid (e.g. invalid token)"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Password"
+        ],
+        "summary": "Change a password of a user using thier password",
+        "operationId": "ChangePassword",
+        "requestBody": {
+          "description": "The username, current password and new password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            },
+            "application/*+xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucessfully changed users password"
+          },
+          "400": {
+            "description": "The request is invalid (e.g. invalid password)"
+          }
+        }
+      }
+    },
+    "/api/Roles": {
+      "get": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "Get a list of roles, the users they contain and the features they can access",
+        "operationId": "GetAllRoles",
+        "responses": {
+          "200": {
+            "description": "Returns the list of roles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ViewRole"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "Create a new role with a given name",
+        "operationId": "CreateRole",
+        "requestBody": {
+          "description": "The role to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRole"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRole"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRole"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRole"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRole"
+              }
+            },
+            "application/*+xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRole"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The succesfully created role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewRole"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid"
+          }
+        }
+      }
+    },
+    "/api/Roles/{id}": {
+      "get": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "Get a role by id, the users it contains and the features it can access",
+        "operationId": "GetRoleById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the role to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewRole"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The role is not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "Edit a roles' features",
+        "operationId": "EditRole",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The role id to edit",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated list of features and whether the role can access them",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRole"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRole"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRole"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRole"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRole"
+              }
+            },
+            "application/*+xml": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRole"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The succesfully edited role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewRole"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin permissions were modified incorrectly"
+          },
+          "404": {
+            "description": "The role was not found"
+          },
+          "422": {
+            "description": "A feature access record refers to an invalid feature"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "Delete a given role",
+        "operationId": "DeleteRole",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The role to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfuly deleted role"
+          },
+          "403": {
+            "description": "Admin permissions were modified incorrectly"
+          },
+          "404": {
+            "description": "The role is not found"
+          }
+        }
+      }
+    },
+    "/api/Roles/{id}/Users": {
+      "get": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "Get a list of all users and whether they are in the given role",
+        "operationId": "RoleUsers",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The role id to check membership for",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The list of users and whether they are in the role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewRoleUsers"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "Change which users are in a given role",
+        "operationId": "EditRoleUsers",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The role to update membership for",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A list of users and whether they are in the role",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRoleUsers"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRoleUsers"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRoleUsers"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRoleUsers"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRoleUsers"
+              }
+            },
+            "application/*+xml": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRoleUsers"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully updated a roles membership",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewRoleUsers"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Admin permissions were modified incorrectly"
+          },
+          "422": {
+            "description": "A user membership record refers to an invalid user"
+          }
+        }
+      }
+    },
+    "/api/Roles/{id}/Features": {
+      "get": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "Get the features a given role has access to",
+        "operationId": "RoleFeatures",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the role to return the features of",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of the roles features",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Feature"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The role is not found"
+          }
+        }
+      }
+    },
+    "/api/Users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a list of all users",
+        "operationId": "GetAllUsers",
+        "responses": {
+          "200": {
+            "description": "Returns the list fo users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new user",
+        "operationId": "CreateUser",
+        "requestBody": {
+          "description": "The details of the user to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            },
+            "application/*+xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully created user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid"
+          }
+        }
+      }
+    },
+    "/api/Users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a user by id",
+        "operationId": "GetUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The user was not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete a user",
+        "operationId": "DeleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The user to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully deleted user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid (e.g. if the user is not disabled)"
+          },
+          "403": {
+            "description": "Admin permissions were modified incorrectly"
+          },
+          "404": {
+            "description": "The user was not found"
+          }
+        }
+      }
+    },
+    "/api/Users/current": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get the currently logged in user",
+        "operationId": "GetCurrentUser",
+        "responses": {
+          "200": {
+            "description": "Returns the logged in user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not currently logged in"
+          },
+          "404": {
+            "description": "The user was not found"
+          }
+        }
+      }
+    },
+    "/api/Users/{_id}/Roles": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a list of all roles and whether the user is a member",
+        "operationId": "GetUserRoles",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "The id of the user to list roles for",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the list of user role membership",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewUserRoles"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid (e.g. invalid user id)"
+          },
+          "404": {
+            "description": "The user was not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Edit the roles a user is a member of",
+        "operationId": "EditUserRoles",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "The user to edit membership for",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated membership of roles",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUserRoles"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUserRoles"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUserRoles"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUserRoles"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUserRoles"
+              }
+            },
+            "application/*+xml": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUserRoles"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns the updated membership values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewUserRoles"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid (e.g. invalid user id)"
+          },
+          "404": {
+            "description": "The user was not found"
+          },
+          "422": {
+            "description": "A role membership record refers to an invalid role"
+          }
+        }
+      }
+    },
+    "/api/Users/{_id}/EffectiveAccess": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a list of features a user can access due to thier roles",
+        "operationId": "GetUserEffectiveAccess",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "The id of the user to list access for",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the features a user can access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEffectiveAccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid (e.g. invalid user id)"
+          },
+          "404": {
+            "description": "The user was not found"
+          }
+        }
+      }
+    },
+    "/api/Users/{_id}/Permission/{permission}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Check if a user has a permission given by thier roles",
+        "operationId": "UserHasPerm",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "The id of the user to check permission for",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "permission",
+            "in": "path",
+            "description": "The permission to check",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns whether the user has the premission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid (e.g. invalid user id)"
+          },
+          "404": {
+            "description": "The user was not found"
+          }
+        }
+      }
+    },
+    "/api/Users/{_id}/Enabled": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Set whether a user is enabled",
+        "operationId": "UserSetEnabled",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "The id of the user to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Whether the user is enabled",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            "application/*+xml": {
+              "schema": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully updated users enabled status"
+          },
+          "400": {
+            "description": "The request is invalid (e.g. invalid user id)"
+          },
+          "403": {
+            "description": "Admin permissions were modified incorrectly"
+          },
+          "404": {
+            "description": "The user was not found"
+          }
+        }
+      }
+    },
+    "/api/Users/{_id}": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Edit an existing user",
+        "operationId": "EditUser",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "The user to edit",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The updated user information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUser"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUser"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUser"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUser"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUser"
+              }
+            },
+            "application/*+xml": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully updated user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EditUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid (e.g. invalid user id)"
+          },
+          "403": {
+            "description": "Admin permissions were modified incorrectly"
+          },
+          "404": {
+            "description": "The user was not found"
+          }
+        }
+      }
+    },
+    "/api/Users/{_id}/BarcodePin": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Give barcode pin to a user",
+        "operationId": "GiveUserBarcodePin",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "description": "The user to generate a pin for",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully given user a barcode pin"
+          },
+          "400": {
+            "description": "The request is invalid (e.g. invalid user id)"
+          },
+          "403": {
+            "description": "Admin permissions were modified incorrectly"
+          },
+          "404": {
+            "description": "The user was not found"
+          },
+          "409": {
+            "description": "The user already has a barcode pin"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ChangePasswordRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "newPassword": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateJWT": {
+        "type": "object",
+        "properties": {
+          "_Features": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean",
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "expiration": {
+            "type": "string",
+            "format": "date"
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FeatureBooleanKeyValuePair"
+            },
+            "nullable": true
+          },
+          "featureAreas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StringTrinaryKeyValuePair"
+            },
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateRole": {
+        "type": "object",
+        "properties": {
+          "roleName": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "A new role to create"
+      },
+      "CreateUser": {
+        "type": "object",
+        "properties": {
+          "usrName": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrFirstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrLastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrEmailAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrDepartment": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrEnabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EditRole": {
+        "type": "object",
+        "properties": {
+          "_Features": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean",
+              "nullable": true
+            },
+            "description": "An updated list of features and whether the role gives access to them",
+            "nullable": true
+          },
+          "features": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FeatureBooleanKeyValuePair"
+            },
+            "nullable": true
+          },
+          "featureAreas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StringTrinaryKeyValuePair"
+            },
+            "nullable": true
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "description": "",
+            "format": "int32"
+          },
+          "roleName": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "A role with an edited set of features"
+      },
+      "EditRoleUsers": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean",
+              "nullable": true
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EditUser": {
+        "type": "object",
+        "properties": {
+          "usrName": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrFirstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrLastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrEmailAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrDepartment": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrEnabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EditUserRoles": {
+        "type": "object",
+        "properties": {
+          "roles": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean",
+              "nullable": true
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Feature": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "",
+            "format": "int32"
+          },
+          "featureName": {
+            "type": "string",
+            "description": "The name of the feature",
+            "nullable": true
+          },
+          "featureArea": {
+            "type": "string",
+            "description": "The area that the feature is a part of",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "A single feature of Titan to which access can be restricted"
+      },
+      "FeatureBooleanKeyValuePair": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "$ref": "#/components/schemas/Feature"
+          },
+          "value": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "JWTResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "expiration": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "expiration": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "claims": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "nullable": true
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StringTrinaryKeyValuePair": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "$ref": "#/components/schemas/Trinary"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TokenChangePasswordRequest": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Trinary": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "description": "\r\n\r\n0 = None\r\n\r\n1 = All\r\n\r\n2 = Some",
+        "format": "int32",
+        "x-enumNames": [
+          "None",
+          "All",
+          "Some"
+        ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "usrID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "usrName": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrUUID": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "usrFirstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrLastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrEmailAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrLastLogin": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "usrLoginCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "usrDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrDepartment": {
+            "type": "string",
+            "nullable": true
+          },
+          "usrEnabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserEffectiveAccess": {
+        "type": "object",
+        "properties": {
+          "features": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FeatureBooleanKeyValuePair"
+            },
+            "nullable": true
+          },
+          "featureAreas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StringTrinaryKeyValuePair"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ViewRole": {
+        "type": "object",
+        "properties": {
+          "features": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FeatureBooleanKeyValuePair"
+            },
+            "nullable": true
+          },
+          "featureAreas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StringTrinaryKeyValuePair"
+            },
+            "nullable": true
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "description": "",
+            "format": "int32"
+          },
+          "roleName": {
+            "type": "string",
+            "description": "",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ViewRoleUsers": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean",
+              "nullable": true
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ViewUserRoles": {
+        "type": "object",
+        "properties": {
+          "roles": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean",
+              "nullable": true
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+﻿@model Contract
+
+@{
+    ViewBag.Title = "Create Contract";
+}
+
+<h2>Create Contract</h2>
+
+@using (Html.BeginForm(
+    nameof(ContractsController.CreateContract), 
+    typeof(ContractsController).ControllerName(),
+    FormMethod.Post))
+{
+    <div class="input-group mb-3">
+        <span class="input-group-text">Customer</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.ConCusID, 
+            (IEnumerable<SelectListItem>)ViewBag.CustomerOptions, 
+            new { @class = "form-control" }
+        )
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.ContractName)</span>
+
+        @Html.EditorFor(Model => Model.ContractName,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.CustomerOrderNumber)</span>
+
+        @Html.EditorFor(Model => Model.CustomerOrderNumber,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.CustomerOrderDate)</span>
+
+        @Html.EditorFor(Model => Model.CustomerOrderDate, "{0:dd/MM/yyyy}", 
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.BookingInInstructions)</span>
+
+        @Html.EditorFor(Model => Model.BookingInInstructions,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.IsCasualty)</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.IsCasualty, 
+            LookupHelpers.YesNoFromBool,
+            new { @class = "form-control" }
+        )
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.DespatchMethod)</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.DespatchMethod, 
+            (IEnumerable<SelectListItem>)ViewBag.DespatchMethodOptions, 
+            new { @class = "form-control" }
+        )
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.DeliveryTerms)</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.DeliveryTerms, 
+            (IEnumerable<SelectListItem>)ViewBag.DeliveryTermsOptions, 
+            new { @class = "form-control" }
+        )
+    </div>
+
+    <hr />
+    <h4>Address</h4>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.PostalName)</span>
+    
+        @Html.EditorFor(Model => Model.PostalName,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine1)</span>
+    
+        @Html.EditorFor(Model => Model.AddressLine1,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine2)</span>
+    
+        @Html.EditorFor(Model => Model.AddressLine2,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine3)</span>
+    
+        @Html.EditorFor(Model => Model.AddressLine3,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine4)</span>
+    
+        @Html.EditorFor(Model => Model.AddressLine4,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.City)</span>
+    
+        @Html.EditorFor(Model => Model.City,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.County)</span>
+    
+        @Html.EditorFor(Model => Model.County,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.Postcode)</span>
+
+        @Html.EditorFor(Model => Model.Postcode,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="text-danger">
+        @Html.ValidationSummary()
+    </div>
+
+    <input type="submit" class="btn btn-success" value="Create Contract" />
+}

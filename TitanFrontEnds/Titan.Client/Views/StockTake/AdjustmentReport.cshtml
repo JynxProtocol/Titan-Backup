@@ -1,0 +1,68 @@
+﻿@model AdjustResponseReportDTO
+
+@{
+    ViewBag.Title = "Adjustment Report";
+}
+
+<h2>Adjustment Report</h2>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Success</th>
+            <th>Code</th>
+            <th>Bin</th>
+            <th>Message</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (AdjustResponseDTO Item in Model.Report)
+        {
+            <tr class="@(Item.Success == true ? "" : "table-danger")">
+                <td>
+                    @if (Item.Success == true)
+                    {
+                        <span>Success</span>
+                    }
+                    else
+                    {
+                        <span>Failed</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Item.Bin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Item.Message)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Success == true)
+{
+    <h3 class="text-danger">Some adjustments failed. 
+        Some Sage values may have been changed. The stocktake was not closed</h3>
+}
+
+@if (Model.StockTakeClosed == true)
+{
+    <h4>Stocktake completed</h4>
+}
+
+<div style="display:flex">
+    @Html.ActionLink(
+        "Back to list", 
+        nameof(StockTakeController.CompletedList), 
+        new { },
+        new 
+        { 
+            @class = "btn btn-primary", 
+            style = "margin-left:auto" 
+        }
+    )
+</div>

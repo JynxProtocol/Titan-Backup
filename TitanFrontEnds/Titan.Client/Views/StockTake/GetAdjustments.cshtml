@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Apply Sage adjustments";
+}
+
+@model List<StockAdjustDTO>
+
+<h2>Apply adjustments</h2>
+<hr />
+<h3>You are about to apply the following adjustments in Sage:</h3>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Actual Sage value</th>
+            <th>Snapshot Sage value</th>
+            <th>New value</th>
+            <th>Change</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (StockAdjustDTO stockAdjust in Model)
+        {
+            var SageStockClass = 
+                stockAdjust.SnapshotSageQuantity == stockAdjust.CurrentSageQuantity 
+                    ? "" : "table-danger";
+            <tr>
+                <td>
+                    @Html.DisplayFor(x => stockAdjust.Code)
+                </td>
+                <td class="@SageStockClass">
+                    @Html.DisplayFor(x => stockAdjust.CurrentSageQuantity)
+                </td>
+                <td class="@SageStockClass">
+                    @Html.DisplayFor(x => stockAdjust.SnapshotSageQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => stockAdjust.ResultSageQuantity)
+                </td>
+
+                @{
+                    string ChangeClass = 
+                        (stockAdjust.Change > 0) ? "table-success" : "table-danger";
+                }
+
+                <td class="@((stockAdjust.Change == 0) ? "" : ChangeClass)">
+                    @(((decimal)stockAdjust.Change).ToString("F2"))
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@using (Html.BeginForm(
+    nameof(StockTakeController.Adjust), 
+    typeof(StockTakeController).ControllerName(),
+    new { id = ViewBag.StockTakeID }, 
+    FormMethod.Post))
+{
+    <table style="display:none" class="table table-bordered table-repsonsive table-hover table-striped">
+        @{int i = 0;}
+
+        @foreach (StockAdjustDTO stockAdjust in Model)
+        {
+            <tr>
+                <td>
+                    <input type="text" value="@stockAdjust.BinName" 
+                        name="[@(i)].@nameof(stockAdjust.BinName)" />
+
+                    <input type="number" value="@stockAdjust.Change" 
+                        name="[@(i)].@nameof(stockAdjust.Change)" />
+
+                    <input type="text" value="@stockAdjust.Code" 
+                        name="[@(i)].@nameof(stockAdjust.Code)" />
+
+                    <input type="number" value="@stockAdjust.SnapshotSageQuantity" 
+                        name="[@(i)].@nameof(stockAdjust.SnapshotSageQuantity)" />
+
+                    <input type="text" value="@stockAdjust.Ref" 
+                        name="[@(i)].@nameof(stockAdjust.Ref)" />
+
+                    <input type="number" value="@stockAdjust.ResultSageQuantity" 
+                        name="[@(i)].@nameof(stockAdjust.ResultSageQuantity)" />
+
+                    <input type="text" value="@stockAdjust.SecondRef" 
+                        name="[@(i)].@nameof(stockAdjust.SecondRef)" />
+
+                    <input type="text" value="@stockAdjust.Warehouse" 
+                        name="[@(i)].@nameof(stockAdjust.Warehouse)" />
+                </td>
+            </tr>
+
+            i++;
+        }
+    </table>
+
+    <input type="submit" class="btn btn-danger" value="Submit" />
+}
+

@@ -1,0 +1,145 @@
+﻿@using TitanAPIAdminConnection
+@model ViewRole
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+<hr />
+@{
+    int count = 0;
+    int i = 0;
+}
+@foreach (var kvp in Model.FeatureAreas)
+{
+    i = (from featureKVP in Model.Features
+         where featureKVP.Key.FeatureArea == kvp.Key
+         select featureKVP).Count();
+    if (i > count)
+    {
+        count = i;
+    }
+}
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <tr>
+        <th scope="colgroup">
+            Feature Area
+        </th>
+        <th colspan="@count">
+            Features
+        </th>
+    </tr>
+
+    @foreach (var kvp in Model.FeatureAreas)
+    {
+        <tr>
+            <th scope="rowgroup" style="text-align:center">
+                <p>@kvp.Key</p>
+
+                @if (kvp.Value == Trinary.None)
+                {
+                    <input class="check-box form-control unchecked featurearea" type="checkbox" featurearea="@kvp.Key" disabled="disabled">
+                }
+                else if (kvp.Value == Trinary.All)
+                {
+                    <input class="check-box form-control checked featurearea" type="checkbox" featurearea="@kvp.Key" disabled="disabled">
+                }
+                else
+                {
+                    <input class="check-box form-control indeterminate featurearea" type="checkbox" featurearea="@kvp.Key" disabled="disabled">
+                }
+            </th>
+            @{ i = 0;}
+            @foreach (var featureKVP in (from featureKVP in Model.Features
+                        where featureKVP.Key.FeatureArea == kvp.Key
+                        select featureKVP))
+            {
+                <td style="text-align:center">
+                    <p>@featureKVP.Key.FeatureName</p>
+
+                    @if (featureKVP.Value == false)
+                    {
+                        <input class="check-box form-control unchecked feature" type="checkbox"
+                               featurearea="@kvp.Key" feature="@featureKVP.Key.FeatureName" disabled="disabled">
+                    }
+                    else if (featureKVP.Value == true)
+                    {
+                        <input class="check-box form-control checked feature" type="checkbox"
+                               featurearea="@kvp.Key" feature="@featureKVP.Key.FeatureName" disabled="disabled">
+                    }
+                </td>
+                i++;
+            }
+            @if (i < count)
+            {
+                <td colspan="@(count - i)"></td>
+            }
+            @*@for (; i < count; i++)
+                {
+                    <td></td>
+                }*@
+        </tr>
+    }
+</table>
+
+<hr />
+@Html.ActionLink("Edit Users", nameof(RolesController.EditUsers), new { id = Model.Id }, new { @class = "btn btn-warning" })
+<hr />
+
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+    View Users in Role
+</button>
+<div class="collapse" id="collapseUsers">
+    <hr />
+    <table class="table table-bordered table-repsonsive table-hover table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Users
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @{
+                        <ul style="list-style-type: none">
+                            @foreach (string username in Model.Users)
+                            {
+                                <li style=" float: left; min-width: 15%; text-align: center">
+                                    @username
+                                </li>
+                            }
+                        </ul>
+                        if (Model.Users.Count == 0)
+                        {
+                            <p>
+                                No Users in Role
+                            </p>
+                        }
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<hr />
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        @Html.ActionLink("Edit", nameof(RolesController.Edit), new { id = Model.Id }, new { @class = "btn btn-warning" })
+        @Html.ActionLink("Back to List", nameof(RolesController.Index), new { }, new { @class = "btn btn-success" })
+        @Html.ActionLink("Delete", nameof(RolesController.Delete), new { id = Model.Id }, new { @class = "btn btn-danger" })
+    </div>
+</div>
+
+
+<script>
+    $(".unchecked").prop("checked", false);
+    $(".checked").prop("checked", true);
+    $(".indeterminate").prop("indeterminate", true);
+    $('#sortTable').DataTable();
+</script>

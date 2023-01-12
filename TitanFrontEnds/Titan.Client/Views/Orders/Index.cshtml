@@ -1,0 +1,71 @@
+﻿@model List<OrderDTO>
+
+@{
+    ViewBag.Title = "Orders to approve";
+}
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <thead>
+        <tr>
+            <th>OrderID</th>
+            <th>GRN</th>
+            <th>Customer</th>
+            <th>Customer Order Number</th>
+            <th>DateReceived</th>
+            <th>CreatedBy</th>
+            <th>Contract</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Order in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(Model => Order.OrderID)</td>
+                <td>@Html.DisplayFor(Model => Order.Grn)</td>
+                <td>@Html.DisplayFor(Model => Order.CustomerName)</td>
+                <td>@Html.DisplayFor(Model => Order.CusOrderNumber)</td>
+                <td>@Html.DisplayFor(Model => Order.DateReceived)</td>
+                <td>@Html.DisplayFor(Model => Order.CreatedBy)</td>
+                <td>
+                    @if (Order.ConID != null) {
+                        <div class="d-grid">
+                            @Html.ActionLink(
+                                "Contract", 
+                                nameof(ContractsController.EditContract),
+                                typeof(ContractsController).ControllerName(),
+                                new { ConID = Order.ConID }, 
+                                new { @class = "btn btn-success" }
+                            )
+                        </div>
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink(
+                        "Edit",
+                        nameof(OrdersController.Edit),
+                        typeof(OrdersController).ControllerName(),
+                        new { OrderID = Order.OrderID }, 
+                        new { @class = "btn btn-success" }
+                    )
+                </td>
+                <td>
+                    @Html.ActionLink(
+                        "Authorise",
+                        nameof(OrdersController.GenerateSOR),
+                        typeof(OrdersController).ControllerName(),
+                        new { OrderID = Order.OrderID }, 
+                        new { @class = "btn btn-danger" }
+                    )
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $('#sortTable').DataTable({
+        "order": [[0, "desc"]]
+    });
+</script>

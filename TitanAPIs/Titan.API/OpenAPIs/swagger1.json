@@ -1,0 +1,293 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Titan.ReportEngine",
+    "description": "An ASP.NET Core Web API for generating reports and templates",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Report/Generate/{ReportName}": {
+      "get": {
+        "tags": [
+          "Report"
+        ],
+        "operationId": "Generate",
+        "parameters": [
+          {
+            "name": "ReportName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the generated report",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "file"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error generating report"
+          },
+          "404": {
+            "description": "Could not find report"
+          }
+        }
+      }
+    },
+    "/api/Report/FromDB/{ReportName}": {
+      "get": {
+        "tags": [
+          "Report"
+        ],
+        "operationId": "FromDBByName",
+        "parameters": [
+          {
+            "name": "ReportName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the fetched report",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "file"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find saved report"
+          }
+        }
+      }
+    },
+    "/api/Report/FromDB/{ReportName}/V{version}": {
+      "get": {
+        "tags": [
+          "Report"
+        ],
+        "operationId": "FromDBByNameAndVersion",
+        "parameters": [
+          {
+            "name": "ReportName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the fetched report",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "file"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find saved report"
+          }
+        }
+      }
+    },
+    "/api/Report/FromDB/{ReportName}/{id}": {
+      "get": {
+        "tags": [
+          "Report"
+        ],
+        "operationId": "FromDBByNameAndID",
+        "parameters": [
+          {
+            "name": "ReportName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the fetched report",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "file"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find saved report"
+          }
+        }
+      }
+    },
+    "/api/Report/FromDB/{ReportName}/{id}/V{version}": {
+      "get": {
+        "tags": [
+          "Report"
+        ],
+        "operationId": "FromDBByNameIDAndVersion",
+        "parameters": [
+          {
+            "name": "ReportName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the fetched report",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "file"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find saved report"
+          }
+        }
+      }
+    },
+    "/api/Report/Template": {
+      "post": {
+        "tags": [
+          "Report"
+        ],
+        "operationId": "Template",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemplateRequestDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemplateRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemplateRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemplateRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TemplateRequestDTO": {
+        "type": "object",
+        "properties": {
+          "template": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
+}

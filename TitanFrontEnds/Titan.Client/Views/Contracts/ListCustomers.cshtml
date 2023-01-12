@@ -1,0 +1,42 @@
+﻿@model List<ContractOverview>
+
+@{
+    ViewBag.Title = "Customers";
+}
+
+<h2>Choose a Contract</h2>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Contract</th>
+            <th>Customer Order Number</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ContractOverview Contract in Model)
+        {
+            <tr class="position-relative">
+                <td>@Html.DisplayFor(modelItem => Contract.CustomerName)</td>
+                <td>@Html.DisplayFor(modelItem => Contract.ContractName)</td>
+                <td>@Html.DisplayFor(modelItem => Contract.CustomerOrderNumber)</td>
+
+                <th scope="row">
+                    @Html.ActionLink(
+                        "Book in parts",
+                        nameof(OrdersController.BookInParts),
+                        typeof(OrdersController).ControllerName(),
+                        new { ConID = Contract.ConID },
+                        new { @class = "btn btn-warning stretched-link" } 
+                    )
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $('#sortTable').DataTable();
+</script>

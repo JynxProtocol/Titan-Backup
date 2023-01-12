@@ -1,0 +1,85 @@
+﻿@model IEnumerable<LookUpAWKWorkRequired>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>Manage AWK Faults List</h2>
+
+<div class="mb-3">
+    @Html.ActionLink(
+        "Add to List", 
+        nameof(AWKController.AddAWKWorkRequired), 
+        new {},
+        new { @class = "btn btn-success" }
+    )
+</div>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <thead>
+        <tr>
+            <th>AWK fault name</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LookupText)
+                </td>
+                <td>
+                     @Html.ActionLink(
+                         "Edit",
+                         nameof(AWKController.EditAWKWorkRequired),
+                         new { Id = item.Id },
+                         new { @class = "btn btn-success" }
+                     )
+                </td>
+                <td>
+                    <button class="btn btn-danger" data-bs-toggle="modal" 
+                        data-bs-target="#Delete_@item.Id">
+                        Delete
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="Delete_@item.Id" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete work required</h5>
+                                    <button type="button" class="btn-close" 
+                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you wish to delete this work required?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    @using (Html.BeginForm(
+                                        nameof(AWKController.DeleteAWKWorkRequired),
+                                        typeof(AWKController).ControllerName(),
+                                        new { item.Id },
+                                        FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="submit" class="btn btn-danger" 
+                                            value="Delete" />
+                                    }
+                                    <button type="button" class="btn btn-secondary" 
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $('#sortTable').DataTable();
+</script>

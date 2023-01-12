@@ -1,0 +1,94 @@
+﻿@model List<ReceivedPart>
+
+@{
+    ViewBag.Title = "Book in parts";
+}
+
+<h2>Book in parts</h2>
+
+@using (Html.BeginForm(
+    nameof(OrdersController.BookInParts), 
+    typeof(OrdersController).ControllerName(), 
+    new { ConID = ViewBag.ConID }, 
+    FormMethod.Post))
+{
+    <table class="table table-bordered table-repsonsive table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Part</th>
+                <th>Description</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.EditorFor(Model => Model[i].StockCode,
+                            new { htmlAttributes = new {
+                                disabled = "disabled",
+                                @class = "form-control stock-code-autocomplete",
+                                data_i = i } })
+                        @Html.HiddenFor(Model => Model[i].StockCode,
+                                new { htmlAttributes = new {
+                                @class = "form-control stock-code-autocomplete",
+                                data_i = i } })
+                    </td>
+                    <td>
+                        @Html.EditorFor(Model => Model[i].Description,
+                            new { htmlAttributes = 
+                                new { disabled = "disabled", @class="form-control" } })
+                        @Html.HiddenFor(Model => Model[i].Description)
+                    </td>
+                    <td>
+                        @Html.EditorFor(Model => Model[i].Quantity,
+                            new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">GRN</span>
+        <input type="text" class="form-control" id="GRN" name="GRN" required />
+    </div>
+    <span data-valmsg-for="GRN" data-valmsg-replace="true" class="text-danger"></span>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Delivery Reference</span>
+        <input type="text" class="form-control" id="DeliveryRef" name="DeliveryRef" />
+    </div>
+
+@*    <div class="input-group mb-3">
+        <span class="input-group-text">Is order casualty?</span>
+        @Html.DropDownList("IsCasualty",
+            LookupHelpers.YesNoFromBool,
+            new { @class = "form-control" })
+    </div>*@
+
+    <input type="submit" class="btn btn-success" id="submit" value="Book in parts" />
+}
+
+<script>
+    function GetPart(event, ui) {
+        $.ajax({
+                dataType: 'json',
+                url: '@Url.Action(nameof(LookupController.GetPartCodeInformation),
+                    typeof(LookupController).ControllerName())',
+                data: { code: $(event.target).val() },
+                success: function (data) {
+                    $(event.target).removeClass("bg-danger");
+                    $("input[type=submit]").removeAttr('disabled');
+
+                    var i = $(event.target).data("i");
+                    $(`#z${i}__Description`).val(data.description);
+                },
+                error: function () {
+                    $(event.target).addClass("bg-danger");
+                    $("input[type=submit]").attr('disabled', true);
+                }
+            });
+        };
+</script>

@@ -1,0 +1,65 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@using System.Web
+@using TitanAPIConnection
+@model StockResponseDTO
+
+<div class="flexlayout" @*style="display: grid; grid-template-columns: repeat(1, 1fr); grid-template-rows: repeat(4, 1fr); gap: 1em; aspect-ratio: 9/16; max-width: min(350px, 90%); margin: auto;"*@>
+    <h3 style="text-align: center">
+        Please scan a barcode
+    </h3>
+    <div class="padding">
+
+    </div>
+    @using (Html.BeginForm("StockCorrect", "StockCorrect", FormMethod.Get,
+    new { id = "barcodeForm"})) {
+        <div class="input-group">
+            <input class="form-control largetext" id="Code" name="Code" type="text" value="" autofocus autocomplete="new-password">
+            <div class="input-group-append">
+                <input type="submit" class="btn btn-secondary medtext" value="Enter"/>
+            </div>
+        </div>
+    }
+
+    @Html.ActionLink("Menu", "", typeof(HomeController).ControllerName(), new { }, new { @class = "btn btn-secondary py-3 px-3 titanbutton", style="display: flex; justify-content: center; align-items: center;" })
+
+    <script>
+        var isValid = false;
+
+        $("#barcodeForm").on("submit", function(e) {
+            if (!isValid){
+                e.preventDefault();
+                $.ajax({
+                    url: "/StockData/Exists/",
+                    type: 'POST',
+                    data: $("#Code").serialize(),
+                    success: function(data) {
+                        if (data !== true) {
+                            ShowNotification("<h3 class='text-danger'>Invalid stock code</h3>");
+                        } 
+                        else {
+                            isValid = true;
+                            $("#barcodeForm").submit();
+                        }
+                    },
+                    error: function(xhr) {
+                        HandleXHRError(xhr);
+                    },
+                });
+            }
+            else {
+                isValid = false;
+            }
+        });
+    </script>
+
+    @if (Model != null){
+        <script>
+            $(document).ready(ShowNotification("@Html.Raw(HttpUtility.JavaScriptStringEncode(@Model.Message))"));
+        </script>
+    }
+</div>

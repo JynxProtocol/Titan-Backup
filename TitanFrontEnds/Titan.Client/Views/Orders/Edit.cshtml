@@ -1,0 +1,189 @@
+﻿@model OrderDTO
+
+@{
+    ViewBag.Title = "Update Order";
+}
+
+<h2>Edit order</h2>
+
+@using (Html.BeginForm(
+    nameof(OrdersController.Edit),
+    typeof(OrdersController).ControllerName(), 
+    new { Model.OrderID }, 
+    FormMethod.Post))
+{
+    <div class="input-group mb-3">
+        <span class="input-group-text">GRN</span>
+    
+        @Html.EditorFor(Model => Model.Grn,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Customer Order Number</span>
+    
+        @Html.EditorFor(Model => Model.OrdCustomerRef,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Despatch Method</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.DespatchMethod,
+            (IEnumerable<SelectListItem>)ViewBag.DespatchMethodOptions,
+            new { @class = "form-control" }
+        )
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Delivery Terms</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.DeliveryTerms, 
+            (IEnumerable<SelectListItem>)ViewBag.DeliveryTermsOptions,
+            new { @class = "form-control" }
+        )
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Customer</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.CusID, 
+            (IEnumerable<SelectListItem>)ViewBag.CustomerOptions,
+            new { @class = "form-control", disabled = "disabled" }
+        )
+    </div>
+
+    <hr />
+    <h4>Address</h4>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.PostalName)</span>
+    
+        @Html.EditorFor(Model => Model.PostalName,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine1)</span>
+    
+        @Html.EditorFor(Model => Model.AddressLine1,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine2)</span>
+    
+        @Html.EditorFor(Model => Model.AddressLine2,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine3)</span>
+    
+        @Html.EditorFor(Model => Model.AddressLine3,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine4)</span>
+    
+        @Html.EditorFor(Model => Model.AddressLine4,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.City)</span>
+    
+        @Html.EditorFor(Model => Model.City,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.County)</span>
+    
+        @Html.EditorFor(Model => Model.County,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.PostCode)</span>
+        @Html.EditorFor(Model => Model.PostCode,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <hr />
+    <h4>Items</h4>
+
+    <table class="table table-bordered table-repsonsive table-hover table-striped">
+        <thead>
+            <tr>
+                <th>StockCode</th>
+                <th>DirtyStockCode</th>
+                <th>Quantity recieved</th>
+                <th>Quantity expected</th>
+                <th>Colour</th>
+                <th>Warrantry</th>
+                <th>Leadtime</th>
+                <th>Unit price</th>
+                <th>Serial number</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.OrderDetails.Count; i++) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(Model => Model.OrderDetails[i].StockCode)
+                        @Html.HiddenFor(Model => Model.OrderDetails[i].OrderDetailID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(Model => Model.OrderDetails[i].DirtyStockCode)
+                    </td>
+                    <td>
+                        @Html.EditorFor(Model => Model.OrderDetails[i].QtyReceived,
+                            new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                    <td>
+                        @Html.EditorFor(Model => Model.OrderDetails[i].ExpectedQty,
+                            new { htmlAttributes = new { @class = "form-control", 
+                            disabled = "disabled" } })
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(
+                            Model => Model.OrderDetails[i].Colour,
+                            (IEnumerable<SelectListItem>)ViewBag.ColourOptions, 
+                            new { @class = "form-control" }
+                        )
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(
+                            Model => Model.OrderDetails[i].Warranty,
+                            (IEnumerable<SelectListItem>)ViewBag.WarrantyOptions, 
+                            new { @class = "form-control" }
+                        )
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(
+                            Model => Model.OrderDetails[i].LeadTime,
+                            (IEnumerable<SelectListItem>)ViewBag.LeadTimeOptions, 
+                            new { @class = "form-control" }
+                        )
+                    </td>
+                    <td>
+                        @Html.EditorFor(Model => Model.OrderDetails[i].UnitPrice,
+                            new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                    <td>
+                        @Html.EditorFor(Model => Model.OrderDetails[i].SerialNumber,
+                            new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <hr />
+    <input type="submit" class="btn btn-success" value="Save order" />
+}

@@ -1,0 +1,56 @@
+﻿@model List<ContractOverview>
+
+@{
+    ViewBag.Title = "Closed Contracts";
+}
+
+<h2>Closed Contracts</h2>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <thead>
+        <tr>
+            <th>Contract Number</th>
+            <th>Contract Name</th>
+            <th>Customer</th>
+            <th>Customer Order Number</th>
+            <th>Contract Value</th>
+            <th>Remaining Contract Value</th>
+            <th>Acknowledged?</th>
+            <th>View</th>
+        </tr>
+        </thead>
+    <tbody>
+        @foreach (var Contract in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(Model => Contract.ConID)</td>
+                <td>@Html.DisplayFor(Model => Contract.ContractName)</td>
+                <td>@Html.DisplayFor(Model => Contract.CustomerName)</td>
+                <td>@Html.DisplayFor(Model => Contract.CustomerOrderNumber)</td>
+                <td>@Contract.TotalValue.ToString("C")</td>
+                <td>@Contract.RemainingValue.ToString("C")</td>
+                                
+                <td>
+                    @Html.DropDownListFor(
+                        Model => Contract.Acknowledged,
+                        LookupHelpers.AcknowledgedOptions, 
+                        new { @class = "form-control", disabled = "" }
+                    )
+                </td>
+
+                <td>
+                    @Html.ActionLink(
+                        "View", 
+                        nameof(ContractsController.ViewContract),
+                        new { Contract.ConID },
+                        new { @class = "btn btn-success" } 
+                    )
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $('#sortTable').DataTable();
+</script>

@@ -1,0 +1,79 @@
+﻿@inject TitanAPIAdminConnection.TitanAdmin TitanAdmin
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Titan.Administration</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    @*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">*@
+      <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</head>
+<body>
+    <header>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="~/home/index"><img style="vertical-align:middle" src="~/Content/images/sabre-rail-logo.png" width="100" /> Titan.Administration</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse">
+                        <ul class="navbar-nav">
+                            @if (TitanAdmin.UserHasPermAsync("current", "UsersSee").Result)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                                </li>
+                            }
+                            @if (TitanAdmin.UserHasPermAsync("current", "RolesSee").Result)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="MyAccount">Account</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="/Account/Logout"><button type="button" class="btn btn-secondary"><i class="bi-box-arrow-left" aria-hidden="true"></i> Logout</button></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        }
+    </header>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    <hr />
+
+    <footer class="footer" style="z-index: -1;">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <p style="text-align: right;">
+                <a href="/Enquiries/BugReport" class="btn btn-secondary"><i class="bi bi-bug"></i> Bug Report</a>
+                <a href="/Enquiries/FeatureRequest" class="btn btn-secondary"><i class="bi bi-lightbulb"></i> Feature Request</a>
+            </p>
+        }
+        <p style="text-align: center; white-space: normal; line-height: normal; padding: 10px">&copy; @DateTime.Now.Year - Sabre Rail Services Ltd. Grindon Way, Heighington Lane Business Park, Newton Aycliffe, Co. Durham, DL5 6SH</p>
+    </footer>
+    
+
+</body>
+</html>

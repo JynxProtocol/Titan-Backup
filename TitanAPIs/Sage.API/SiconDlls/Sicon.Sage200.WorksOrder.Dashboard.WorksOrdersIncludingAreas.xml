@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="Issued/Allocated Works Orders by Area" IncludeMasterFilterState="false" />
+  <DataSources>
+    <SqlDataSource Name="SiWorksOrder" ComponentName="sqlDataSource1">
+      <Connection Name="Sage200" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="SiWorksOrder">
+        <Tables>
+          <Table Name="SiWorksOrder" />
+          <Table Name="SiWorksOrderDept" />
+          <Table Name="SiWorksOrderStage" />
+          <Relation Type="LeftOuter" Parent="SiWorksOrder" Nested="SiWorksOrderStage">
+            <KeyColumn Parent="SiWorksOrderStageID" Nested="SiWorksOrderStageID" />
+          </Relation>
+          <Relation Type="LeftOuter" Parent="SiWorksOrderStage" Nested="SiWorksOrderDept">
+            <KeyColumn Parent="SiWorksOrderDeptID" Nested="SiWorksOrderDeptID" />
+          </Relation>
+        </Tables>
+        <Columns>
+          <Column Table="SiWorksOrder" Name="SiWorksOrderID" />
+          <Column Table="SiWorksOrder" Name="WONumber" />
+          <Column Table="SiWorksOrder" Name="WOName" />
+          <Column Table="SiWorksOrder" Name="WOQuantity" />
+          <Column Table="SiWorksOrder" Name="WOCreatedDate" />
+          <Column Table="SiWorksOrder" Name="WOGeneratedDate" />
+          <Column Table="SiWorksOrder" Name="WODueDate" />
+          <Column Table="SiWorksOrder" Name="WOStatusEnumID" />
+          <Column Table="SiWorksOrder" Name="WOStatus" />
+          <Column Table="SiWorksOrder" Name="SiWorksOrderStageID" />
+          <Column Table="SiWorksOrderDept" Name="SiWorksOrderDeptID" />
+          <Column Table="SiWorksOrderDept" Name="Code" />
+          <Column Table="SiWorksOrderDept" Name="Description" />
+          <Column Table="SiWorksOrderStage" Name="SiWorksOrderStageID" Alias="SiWorksOrderStage_SiWorksOrderStageID" />
+          <Column Table="SiWorksOrderStage" Name="SiWorksOrderDeptID" Alias="SiWorksOrderStage_SiWorksOrderDeptID" />
+        </Columns>
+        <Filter>[SiWorksOrder.WOStatusEnumID] Between(2, 6) And [SiWorksOrder.Deleted] = False And Not IsNullOrEmpty([SiWorksOrder.WONumber])</Filter>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Parameters>
+    <Parameter Name="Area" AllowMultiselect="true" SelectAllValues="true" Description="Area">
+      <DynamicListLookUpSettings DataSourceName="sqlDataSource1" DataMember="SiWorksOrder" ValueMember="Code" DisplayMember="Code" SortByMember="Code" />
+    </Parameter>
+  </Parameters>
+  <Items>
+    <Grid ComponentName="gridDashboardItem1" Name="Grid 1" ShowCaption="false" DataSource="sqlDataSource1" DataMember="SiWorksOrder" FilterString="[DataItem8] In(?Area)">
+      <InteractivityOptions MasterFilterMode="Single" />
+      <DataItems>
+        <Dimension DataMember="WONumber" SortOrder="Descending" DefaultId="DataItem0" />
+        <Dimension DataMember="WOName" DefaultId="DataItem1" />
+        <Measure DataMember="WOQuantity" DefaultId="DataItem2">
+          <NumericFormat FormatType="Number" />
+        </Measure>
+        <Dimension DataMember="WOGeneratedDate" DateTimeGroupInterval="DayMonthYear" DefaultId="DataItem3" />
+        <Dimension DataMember="WOCreatedDate" DateTimeGroupInterval="DayMonthYear" DefaultId="DataItem4" />
+        <Dimension DataMember="WODueDate" DateTimeGroupInterval="DayMonthYear" DefaultId="DataItem5" />
+        <Dimension DataMember="WOStatus" DefaultId="DataItem6" />
+        <Dimension DataMember="Description" DefaultId="DataItem7" />
+        <Dimension DataMember="Code" DefaultId="DataItem8" />
+      </DataItems>
+      <FormatRules>
+        <GridItemFormatRule Name="Format Rule 1" DataItem="DataItem5" DataItemApplyTo="DataItem5">
+          <FormatConditionExpression Expression="[DataItem5] &lt; LocalDateTimeToday()">
+            <AppearanceSettings AppearanceType="Red" />
+          </FormatConditionExpression>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="Format Rule 2" DataItem="DataItem5" DataItemApplyTo="DataItem5">
+          <FormatConditionExpression Expression="[DataItem5] &gt;= LocalDateTimeToday()">
+            <AppearanceSettings AppearanceType="Green" />
+          </FormatConditionExpression>
+        </GridItemFormatRule>
+      </FormatRules>
+      <GridColumns>
+        <GridDimensionColumn Name="WO Number">
+          <Dimension DefaultId="DataItem0" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="WO Name">
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Quantity">
+          <Measure DefaultId="DataItem2" />
+        </GridMeasureColumn>
+        <GridDimensionColumn Name="Generated Date">
+          <Dimension DefaultId="DataItem3" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Start Date">
+          <Dimension DefaultId="DataItem4" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Due Date">
+          <Dimension DefaultId="DataItem5" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Status">
+          <Dimension DefaultId="DataItem6" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Area">
+          <Dimension DefaultId="DataItem8" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Area Description">
+          <Dimension DefaultId="DataItem7" />
+        </GridDimensionColumn>
+      </GridColumns>
+      <GridOptions />
+    </Grid>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup Orientation="Vertical">
+      <LayoutItem DashboardItem="gridDashboardItem1" />
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

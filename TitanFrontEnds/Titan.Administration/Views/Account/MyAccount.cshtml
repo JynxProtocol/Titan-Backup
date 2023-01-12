@@ -1,0 +1,65 @@
+﻿@using TitanAPIAdminConnection
+@model User
+
+@{
+    ViewBag.Title = "My Account";
+}
+
+<h2>My Account</h2>
+
+<div class="form-horizontal">
+    <hr />
+
+    <div Class="form-group row">
+        <div class="control-label col-md-3">User Name:</div>
+        <div Class="col-md-3">
+            @{
+                @Html.EditorFor(model => model.UsrName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(Model => Model.UsrName)
+            }
+        </div>
+    </div>
+
+    <div Class="form-group row">
+        <div class="control-label col-md-3">Password:</div>
+        <div Class="col-md-3">
+            @Html.ActionLink(
+                "Update Password",
+                nameof(AccountController.ChangePassword),
+                typeof(AccountController).ControllerName(),
+                new { }, 
+                new { @class = "btn btn-danger" }
+            )
+        </div>
+    </div>
+
+    <div Class="form-group row">
+        <div class="control-label col-md-3">User First Name:</div>
+        <div Class="col-md-3">
+            @{
+                @Html.EditorFor(model => model.UsrFirstName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(Model => Model.UsrFirstName)
+            }
+        </div>
+    </div>
+
+    <div Class="form-group row">
+        <div class="control-label col-md-3">User Last Name:</div>
+        <div Class="col-md-3">
+            @{
+                @Html.EditorFor(model => model.UsrLastName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(Model => Model.UsrLastName)
+            }
+        </div>
+    </div>
+
+    <div Class="form-group row">
+        <div class="control-label col-md-3">User Email Address:</div>
+        <div Class="col-md-3">
+            @{
+                @Html.EditorFor(model => model.UsrEmailAddress, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(Model => Model.UsrEmailAddress)
+            }
+        </div>
+    </div>
+</div>

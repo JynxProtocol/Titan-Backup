@@ -1,0 +1,25 @@
+﻿@model int
+
+@{
+    ViewBag.Title = "Add image for AWK";
+}
+
+<h2>Add AWK image</h2>
+
+@using (Html.BeginForm(
+    nameof(AWKController.AddImage),
+    typeof(AWKController).ControllerName(), 
+    new { ConID = @Model }, 
+    FormMethod.Post,
+    false, 
+    new { enctype = "multipart/form-data" }))
+{
+    <div class="input-group mb-3">
+        <span class="input-group-text">Select or take picture</span>
+    
+        <input name="Image" id="Image" type="file" class="form-control"
+           accept="image/*;capture=camera" capture="environment">
+    </div>
+
+    <input type="submit" class="btn btn-success" id="submit" value="Add image" />
+}

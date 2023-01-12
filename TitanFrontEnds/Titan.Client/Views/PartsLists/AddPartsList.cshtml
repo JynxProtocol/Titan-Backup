@@ -1,0 +1,43 @@
+﻿@model PartsList
+
+@{
+    ViewBag.Title = "Add Parts List";
+}
+
+<h2>Add parts list</h2>
+
+@using (Html.BeginForm(
+    nameof(PartsListsController.AddPartsList),
+    typeof(PartsListsController).ControllerName(),
+    FormMethod.Post))
+{
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.Title)</span>
+    
+        @Html.EditorFor(Model => Model.Title,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+                    
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.ProductGroup)</span>
+
+        <datalist id="ProductGroupList">
+            @foreach (var ProductGroup in (IEnumerable<SelectListItem>)ViewBag.ProductGroupOptions)
+            {
+                if (ProductGroup.Value == Model.ProductGroup)
+                {
+                    <option selected>@ProductGroup.Text</option>
+                }
+                else
+                {
+                    <option>@ProductGroup.Text</option>
+                }
+            }
+        </datalist>
+    
+        @Html.EditorFor(Model => Model.ProductGroup,
+            new { htmlAttributes = new { @class = "form-control", list = "ProductGroupList" } })
+    </div>
+
+    <input type="submit" class="btn btn-success " value="Add Parts List" />
+}

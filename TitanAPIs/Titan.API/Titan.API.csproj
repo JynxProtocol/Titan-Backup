@@ -1,0 +1,78 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<UserSecretsId>ba61f072-5413-4d65-9c16-b4d178276a88</UserSecretsId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="sig.htm" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="sig.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <OpenApiReference Include="OpenAPIs\swagger.json" CodeGenerator="NSwagCSharp" Namespace="TitanAdminConnection" ClassName="TitanAdmin">
+      <SourceUri>https://localhost:44338/swagger/v1/swagger.json</SourceUri>
+		<Options>/UseBaseUrl:false /arrayType:"System.Collections.Generic.List" /dictionaryType:"System.Collections.Generic.Dictionary" /arrayBaseType:"System.Collections.Generic.List" /dictionaryBaseType:"System.Collections.Generic.Dictionary" /dateType:"System.DateTime" /dateTimeType:"System.DateTime" /AdditionalNamespaceUsages:Titan.OpenAPIs /GenerateExceptionClasses:false</Options>
+	</OpenApiReference>
+    <OpenApiReference Include="OpenAPIs\swagger1.json" CodeGenerator="NSwagCSharp" Namespace="ReportEngineConnection" ClassName="ReportEngine">
+      <SourceUri>http://localhost:52289/swagger/v1/swagger.json</SourceUri>
+		<Options>/UseBaseUrl:false /arrayType:"System.Collections.Generic.List" /dictionaryType:"System.Collections.Generic.Dictionary" /arrayBaseType:"System.Collections.Generic.List" /dictionaryBaseType:"System.Collections.Generic.Dictionary" /dateType:"System.DateTime" /dateTimeType:"System.DateTime" /AdditionalNamespaceUsages:Titan.OpenAPIs /GenerateExceptionClasses:false</Options>
+	</OpenApiReference>
+    <OpenApiReference Include="OpenAPIs\v1.json" CodeGenerator="NSwagCSharp" Namespace="SageAPIConnection" ClassName="SageAPI">
+      <SourceUri>http://localhost:9000/swagger/docs/v1</SourceUri>
+		<Options>/UseBaseUrl:false /arrayType:"System.Collections.Generic.List" /dictionaryType:"System.Collections.Generic.Dictionary" /arrayBaseType:"System.Collections.Generic.List" /dictionaryBaseType:"System.Collections.Generic.Dictionary" /dateType:"System.DateTime" /dateTimeType:"System.DateTime" /AdditionalNamespaceUsages:Titan.OpenAPIs /GenerateExceptionClasses:false</Options>
+	</OpenApiReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="6.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+    <PackageReference Include="Nager.Date" Version="1.36.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NSwag.ApiDescription.Client" Version="13.17.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+	<PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
+	<PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
+	<PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
+	<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+	<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+	<PackageReference Include="Serilog.Sinks.MSSqlServer" Version="5.8.0" />
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
+    <PackageReference Include="Topshelf" Version="4.3.0" />
+    <PackageReference Include="Unchase.Swashbuckle.AspNetCore.Extensions" Version="2.6.12" />
+  </ItemGroup>
+
+</Project>

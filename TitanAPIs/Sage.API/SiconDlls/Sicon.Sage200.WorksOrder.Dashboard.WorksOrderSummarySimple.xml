@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard CurrencyCulture="en-GB">
+  <Title Text="Works Order Summary (Simple)" />
+  <DataSources>
+    <SqlDataSource Name="SQL Data Source 1" ComponentName="dashboardSqlDataSource1">
+      <Connection Name="Sage 200 Database" ConnectionString="Data Source=SAGE2002020-SP;Initial Catalog=Sage2002017;User ID=Sage2002017_MMSUser;Password=%_gpboAr-#PmHbd8Ten01pO/W$GQgi3U" />
+      <Query Type="SelectQuery" Name="SiWorksOrder">
+        <Tables>
+          <Table Name="SiWorksOrder" X="30" Y="30" Width="125" Height="1388" />
+          <Table Name="SiWorksOrderFinishedItem" X="185" Y="30" Width="125" Height="666" />
+          <Table Name="StockItem" X="340" Y="30" Width="125" Height="1806" />
+          <Relation Type="Inner" Parent="SiWorksOrder" Nested="SiWorksOrderFinishedItem">
+            <KeyColumn Parent="SiWorksOrderID" Nested="SiWorksOrderID" />
+          </Relation>
+          <Relation Type="Inner" Parent="SiWorksOrderFinishedItem" Nested="StockItem">
+            <KeyColumn Parent="ItemID" Nested="ItemID" />
+          </Relation>
+        </Tables>
+        <Columns>
+          <Column Table="SiWorksOrder" Name="WOName" />
+          <Column Table="SiWorksOrder" Name="WONumber" />
+          <Column Table="SiWorksOrder" Name="WOCreatedDate" />
+          <Column Table="SiWorksOrder" Name="WOStatus" />
+          <Column Table="SiWorksOrder" Name="WOQuantity" />
+          <Column Table="SiWorksOrder" Name="WODueDate" />
+          <Column Table="SiWorksOrderFinishedItem" Name="Quantity" />
+          <Column Table="StockItem" Name="Code" />
+          <Column Table="StockItem" Name="Name" />
+          <Column Table="SiWorksOrderFinishedItem" Name="QuantityBooked" />
+          <Column Table="SiWorksOrderFinishedItem" Name="ScrappedQuantity" />
+        </Columns>
+        <Filter>[SiWorksOrder.WOStatus] &lt;&gt; 'Template' And [SiWorksOrder.WOStatus] &lt;&gt; 'Suggested' And [SiWorksOrder.WOStatus] &lt;&gt; 'Estimate' And [SiWorksOrder.WOStatus] &lt;&gt; 'Completed'</Filter>
+        <GroupFilter></GroupFilter>
+      </Query>
+      <ResultSchema>
+        <DataSet Name="SQL Data Source 1">
+          <View Name="SiWorksOrder">
+            <Field Name="WOName" Type="String" />
+            <Field Name="WONumber" Type="String" />
+            <Field Name="WOCreatedDate" Type="DateTime" />
+            <Field Name="WOStatus" Type="String" />
+            <Field Name="WOQuantity" Type="Decimal" />
+            <Field Name="WODueDate" Type="DateTime" />
+            <Field Name="Quantity" Type="Decimal" />
+            <Field Name="Code" Type="String" />
+            <Field Name="Name" Type="String" />
+            <Field Name="QuantityBooked" Type="Decimal" />
+            <Field Name="ScrappedQuantity" Type="Decimal" />
+          </View>
+        </DataSet>
+      </ResultSchema>
+      <ConnectionOptions CloseConnection="true" />
+      <CalculatedFields>
+        <CalculatedField Name="Qty Scrapped" Expression="IsNull([ScrappedQuantity], 0)" DataType="Auto" DataMember="SiWorksOrder" />
+        <CalculatedField Name="Late" Expression="Iif([WOStatus] = 'Booked', 'Booked', [WOStatus] = 'On Hold', 'On Hold', GetDate([WODueDate]) &gt; GetDate(Now()), 'Due after today', GetDate([WODueDate]) &lt; GetDate(Now()), 'Late', 'Due today')" DataType="Auto" DataMember="SiWorksOrder" />
+        <CalculatedField Name="Remaining Quantity" Expression="[Quantity] - [QuantityBooked] - [Qty Scrapped]" DataType="Auto" DataMember="SiWorksOrder" />
+      </CalculatedFields>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Grid ComponentName="gridDashboardItem1" Name="Summary" DataSource="dashboardSqlDataSource1" DataMember="SiWorksOrder">
+      <DataItems>
+        <Dimension DataMember="WOName" DefaultId="DataItem0" />
+        <Dimension DataMember="WONumber" DefaultId="DataItem1" />
+        <Dimension DataMember="WOStatus" DefaultId="DataItem2" />
+        <Dimension DataMember="WOCreatedDate" DateTimeGroupInterval="DateHourMinute" DefaultId="DataItem3" />
+        <Dimension DataMember="WODueDate" DateTimeGroupInterval="DateHourMinute" DefaultId="DataItem4" />
+        <Dimension DataMember="Code" DefaultId="DataItem5" />
+        <Measure DataMember="Quantity" DefaultId="DataItem6">
+          <NumericFormat FormatType="General" />
+        </Measure>
+        <Measure DataMember="QuantityBooked" Name="QuantityBooked" DefaultId="DataItem7">
+          <NumericFormat FormatType="General" />
+        </Measure>
+        <Measure DataMember="Qty Scrapped" DefaultId="DataItem9">
+          <NumericFormat FormatType="General" />
+        </Measure>
+        <Dimension DataMember="Late" Name="On Time Status" DefaultId="DataItem8" />
+        <Measure DataMember="Remaining Quantity" DefaultId="DataItem10">
+          <NumericFormat FormatType="General" />
+        </Measure>
+      </DataItems>
+      <FormatRules>
+        <GridItemFormatRule Name="FormatRule 1" Enabled="false">
+          <FormatConditionValue>
+            <AppearanceSettings AppearanceType="PaleRed" />
+            <Value1 Type="System.String" Value="Late" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="FormatRule 2" Enabled="false">
+          <FormatConditionValue>
+            <AppearanceSettings AppearanceType="PaleGreen" />
+            <Value1 Type="System.String" Value="Due after today" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="FormatRule 3" Enabled="false">
+          <FormatConditionValue>
+            <AppearanceSettings AppearanceType="PaleYellow" />
+            <Value1 Type="System.String" Value="Due today" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="FormatRule 4" DataItem="DataItem8">
+          <FormatConditionValue>
+            <AppearanceSettings AppearanceType="PaleRed" />
+            <Value1 Type="System.String" Value="Late" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="FormatRule 5" DataItem="DataItem8">
+          <FormatConditionValue>
+            <AppearanceSettings AppearanceType="PaleGreen" />
+            <Value1 Type="System.String" Value="Due after today" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="FormatRule 6" DataItem="DataItem8">
+          <FormatConditionValue>
+            <AppearanceSettings AppearanceType="PaleYellow" />
+            <Value1 Type="System.String" Value="Due today" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+      </FormatRules>
+      <GridColumns>
+        <GridDimensionColumn Name="WO Name" Weight="173.96166134185305">
+          <Dimension DefaultId="DataItem0" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="WO Number" Weight="76.876996805111816">
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Status" Weight="37.779552715654951">
+          <Dimension DefaultId="DataItem2" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Start Date" Weight="56.66932907348243">
+          <Dimension DefaultId="DataItem3" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Due Date" Weight="56.66932907348243">
+          <Dimension DefaultId="DataItem4" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Finished Item Code" Weight="73.801916932907346">
+          <Dimension DefaultId="DataItem5" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Quantity Required" Weight="71.605431309904148">
+          <Measure DefaultId="DataItem6" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Remaining Quantity" Weight="75.11980830670926">
+          <Measure DefaultId="DataItem10" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Quantity Booked" Weight="66.773162939297123">
+          <Measure DefaultId="DataItem7" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Quantity Scrapped" Weight="72.923322683706076">
+          <Measure DefaultId="DataItem9" />
+        </GridMeasureColumn>
+        <GridDimensionColumn Weight="62.819488817891376">
+          <Dimension DefaultId="DataItem8" />
+        </GridDimensionColumn>
+      </GridColumns>
+      <GridOptions ColumnWidthMode="Manual" />
+    </Grid>
+    <Chart ComponentName="chartDashboardItem1" Name="Chart 1" ShowCaption="false" DataSource="dashboardSqlDataSource1" DataMember="SiWorksOrder">
+      <DataItems>
+        <Dimension DataMember="WONumber" DefaultId="DataItem0" />
+        <Measure DataMember="Quantity" DefaultId="DataItem1">
+          <NumericFormat FormatType="General" />
+        </Measure>
+        <Measure DataMember="QuantityBooked" DefaultId="DataItem2">
+          <NumericFormat FormatType="General" />
+        </Measure>
+        <Measure DataMember="Qty Scrapped" DefaultId="DataItem3">
+          <NumericFormat FormatType="General" />
+        </Measure>
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem0" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <AxisY Title="Quantity" />
+          <Series>
+            <Simple Name="Quantity Required">
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple Name="Quantity Booked">
+              <Value DefaultId="DataItem2" />
+            </Simple>
+            <Simple Name="Quantity Scrapped">
+              <Value DefaultId="DataItem3" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <ComboBox ComponentName="comboBoxDashboardItem1" Name="Bom Name" DataSource="dashboardSqlDataSource1" DataMember="SiWorksOrder" EnableSearch="true" ComboBoxType="Checked">
+      <DataItems>
+        <Dimension DataMember="WOName" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ComboBox>
+    <ComboBox ComponentName="comboBoxDashboardItem2" Name="Works Order Status" DataSource="dashboardSqlDataSource1" DataMember="SiWorksOrder" ComboBoxType="Checked">
+      <DataItems>
+        <Dimension DataMember="WOStatus" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ComboBox>
+    <ComboBox ComponentName="comboBoxDashboardItem3" Name="On Time Status" DataSource="dashboardSqlDataSource1" DataMember="SiWorksOrder" ComboBoxType="Checked">
+      <DataItems>
+        <Dimension DataMember="Late" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ComboBox>
+    <RangeFilter ComponentName="rangeFilterDashboardItem1" Name="Start Date" ShowCaption="true" DataSource="dashboardSqlDataSource1" DataMember="SiWorksOrder" SelectedDateTimePeriodIndex="This Year">
+      <DataItems>
+        <Dimension DataMember="WOCreatedDate" DateTimeGroupInterval="DayMonthYear" DefaultId="DataItem0" />
+        <Measure DataMember="WOCreatedDate" SummaryType="Count" DefaultId="DataItem1" />
+      </DataItems>
+      <Argument DefaultId="DataItem0" />
+      <Series>
+        <Simple>
+          <Value DefaultId="DataItem1" />
+        </Simple>
+      </Series>
+      <DateTimePeriods>
+        <DateTimePeriod Name="This Year">
+          <StartLimit>
+            <FlowDateTimePeriodLimit />
+          </StartLimit>
+          <EndLimit>
+            <FlowDateTimePeriodLimit Offset="1" />
+          </EndLimit>
+        </DateTimePeriod>
+      </DateTimePeriods>
+    </RangeFilter>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup Orientation="Vertical">
+      <LayoutGroup Weight="5.1935788479697829">
+        <LayoutItem DashboardItem="comboBoxDashboardItem1" Weight="48.8176563321072" />
+        <LayoutItem DashboardItem="comboBoxDashboardItem2" Weight="30.320546505517605" />
+        <LayoutItem DashboardItem="comboBoxDashboardItem3" Weight="20.861797162375197" />
+      </LayoutGroup>
+      <LayoutGroup Orientation="Vertical" Weight="32.294617563739379">
+        <LayoutItem DashboardItem="rangeFilterDashboardItem1" Weight="30.994152046783626" />
+        <LayoutItem DashboardItem="gridDashboardItem1" Weight="69.005847953216374" />
+      </LayoutGroup>
+      <LayoutItem DashboardItem="chartDashboardItem1" Weight="62.511803588290839" />
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

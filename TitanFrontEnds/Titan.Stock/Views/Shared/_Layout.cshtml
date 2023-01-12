@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Titan.Stock</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</head>
+<body>
+    <header style="display: none;">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Titan.Stock</a>
+@*                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="MyAccount">Account</a>
+                        </li>
+                    </ul>
+                </div>*@
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="notification btn" id="notification"></div>
+
+            <!-- Modal -->
+            <div class="modal fade notificationModal" id="notificationModal" tabindex="-1" aria-hidden="true" style="width: initial; height: initial">
+                <div class="modal-dialog" role="document" style="max-width: initial">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="notificationModalTitle">Title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="notificationModalBody">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $("#notification").click(function () {
+                    if ($("#notification").hasClass("show")) {
+                        $("#notification").removeClass("show");
+                        $('#notificationModal').modal('show');
+                    }
+                });
+
+                // prevent screen from re-sizing when the keyboard pops up
+                $(function() {
+                    var w = 
+                        Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+                    var h = 
+                        Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+                    $("html").css("width", w)
+                    $("html").css("height", h);
+                    $(".flexlayout").css("maxHeight", "calc(" + h + "px - 3rem - 1rem)");
+                });
+            </script>
+
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer" style="z-index: -1;">
+@*        @if User.Identity.IsAuthenticated)
+        {
+            <p style="text-align: right;">
+                <a href="https://titan/Enquiries/BugReport" class="btn btn-secondary"><i class="bi bi-bug"></i> Bug Report</a>
+                <a href="https://titan/Enquiries/FeatureRequest" class="btn btn-secondary"><i class="bi bi-lightbulb"></i> Feature Request</a>
+            </p>
+        }*@
+        @*<p style="text-align: center; white-space: normal; line-height: normal; padding: 10px">&copy; @DateTime.Now.Year - Sabre Rail Services Ltd. Grindon Way, Heighington Lane Business Park, Newton Aycliffe, Co. Durham, DL5 6SH</p>
+ *@   </footer>
+</body>
+</html>

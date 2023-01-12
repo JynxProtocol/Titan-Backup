@@ -1,0 +1,24 @@
+﻿@using Titan.Administration.Models
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Premission required";
+}
+
+<h1 class="text-danger">You do not have permission to preform this operation</h1>
+
+<h3 class="text-danger"><img src="~/content/images/RedX.png" width="100" /> Access denied</h3>
+<br />
+
+<div><a class="btn btn-primary" id="back-link">Go Back</a></div>
+<br />
+
+<h4 class="text-danger">Please contact an administrator if you require access</h4>
+
+<script>
+    $('#back-link').attr('href', document.referrer);
+
+    $('#back-link').click(function () {
+        history.back();
+        return false;
+    });
+</script>

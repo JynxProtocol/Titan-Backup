@@ -1,0 +1,87 @@
+﻿@model WOInformation
+
+@{
+    ViewBag.Title = "Raise AWK";
+}
+
+<h3>Enter AWK work required</h3>
+
+@using (Html.BeginForm(
+    nameof(AWKController.Raise),
+    typeof(AWKController).ControllerName(),
+    new { WO = Model.WorksOrderNumber },
+    FormMethod.Post))
+{
+    @Html.HiddenFor(Model => Model.LinkedTo)
+    @Html.HiddenFor(Model => Model.CusOrderNumber)
+    @Html.HiddenFor(Model => Model.AccountName)
+    @Html.HiddenFor(Model => Model.AccountNumber)
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.WorksOrderNumber)</span>
+    
+        @Html.EditorFor(Model => Model.WorksOrderNumber,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Cat Number</span>
+
+        @Html.EditorFor(Model => Model.BomReference,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Description</span>
+
+        @Html.EditorFor(Model => Model.BomDescription,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">Quantity</span>
+
+        @Html.EditorFor(Model => Model.QtyRequired,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+
+    <table class="table table-bordered table-repsonsive table-hover table-striped">
+        <tr>
+            <th>Part Number</th>
+            <th>Description</th>
+            <th>Qty Required</th>
+            <th>Fault</th>
+        </tr>
+
+        @foreach (var (Part, Index) in Model.PartsListItems
+            .Select((Part, Index) => (Part, Index)))
+        {
+            <tr>
+                @Html.HiddenFor(m => Model.PartsListItems[Index].SageStkID)
+                @Html.HiddenFor(m => Model.PartsListItems[Index].ProductGroup)
+
+                <td>@Html.DisplayFor(m => Model.PartsListItems[Index].PartNumber)</td>
+                @Html.HiddenFor(m => Model.PartsListItems[Index].PartNumber)
+
+                <td>@Html.DisplayFor(m => Model.PartsListItems[Index].Description)</td>
+                @Html.HiddenFor(m => Model.PartsListItems[Index].Description)
+
+                <td>
+                    @Html.EditorFor(m => Model.PartsListItems[Index].Qty, 
+                        new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                </td>
+
+                <td>
+                    @Html.DropDownListFor(
+                        m => Model.PartsListItems[Index].AwkFault, 
+                        (IEnumerable<SelectListItem>)ViewBag.Faults, 
+                        new { @class = "form-control" }
+                    )
+                </td>
+            </tr>
+
+        }
+    </table>
+
+    <input type="submit" class="btn btn-success" value="Raise Awk" />
+}

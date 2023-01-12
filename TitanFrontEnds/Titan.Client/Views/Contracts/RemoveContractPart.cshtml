@@ -1,0 +1,123 @@
+﻿@model ContractItem
+
+@{
+    ViewBag.Title = "Remove item from contract";
+}
+
+<h2>Are you sure you want to remove this?</h2>
+
+@using (Html.BeginForm(
+    nameof(ContractsController.RemoveContractPart),
+    typeof(ContractsController).ControllerName(),
+    new { ConID = Model.ConID, ConDetID = Model.ConDetID },
+    FormMethod.Post))
+{
+    <div class="input-group mb-3">
+        <span class="input-group-text">Stock Code</span>
+    
+        @Html.EditorFor(Model => Model.StockCode, 
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } }
+        )
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.Description)</span>
+    
+        @Html.EditorFor(Model => Model.Description,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Repairable Code</span>
+    
+        @Html.EditorFor(Model => Model.DirtyStockCode,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Expected Recipt Qty</span>
+    
+        @Html.EditorFor(Model => Model.QtyRequired,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">Total Order Qty</span>
+    
+        @Html.EditorFor(Model => Model.TotalQty,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.Colour)</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.Colour,
+            (IEnumerable<SelectListItem>)ViewBag.ColourOptions, 
+            new { @class = "form-control", disabled = "" }
+        )
+    </div>
+        
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.Warranty)</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.Warranty,
+            (IEnumerable<SelectListItem>)ViewBag.WarrantyOptions, 
+            new { @class = "form-control", disabled = "" }
+        )
+    </div>
+            
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.LeadTime)</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.LeadTime,
+            (IEnumerable<SelectListItem>)ViewBag.LeadTimeOptions, 
+            new { @class = "form-control", disabled = "" }
+        )
+    </div>
+                
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.WorkRequired)</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.WorkRequired,
+            (IEnumerable<SelectListItem>)ViewBag.WorkRequiredOptions, 
+            new { @class = "form-control", disabled = "" }
+        )
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.UnitPrice)</span>
+
+        @Html.EditorFor(Model => Model.UnitPrice,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">Quotation Number</span>
+
+        @Html.EditorFor(Model => Model.QuotationNumber,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+        
+    <div class="input-group mb-3">
+        <span class="input-group-text">Special Instruction</span>
+
+        @Html.EditorFor(Model => Model.SpecialInstruction,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Has serial number?</span>
+
+        @Html.DropDownListFor(
+            Model => Model.IsSerialised,
+            LookupHelpers.YesNoFromInt, 
+            new { @class = "form-control", disabled = "" }
+        )
+    </div>
+
+    <input type="submit" class="btn btn-danger" value="Confirm delete" />
+}

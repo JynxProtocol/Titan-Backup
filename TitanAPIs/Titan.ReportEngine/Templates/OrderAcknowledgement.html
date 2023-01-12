@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        {{{> ReportStyles}}}
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align: center;">Order Acknowledgement</h1>
+
+    {{#with OrderAcknowledgement}}
+
+    <table class="cellpadding-5"
+           style="border-collapse: collapse; width: 100%; border: 1px solid black;">
+        <tr>
+            <td>
+                <b>Deliver to</b><br />
+                {{{> Address DeliveryAddress}}}
+            </td>
+            <td rowspan="2" style="text-align: center;">
+                <style>
+                    .cellpadding th, .cellpadding td {
+                        padding-top: 1em;
+                        padding-bottom: 1em;
+                    }
+                </style>
+                <table class="cellpadding" style="width: 100%;">
+                    <tr>
+                        <td style="text-align: right;">
+                            <b>Sabre Order Ref:</b>
+                        </td>
+                        <td>{{SabreOrderRef}}</td>
+                    </tr>
+                    <!--<tr>
+                        <td style="text-align: right;">
+                            <b>Sabre Order Date:</b>
+                        </td>
+                        <td>{{SabreOrderDate}}</td>
+                    </tr>-->
+                    <tr>
+                        <td style="text-align: right;">
+                            <b>Client Order Ref:</b>
+                        </td>
+                        <td>{{ClientOrderRef}}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <b>Client Order Date:</b>
+                        </td>
+                        <td>{{ClientOrderDate}}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">
+                            <b>Cust. Acc. No.:</b>
+                        </td>
+                        <td>{{CustomerAccountNumber}}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Invoice to</b><br />
+                {{{> Address InvoiceAddress}}}
+            </td>
+        </tr>
+    </table>
+
+    <br />
+
+    <table class="cellpadding-5"
+           style="border-collapse: collapse; width: 100%; border: 1px solid black;">
+        <thead>
+            <tr style="text-align:center">
+                <!--<th>Line</th>-->
+                <th>Item code</th>
+                <th style="width: 40%;">Description</th>
+                <th>Qty</th>
+                <th>Unit price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody style="text-align:center">
+            {{#each Items}}
+            <tr>
+                <!--<td>{{inc @Index}}</td>-->
+                <td>{{Code}}</td>
+                <td style="width: 40%;">
+                    {{Description}}<br />
+                    Warrantry: {{Warrantry}}<br />
+                    Colour: {{Colour}}
+                </td>
+                <td>{{Quantity}}</td>
+                <td>{{Price}}</td>
+                <td>{{Total}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+        <tbody style="border: none;">
+            <tr>
+                <td colspan="4" style="text-align: right;">
+                    <b style="text-transform: uppercase;">Total Net:</b>
+                </td>
+                <td>
+                    {{TotalNet}}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: right;">
+                    <b style="text-transform: uppercase;">Total VAT:</b>
+                </td>
+                <td>
+                    {{TotalVAT}}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: right;">
+                    <b style="text-transform: uppercase;">Total Gross:</b>
+                </td>
+                <td>
+                    {{TotalGross}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="text-align: center; page-break-before: avoid;">
+        <b>
+            Delivery: {{DeliveryMethod}} <br />
+            Terms: {{Terms}} days from end of month <br />
+            Delivery as per Quotation or Agreed Schedule <br />
+            Please see attached Terms and Conditions
+        </b>
+    </p>
+    {{/with}}
+
+</body>
+</html>

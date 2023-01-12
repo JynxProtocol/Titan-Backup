@@ -1,0 +1,443 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Titan</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="~/lib/jquery-ui/themes/base/jquery-ui.min.css" />
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    
+    <link rel="stylesheet" href="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.css" />
+    <script src="~/lib/datatables.net/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.js"></script>
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/css/notification.css" asp-append-version="true" />
+    <script src="~/js/notification.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</head>
+<body>
+
+    <div class="notification btn" id="notification"></div>
+
+    <!-- Modal -->
+    <div class="modal fade notificationModal" id="notificationModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalTitle">Title</h5>
+                    <button type="button" class="btn-close" 
+                        data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="notificationModalBody">
+                    ...
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" 
+                    data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $("#notification").click(function () {
+            if ($("#notification").hasClass("show")) {
+                $("#notification").removeClass("show");
+                $('#notificationModal').modal('show');
+            }
+        });
+        $("#notificationModal").click(function (e) {
+            e.stopPropagation()
+        });
+        $(".modal-content").click(function (e) {
+            e.stopPropagation()
+        });
+        $(document).click(function () {
+            $('#notificationModal').modal('hide');
+        });
+        $("#close").click(function () {
+            $('#notificationModal').modal('hide');
+        });
+        $("#close").click(function () {
+            $('#notificationModal').modal('hide');
+        });
+    </script>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <img style="vertical-align:middle" src="~/Content/images/sabre-rail-logo.png" 
+                    width="100" /> Titan
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                AWK
+                            </a>
+                            <ul class="dropdown-menu">
+                                @if (await TitanAdmin.UserHasPermission("RaiseAWK"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "Raise AWK", 
+                                            nameof(AWKController.RaiseAWKOnWO),
+                                            typeof(AWKController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                                @if (await TitanAdmin.UserHasPermission("ApproveAWK"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "To Approve",
+                                            nameof(AWKController.ToApprove),
+                                            typeof(AWKController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                                @if (await TitanAdmin.UserHasPermission("QuoteAWK"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "To Quote",
+                                            nameof(AWKController.ToQuote),
+                                            typeof(AWKController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                                @if (await TitanAdmin.UserHasPermission("AuthoriseAWK"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "To Authorise",
+                                            nameof(AWKController.ToAuthorise),
+                                            typeof(AWKController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                                @if (await TitanAdmin.UserHasPermission("ClosedAWK"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "Closed",
+                                            nameof(AWKController.Closed),
+                                            typeof(AWKController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                                <li><hr class="dropdown-divider"></li>
+                                @if (await TitanAdmin.UserHasPermission("PartsList"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "Parts List",
+                                            nameof(PartsListsController.Index),
+                                            typeof(PartsListsController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                                @if (await TitanAdmin.UserHasPermission("PriceList"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "Price List",
+                                            nameof(PriceBookController.Index),
+                                            typeof(PriceBookController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                                <li><hr class="dropdown-divider"></li>
+                                @if (await TitanAdmin.UserHasPermission("ManageAWKFaults"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "Manage AWK Faults",
+                                            nameof(AWKController.FaultsList),
+                                            typeof(AWKController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                                @if (await TitanAdmin.UserHasPermission("ManageAWKWorkRequireds"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "Manage AWK Work Requireds",
+                                            nameof(AWKController.AWKWorkRequiredList),
+                                            typeof(AWKController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Sales
+                            </a>
+                            <ul class="dropdown-menu">
+                                @if (await TitanAdmin.UserHasPermission("ViewContract"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "Contracts",
+                                            nameof(ContractsController.Index),
+                                            typeof(ContractsController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                                @if (await TitanAdmin.UserHasPermission("ViewContract"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "Closed Contracts",
+                                            nameof(ContractsController.Closed),
+                                            typeof(ContractsController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                                @if (await TitanAdmin.UserHasPermission("BookInParts"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "Contract GRN",
+                                            nameof(ContractsController.ListCustomers),
+                                            typeof(ContractsController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                                <li><hr class="dropdown-divider"></li>
+                                @if (await TitanAdmin.UserHasPermission("ViewContract"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "Transactions",
+                                            nameof(OrdersController.Complete),
+                                            typeof(OrdersController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Stocktake
+                            </a>
+                            <ul class="dropdown-menu">
+                                @if (await TitanAdmin.UserHasPermission("StockExists"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "Stocktakes",
+                                            nameof(StockTakeController.List),
+                                            typeof(StockTakeController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                                @if (await TitanAdmin.UserHasPermission("StockExists"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "Completed stocktakes",
+                                            nameof(StockTakeController.CompletedList),
+                                            typeof(StockTakeController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                                @if (await TitanAdmin.UserHasPermission("StockExists"))
+                                {
+                                    <li>
+                                        @Html.ActionLink(
+                                            "Deleted stocktakes",
+                                            nameof(StockTakeController.DeletedList),
+                                            typeof(StockTakeController).ControllerName(),
+                                            new { },
+                                            new { @class = "dropdown-item" }
+                                        )
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                        @if (await TitanAdmin.UserHasPermission("ViewExpedite"))
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink(
+                                    "Expedite",
+                                    nameof(ExpediteController.Index),
+                                    typeof(ExpediteController).ControllerName(),
+                                    new { },
+                                    new { @class = "nav-link" }
+                            )
+                            </li>  
+                        }
+                    </ul>
+
+                    @Html.ActionLink(
+                        "Logout",
+                        nameof(AccountController.Logout),
+                        typeof(AccountController).ControllerName(),
+                        new { },
+                        new { @class = "btn btn-secondary" } 
+                    )
+                </div>
+            </div>
+        </nav>
+    }
+
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    <script>
+        $(function () {
+            $("select:not(.form-select)").each(function () {
+                if (!$(this).children("[selected]").length) {
+                    $(this).append("<option value='' selected hidden disabled>" + 
+                        "Select an option...</option>");
+                }
+            });
+
+            $(".stock-code-autocomplete").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action(nameof(LookupController.AutocompleteStockCode),
+                                typeof(LookupController).ControllerName())',
+                        data: { Code: request.term },
+                        dataType: "json",
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        }
+                    });
+                },
+                close: callback,
+                minLength: 1
+            });
+
+            $(".wo-autocomplete").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action(nameof(LookupController.AutocompleteWorksOrderNumber),
+                                typeof(LookupController).ControllerName())',
+                        data: { WONumber: request.term },
+                        dataType: "json",
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        }
+                    });
+                },
+                minLength: 1
+            });
+        })
+
+        function callback(event){
+            var callbackname = $(event.target).data("callback");
+            window[callbackname](event);
+        }
+
+        function GetRepairableInformation(event) {
+            $.ajax({
+                dataType: 'json',
+                url: '@Url.Action(nameof(LookupController.GetRepairableInformation),
+                    typeof(LookupController).ControllerName())',
+                data: { topLevelCode: $(event.target).val() },
+                success: function (data) {
+                    $(event.target).removeClass("table-danger");
+                    $("input[type=submit]").removeAttr('disabled');
+
+                    $(event.target).val(data.stockCode);
+                    $("#Description").val(data.description);
+                    $("#DirtyStockCode").val(data.repairableCode);
+                    $("#SageStkID").val(data.stockID);
+                },
+                error: function () {
+                    $(event.target).addClass("table-danger");
+                    $("input[type=submit]").attr('disabled', true);
+                }
+            });
+        };
+
+        function GetPartCodeInformation(event) {
+            $.ajax({
+                dataType: 'json',
+                url: '@Url.Action(nameof(LookupController.GetPartCodeInformation),
+                    typeof(LookupController).ControllerName())',
+                data: { code: $(event.target).val() },
+                success: function (data) {
+                    $(event.target).removeClass("table-danger");
+                    $("input[type=submit]").removeAttr('disabled');
+
+                    $(event.target).val(data.stockCode);
+                    $("#Description").val(data.description);
+                    $("#SageStkID").val(data.stockID);
+                },
+                error: function () {
+                    $(event.target).addClass("table-danger");
+                    $("input[type=submit]").attr('disabled', true);
+                }
+            });
+        };
+    </script>
+</body>
+</html>

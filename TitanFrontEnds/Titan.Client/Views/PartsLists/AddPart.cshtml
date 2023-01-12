@@ -1,0 +1,58 @@
+﻿@model PartsListItem
+
+@{
+    ViewBag.Title = "Add part";
+}
+
+<h2>Add part to list</h2>
+
+@using (Html.BeginForm(
+    nameof(PartsListsController.AddPart),
+    typeof(PartsListsController).ControllerName(),
+    new { PLHID = Model.Plhid },
+    FormMethod.Post)) 
+{
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.ItemNumber)</span>
+    
+        @Html.EditorFor(Model => Model.ItemNumber,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">Product Code</span>
+    
+        @Html.EditorFor(Model => Model.PartNumber,
+            new { htmlAttributes = 
+                new { @class = "form-control stock-code-autocomplete", 
+                    data_callback = "GetPartCodeInformation" } })
+
+        @Html.HiddenFor(Model => Model.SageStkID)
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.Description)</span>
+    
+        @Html.EditorFor(Model => Model.Description,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.Qty)</span>
+    
+        @Html.EditorFor(Model => Model.Qty,
+            new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Mandatory</span>
+
+        @Html.DropDownListFor(
+            Model => Model.Mandatory,
+            LookupHelpers.YesNoFromBool, 
+            new { @class = "form-control" }
+        )
+    </div>
+
+    <input type="submit" class="btn btn-success" value="Add Product" />
+}

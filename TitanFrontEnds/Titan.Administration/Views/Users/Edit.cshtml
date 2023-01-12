@@ -1,0 +1,301 @@
+﻿@using TitanAPIAdminConnection
+@model User
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+<hr />
+
+@using (Html.BeginForm($"Disable", "Users", new { id = Model.UsrID }, FormMethod.Post, null, htmlAttributes: new { id = "DisableForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+@using (Html.BeginForm(FormMethod.Post, htmlAttributes: new { id = "EditForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <table class="table table-bordered table-repsonsive table-hover table-striped">
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.UsrID, htmlAttributes: new { @class = "control-label col-md-2" })
+            </td>
+            <td>
+                @Html.EditorFor(model => model.UsrID, new { htmlAttributes = new { @class = "form-control", disabled = "disabled", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.UsrName, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.UsrName, htmlAttributes: new { @class = "control-label col-md-2" })
+            </td>
+            <td>
+                @Html.EditorFor(model => model.UsrName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UsrName, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        @*<tr>
+                <td>
+                    @Html.LabelFor(model => model.UsrUUID, htmlAttributes: new { @class = "control-label col-md-2" })
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.UsrUUID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UsrUUID, "", new { @class = "text-danger" })
+                </td>
+            </tr>*@
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.UsrFirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            </td>
+            <td>
+                @Html.EditorFor(model => model.UsrFirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UsrFirstName, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.UsrLastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            </td>
+            <td>
+                @Html.EditorFor(model => model.UsrLastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UsrLastName, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.UsrEmailAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+            </td>
+            <td>
+                @Html.EditorFor(model => model.UsrEmailAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UsrEmailAddress, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        @*<tr>
+                <td>
+                    @Html.LabelFor(model => model.ShowInLookUp, htmlAttributes: new { @class = "control-label col-md-2" })
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.ShowInLookUp, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ShowInLookUp, "", new { @class = "text-danger" })
+                </td>
+            </tr>*@
+        @*<tr>
+                <td>
+                    @Html.LabelFor(model => model.UsrLastLogin, htmlAttributes: new { @class = "control-label col-md-2" })
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.UsrLastLogin, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UsrLastLogin, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.UsrLoginCount, htmlAttributes: new { @class = "control-label col-md-2" })
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.UsrLoginCount, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UsrLoginCount, "", new { @class = "text-danger" })
+                </td>
+            </tr>*@
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.UsrDisplayName, htmlAttributes: new { @class = "control-label col-md-2" })
+            </td>
+            <td>
+                @Html.EditorFor(model => model.UsrDisplayName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UsrDisplayName, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.UsrDepartment, htmlAttributes: new { @class = "control-label col-md-2" })
+            </td>
+            <td>
+                @Html.EditorFor(model => model.UsrDepartment, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UsrDepartment, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        @*<tr>
+                <td>
+                    @Html.LabelFor(model => model.UsrBranch, htmlAttributes: new { @class = "control-label col-md-2" })
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.UsrBranch, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UsrBranch, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.UsrTimeZoneID, htmlAttributes: new { @class = "control-label col-md-2" })
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.UsrTimeZoneID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UsrTimeZoneID, "", new { @class = "text-danger" })
+                </td>
+            </tr>*@
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.UsrEnabled, htmlAttributes: new { @class = "control-label col-md-2" })
+            </td>
+            <td>
+                @Html.EditorFor(model => model.UsrEnabled, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UsrEnabled, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+    </table>
+
+
+}
+
+<hr />
+@Html.ActionLink("Reset Password", nameof(UsersController.ResetPassword), new { id = Model.UsrID }, new { @class = "btn btn-success" })
+@Html.ActionLink("Edit Roles", nameof(UsersController.EditRoles), new { id = Model.UsrID }, new { @class = "btn btn-warning" })
+<hr />
+
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseRoles" aria-expanded="false" aria-controls="collapseRoles">
+    View User's Roles
+</button>
+
+<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseAccess" aria-expanded="false" aria-controls="collapseAccess">
+    View User's Effective Access
+</button>
+
+<div class="collapse" id="collapseRoles">
+    <table class="table table-bordered table-repsonsive table-hover table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Roles
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @{
+                        <ul style="list-style-type: none">
+                            @foreach (var RoleKVP in ((ViewUserRoles)ViewBag.UserRoles).Roles)
+                            {
+                                if (RoleKVP.Value ?? false)
+                                {
+                                        <li style=" float: left; min-width: 15%; text-align: center">
+                                            @RoleKVP.Key
+                                        </li>
+                                }
+                            }
+                        </ul>
+                        if (!((ViewUserRoles)ViewBag.UserRoles).Roles.Any(Role => Role.Value ?? false))
+                        {
+                            <p>
+                                User has no Roles
+                            </p>
+                        }
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="collapse" id="collapseAccess">
+    <hr />
+    @{
+        int count = 0;
+        int i = 0;
+
+        @foreach (var kvp in ((UserEffectiveAccess)ViewBag.UserEffectiveAccess).FeatureAreas)
+        {
+            i = (from featureKVP in ((UserEffectiveAccess)ViewBag.UserEffectiveAccess).Features
+                    where featureKVP.Key.FeatureArea == kvp.Key
+                    select featureKVP).Count();
+            if (i > count)
+            {
+                count = i;
+            }
+        }
+        <table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+            <tr>
+                <th scope="colgroup">
+                    Feature Area
+                </th>
+                <th colspan="@count">
+                    Features
+                </th>
+            </tr>
+
+            @foreach (var kvp in ((UserEffectiveAccess)ViewBag.UserEffectiveAccess).FeatureAreas)
+            {
+                <tr>
+                    <th scope="rowgroup" style="text-align:center">
+                        <p>@kvp.Key</p>
+
+                        @if (kvp.Value == Trinary.None)
+                        {
+                            <input class="check-box form-control unchecked featurearea" type="checkbox" featurearea="@kvp.Key" disabled="disabled">
+                        }
+                        else if (kvp.Value == Trinary.All)
+                        {
+                            <input class="check-box form-control checked featurearea" type="checkbox" featurearea="@kvp.Key" disabled="disabled">
+                        }
+                        else
+                        {
+                            <input class="check-box form-control indeterminate featurearea" type="checkbox" featurearea="@kvp.Key" disabled="disabled">
+                        }
+                    </th>
+                    @{ i = 0;}
+                    @foreach (var featureKVP in (from featureKVP in ((UserEffectiveAccess)ViewBag.UserEffectiveAccess).Features
+                                                                        where featureKVP.Key.FeatureArea == kvp.Key
+                                                                        select featureKVP))
+                    {
+                        <td style="text-align:center">
+                            <p>@featureKVP.Key.FeatureName</p>
+
+                            @if (featureKVP.Value == false)
+                            {
+                                <input class="check-box form-control unchecked feature" type="checkbox"
+                                        featurearea="@kvp.Key" feature="@featureKVP.Key.FeatureName" disabled="disabled">
+                            }
+                            else if (featureKVP.Value == true)
+                            {
+                                <input class="check-box form-control checked feature" type="checkbox"
+                                        featurearea="@kvp.Key" feature="@featureKVP.Key.FeatureName" disabled="disabled">
+                            }
+                        </td>
+                        i++;
+                    }
+                    @if (i < count)
+                    {
+                        <td colspan="@(count - i)"></td>
+                    }
+                </tr>
+            }
+        </table>
+        <script>
+            $(".unchecked").prop("checked", false);
+            $(".checked").prop("checked", true);
+            $(".indeterminate").prop("indeterminate", true);
+        </script>
+    }
+</div>
+
+<hr />
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Submit" class="btn btn-warning" form="EditForm" />
+        @Html.ActionLink("Back to List", nameof(UsersController.Index), new { }, new { @class = "btn btn-success" })
+        @if (!Model.UsrEnabled)
+        {
+            @Html.ActionLink("Delete", nameof(UsersController.Delete), new { id = Model.UsrID }, new { @class = "btn btn-danger" })
+        }
+        else
+        {
+            <input type="submit" value="Disable" class="btn btn-danger" style="display: inline-block" form="DisableForm" />
+        }
+    </div>
+</div>
+

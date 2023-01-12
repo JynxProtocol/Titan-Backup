@@ -1,0 +1,69 @@
+﻿@using TitanAPIAdminConnection
+@model IEnumerable<User>
+
+@{
+    ViewBag.Title = "Users List";
+}
+
+<p>
+    @Html.ActionLink("Create New", nameof(UsersController.Create), new { }, new { @class = "btn btn-success" })
+</p>
+<hr />
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.UsrID)</th>
+            <th>@Html.DisplayNameFor(model => model.UsrName)</th>
+            <th>@Html.DisplayNameFor(model => model.UsrEmailAddress)</th>
+            <th>@Html.DisplayNameFor(model => model.UsrLastLogin)</th>
+            <th>@Html.DisplayNameFor(model => model.UsrLoginCount)</th>
+            <th>@Html.DisplayNameFor(model => model.UsrDepartment)</th>
+            <th>@Html.DisplayNameFor(model => model.UsrEnabled)</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.UsrID)</td>
+                <td>@Html.DisplayFor(modelItem => item.UsrName)</td>
+                <td>@Html.DisplayFor(modelItem => item.UsrEmailAddress)</td>
+                <td>@Html.DisplayFor(modelItem => item.UsrLastLogin)</td>
+                <td>@Html.DisplayFor(modelItem => item.UsrLoginCount)</td>
+                <td>@Html.DisplayFor(modelItem => item.UsrDepartment)</td>
+                <td>@Html.EditorFor(modelItem => item.UsrEnabled, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })</td>
+                <td>@Html.ActionLink("Details", nameof(UsersController.Details), new { id = item.UsrID }, new { @class = "btn btn-success" })</td>
+                <td>@Html.ActionLink("Edit", nameof(UsersController.Edit), new { id = item.UsrID }, new { @class = "btn btn-warning" })</td>
+                <td>
+                    @Html.AntiForgeryToken()
+                    @if (item.UsrEnabled)
+                    {
+                        @using (Html.BeginForm($"Disable", "Users", new { id = item.UsrID }))
+                        {
+                            <input type="submit" value="Disable" class="btn btn-danger" />
+                        }
+                    }
+                    else
+                    {
+                        @using (Html.BeginForm($"Enable", "Users", new { id = item.UsrID }))
+                        {
+                            <input type="submit" value="Enable" class="btn btn-success" />
+                        }
+                    }
+                </td>
+            </tr>
+        }
+     </tbody>
+</table>
+
+<script>
+    $('#sortTable').DataTable();
+</script>

@@ -1,0 +1,164 @@
+﻿@model AWHeader
+
+@{
+    ViewBag.Title = "Approve AWK";
+}
+
+<h2>Approve AWK</h2>
+<hr />
+
+@using (Html.BeginForm(
+    nameof(AWKController.Approve), 
+    typeof(AWKController).ControllerName(),
+    new { AWN = Model.Id },
+    FormMethod.Post))
+{
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.WorksOrderNumber)</span>
+    
+        @Html.EditorFor(Model => Model.WorksOrderNumber,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Cat Number</span>
+
+        @Html.EditorFor(Model => Model.BomReference,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Description</span>
+
+        @Html.EditorFor(Model => Model.BomDescription,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Quantity</span>
+
+        @Html.EditorFor(Model => Model.QtyRequired,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">AWK Quantity</span>
+
+        @Html.EditorFor(Model => Model.NumberOfConsolidatedAffectedItems,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="text-danger">
+        @Html.ValidationMessageFor(Model => Model.NumberOfConsolidatedAffectedItems)
+    </div>
+
+    <hr />
+    <h4>Items</h4>
+
+    <table class="table table-bordered table-repsonsive table-hover table-striped" 
+        id="sortTable">
+        <thead>
+            <tr>
+                <th>StockCode</th>
+                <th>Description</th>
+                <th>RequiredQty</th>
+                <th>Free Stock</th>
+                <th>Sabre Stock</th>
+                <th>Fault</th>
+                <th>WorkRequired</th>
+                <th>RepairDetail</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var Item in Model.AwDetails)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => Item.StockCode)</td>
+                    <td>@Html.DisplayFor(model => Item.Description)</td>
+                    <td>@Html.DisplayFor(model => Item.RequiredQty)</td>
+                    <td>@Html.DisplayFor(model => Item.FreeStock)</td>
+                    <td>
+                        @Html.DropDownListFor(
+                            Model => Item.SabreStock,
+                            LookupHelpers.YesNoFromBool,
+                            new { @class = "form-control", disabled = "" }
+                        )
+                    </td>
+                    <td>@Html.DisplayFor(model => Item.Fault)</td>
+                    <td>@Html.DisplayFor(model => Item.WorkRequired)</td>
+                    <td>@Html.DisplayFor(model => Item.RepairDetail)</td>
+
+                    <td>
+                        @Html.ActionLink(
+                            "Edit", 
+                            nameof(AWKController.EditDetail),
+                            new { 
+                                AWN = Model.Id, 
+                                AWDID = Item.Awdid, 
+                                ReturnUrl = Context.CurrentUrl() 
+                            },
+                            new { @class = "btn btn-success" }
+                        )
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <hr />
+    <h4>Images</h4>
+
+    <table class="table table-bordered table-repsonsive table-hover table-striped" 
+        style="width: unset">
+        <tr>
+            <th>Document Name</th>
+            <th style="width:200px">Image</th>
+        </tr>
+
+        @foreach (var Document in Model.Documents)
+        {
+            <tr>
+                <td>@Document.DocumentName </td>
+                <td style="width:200px">
+                    @{
+                        string ImageSource = @Url.Action(
+                            nameof(AWKController.Image),
+                            typeof(AWKController).ControllerName(),
+                            new { AWN = Model.Id, ImageID = Document.DocID }
+                        );
+                    }
+
+                    <img src="@ImageSource" height="200" width="200" />
+                </td>
+            </tr>
+        }
+    </table>
+
+    <hr />
+    <div>
+        @Html.ActionLink(
+            "Add Attachment",
+            nameof(AWKController.AddImage),
+            new { AWN = Model.Id },
+            new { @class = "btn btn-success" }
+        )
+
+        @Html.ActionLink(
+            "Use Camera",
+            nameof(AWKController.Camera),
+            new { AWN = Model.Id },
+            new { @class = "btn btn-warning" }
+        )
+
+        <input type="submit" class="btn btn-danger" id="mainsubmit" value="Approve Awk" />
+    </div>    
+}
+
+<br />
+
+<script>
+    $('#sortTable').DataTable({
+        "order": [[2, "desc"]]
+    });
+</script>

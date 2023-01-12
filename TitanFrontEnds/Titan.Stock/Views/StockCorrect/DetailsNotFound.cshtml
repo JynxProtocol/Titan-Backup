@@ -1,0 +1,13 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model string
+
+<div class="flexlayout" @*style="display: grid; grid-template-columns: repeat(1, 1fr); grid-template-rows: repeat(4, 1fr); gap: 1em; aspect-ratio: 9/16; max-width: min(350px, 90%); margin: auto;"*@>
+    <h3 class="text-danger">
+        Could not find item with stock code <code>@Model</code>. This might be because it is not stored in the <code>MAIN</code> warehouse
+    </h3>
+
+    <div></div>
+    @Html.ActionLink("Menu", "", typeof(HomeController).ControllerName(), new { }, new { @class = "btn btn-secondary py-3 px-3", style="display: flex; justify-content: center; align-items: center;" })
+</div>

@@ -1,0 +1,240 @@
+﻿@model Contract
+
+@{
+    ViewBag.Title = "Edit Contract";
+}
+
+<h2>Edit Contract</h2>
+
+@using (Html.BeginForm(
+    nameof(ContractsController.EditContract), 
+    typeof(ContractsController).ControllerName(),
+    new { ConID = Model.ConID},
+    FormMethod.Post))
+{
+    <div class="input-group mb-3">
+        <span class="input-group-text">Customer</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.ConCusID, 
+            (IEnumerable<SelectListItem>)ViewBag.CustomerOptions, 
+            new { @class = "form-control" }
+        )
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.ContractName)</span>
+
+        @Html.EditorFor(Model => Model.ContractName,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.CustomerOrderNumber)</span>
+
+        @Html.EditorFor(Model => Model.CustomerOrderNumber,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+        <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.CustomerOrderDate)</span>
+
+        @Html.EditorFor(Model => Model.CustomerOrderDate, "{0:dd/MM/yyyy}", 
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.BookingInInstructions)</span>
+
+        @Html.EditorFor(Model => Model.BookingInInstructions,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.IsCasualty)</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.IsCasualty, 
+            LookupHelpers.YesNoFromBool,
+            new { @class = "form-control" }
+        )
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.DespatchMethod)</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.DespatchMethod, 
+            (IEnumerable<SelectListItem>)ViewBag.DespatchMethodOptions, 
+            new { @class = "form-control" }
+        )
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.DeliveryTerms)</span>
+    
+        @Html.DropDownListFor(
+            Model => Model.DeliveryTerms, 
+            (IEnumerable<SelectListItem>)ViewBag.DeliveryTermsOptions, 
+            new { @class = "form-control" }
+        )
+    </div>
+
+    <hr />
+    <h4>Address</h4>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.PostalName)</span>
+    
+        @Html.EditorFor(Model => Model.PostalName,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine1)</span>
+    
+        @Html.EditorFor(Model => Model.AddressLine1,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine2)</span>
+    
+        @Html.EditorFor(Model => Model.AddressLine2,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine3)</span>
+    
+        @Html.EditorFor(Model => Model.AddressLine3,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine4)</span>
+    
+        @Html.EditorFor(Model => Model.AddressLine4,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.City)</span>
+    
+        @Html.EditorFor(Model => Model.City,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.County)</span>
+    
+        @Html.EditorFor(Model => Model.County,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.Postcode)</span>
+
+        @Html.EditorFor(Model => Model.Postcode,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <input type="submit" class="btn btn-success" value="Update Contract" />
+}
+
+<hr />
+@if (Model.ContractDocuments != null)
+{
+    <table class="table table-bordered table-repsonsive table-hover table-striped">
+        <tr>
+            <th>Documents</th>
+        </tr>
+        @foreach (var Document in Model.ContractDocuments)
+        {
+            <tr><td>@Html.DisplayFor(Model => Document.DocumentName)</td></tr>
+        }
+    </table>
+
+    @Html.ActionLink(
+        "Add attachment", 
+        nameof(ContractsController.AddDocument),
+        new { Model.ConID },
+        new { @class = "btn btn-success" } 
+    )
+}
+
+<hr />
+<h4>Items</h4>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped">
+    <tr>
+        <th><div style="width: 25px;"></div></th>
+        <th>Stockcode</th>
+        <th>Description</th>
+        <th>Qty</th>
+        <th>Colour</th>
+        <th>Warranty</th>
+        <th>Unit Price</th>
+        <th>Qty Remaining</th>
+        <th>Alt To</th>
+        <th>Add Alt Part</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+
+    @foreach (var Item in Model.ContractItems)
+    {
+        <tr>
+            @if (Item.AltPart == 1)
+            {
+                <td><img src="~/Content/images/alt.png" width="25" height="25" /></td>
+            }
+            else
+            {
+                <td></td>
+            }
+
+            <td>@Html.DisplayFor(Model => Item.StockCode)</td>
+            <td>@Html.DisplayFor(Model => Item.Description)</td>
+            <td>@Html.DisplayFor(Model => Item.QtyRequired)</td>
+            <td>@Html.DisplayFor(Model => Item.Colour)</td>
+            <td>@Html.DisplayFor(Model => Item.Warranty)</td>
+            <td>@Item.UnitPrice.ToString("C")</td>
+            <td>@Html.DisplayFor(Model => Item.QtyOutstanding)</td>
+            <td>@Html.DisplayFor(Model => Item.Parent)</td>
+
+            @if (Item.AltPart != 1)
+            {
+                <td>
+                    @Html.ActionLink(
+                        "Add Alt", 
+                        nameof(ContractsController.AddAlternativePart),
+                        new { Item.ConID, AltTo = Item.ConDetID }, 
+                        new { @class = "btn btn-success", style = "white-space: nowrap"} 
+                    )
+                </td>
+            }
+            else {
+                <td></td>
+            }
+
+            <td>
+                @Html.ActionLink(
+                    "Edit", 
+                    nameof(ContractsController.UpdateContractPart),
+                    new { Item.ConID, Item.ConDetID }, 
+                    new { @class = "btn btn-warning" }
+                )
+            </td>
+
+            <td>
+                @Html.ActionLink(
+                    "Delete", 
+                    nameof(ContractsController.RemoveContractPart),
+                    new { Item.ConID, Item.ConDetID }, 
+                    new { @class = "btn btn-danger" }
+                )
+            </td>
+        </tr>
+    }
+</table>

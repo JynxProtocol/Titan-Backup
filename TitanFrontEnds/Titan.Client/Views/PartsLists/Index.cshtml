@@ -1,0 +1,127 @@
+﻿@model IEnumerable<PartsListHeader>
+
+@{
+    ViewBag.Title = "Parts List";
+}
+
+<h2>Parts lists</h2>
+
+@Html.ActionLink(
+    "Create New Parts List", 
+    nameof(PartsListsController.AddPartsList), 
+    typeof(PartsListsController).ControllerName(),
+    new {  },
+    new { @class = "btn btn-success" } 
+)
+<hr />
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastUpdatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateLastUpdated)
+            </th>
+            <th>Edit</th>
+            <th>Copy</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Plhid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastUpdatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateLastUpdated)
+                </td>
+                <td>
+                    @Html.ActionLink(
+                        "Edit", 
+                        nameof(PartsListsController.UpdatePartsList), 
+                        typeof(PartsListsController).ControllerName(),
+                        new { PLHID = item.Plhid },
+                        new { @class = "btn btn-success" } 
+                    )
+                </td>
+                <td>
+                    @using (Html.BeginForm(
+                        nameof(PartsListsController.ClonePartsList), 
+                        typeof(PartsListsController).ControllerName(), 
+                        new { FPLHID = item.Plhid }, 
+                        FormMethod.Post))
+                    {
+                        <button class="btn btn-danger">Copy</button>
+                    }
+                </td>
+                <td>
+                    @using (Html.BeginForm(
+                        nameof(PartsListsController.DeletePartsList),
+                        typeof(PartsListsController).ControllerName(),
+                        new { PLHID = item.Plhid }, 
+                        FormMethod.Post))
+                    {
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" 
+                            data-bs-target="#Delete_@item.Plhid">
+                            Delete
+                        </button>
+
+                        <div class="modal" tabindex="-1" id="Delete_@item.Plhid">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Delete parts list</h5>
+                                        <button type="button" class="btn-close" 
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you wish to delete this parts list?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" 
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button class="btn btn-danger">Confirm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $('#sortTable').DataTable();
+</script>

@@ -1,0 +1,37 @@
+﻿#notification {
+    background-color: white;
+    border-color: black;
+    text-align: center;
+    z-index: 1090;
+    top: 0px;
+    padding: 16px;
+    min-width: 300px;
+    max-width: 90%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: top 0.5s, opacity 0.5s;
+    visibility: hidden;
+}
+
+#notificationModal {
+    top: 25px;
+    min-width: 300px;
+    max-width: 90%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: initial;
+    height: initial;
+}
+
+#notificationModal .modal-dialog {
+    max-width: initial;
+}
+
+#notification.show {
+    top: 25px;
+    opacity: 1;
+    visibility: visible;
+}

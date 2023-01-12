@@ -1,0 +1,63 @@
+﻿@model IEnumerable<AWKItemPrice>
+
+@{
+    ViewBag.Title = "AWK Price Book";
+}
+
+<h2>AWK Price Book</h2>
+<hr />
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PartNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateLastUpdated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var Item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => Item.PartNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Item.DateLastUpdated)
+                </td>
+                <td>
+                    @using (Html.BeginForm(
+                        nameof(PriceBookController.Update),
+                        typeof(PriceBookController).ControllerName(),
+                        new { StkID = Item.StkID },
+                        FormMethod.Post)) 
+                    {
+                        <div class="input-group">
+                            <input type="number" value="@Item.Price" name="Price" 
+                                class="form-control" />
+
+                            <button class="btn btn-success">Save</button>
+                        </div>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $('#sortTable').DataTable();
+</script>

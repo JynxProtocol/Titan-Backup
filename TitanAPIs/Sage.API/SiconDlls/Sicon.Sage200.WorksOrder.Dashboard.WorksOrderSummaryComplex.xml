@@ -1,0 +1,464 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard CurrencyCulture="en-GB">
+  <Title Text="Works Order Summary (Detailed)" />
+  <DataSources>
+    <SqlDataSource Name="SQL Data Source 1" ComponentName="dashboardSqlDataSource1">
+      <Connection Name="Sage 200 Database" ConnectionString="Data Source=.;Initial Catalog=200_Westley_Live_PL_DP;User ID=200_Westley_Live_PL_DP_MMSUser;Password=j9-K-HASrtQ-+RD98iq:N0/Zk7:fC8er" />
+      <Query Type="SelectQuery" Name="SiWorksOrder">
+        <Tables>
+          <Table Name="SiWorksOrder" X="30" Y="30" Width="125" Height="1388" />
+          <Table Name="SiWorksOrderFinishedItem" X="185" Y="30" Width="125" Height="666" />
+          <Table Name="StockItem" X="340" Y="30" Width="125" Height="1806" />
+          <Table Name="SiOperation" X="495" Y="30" Width="125" Height="913" />
+          <Table Name="vw_SiconExpectedOperationEndDates" X="650" Y="30" Width="125" Height="229" />
+          <Relation Type="Inner" Parent="SiWorksOrder" Nested="SiWorksOrderFinishedItem">
+            <KeyColumn Parent="SiWorksOrderID" Nested="SiWorksOrderID" />
+          </Relation>
+          <Relation Type="Inner" Parent="SiWorksOrderFinishedItem" Nested="StockItem">
+            <KeyColumn Parent="ItemID" Nested="ItemID" />
+          </Relation>
+          <Relation Type="LeftOuter" Parent="SiWorksOrder" Nested="SiOperation">
+            <KeyColumn Parent="SiWorksOrderID" Nested="SiWorksOrderID" />
+          </Relation>
+          <Relation Type="LeftOuter" Parent="SiOperation" Nested="vw_SiconExpectedOperationEndDates">
+            <KeyColumn Parent="SiOperationID" Nested="SiOperationID" />
+          </Relation>
+        </Tables>
+        <Columns>
+          <Column Table="vw_SiconExpectedOperationEndDates" Name="RemainingHours" />
+          <Column Table="vw_SiconExpectedOperationEndDates" Name="BookedHours" />
+          <Column Table="vw_SiconExpectedOperationEndDates" Name="ExpectedEndDate" />
+          <Column Table="SiOperation" Name="OperationDate" />
+          <Column Table="SiOperation" Name="Sequence" />
+          <Column Table="SiOperation" Name="ID" />
+          <Column Table="SiOperation" Name="Name" />
+          <Column Table="SiOperation" Name="SiWOQuantityCompleted" />
+          <Column Table="SiOperation" Name="TotalQuantity" />
+          <Column Table="SiWorksOrder" Name="WOCreatedDate" />
+          <Column Table="SiWorksOrder" Name="WOName" />
+          <Column Table="SiWorksOrder" Name="WONumber" />
+          <Column Table="SiWorksOrder" Name="WOStatus" />
+          <Column Table="SiWorksOrder" Name="WODueDate" />
+          <Column Table="StockItem" Name="Code" />
+          <Column Table="SiWorksOrderFinishedItem" Name="ScrappedQuantity" />
+          <Column Table="SiWorksOrderFinishedItem" Name="Quantity" />
+          <Column Table="SiWorksOrderFinishedItem" Name="QuantityBooked" />
+          <Column Table="SiOperation" Name="OperationType" />
+          <Column Table="SiOperation" Name="Description" />
+          <Column Table="SiOperation" Name="Status" />
+          <Column Table="SiOperation" Name="ExpectedHours" />
+          <Column Table="vw_SiconExpectedOperationEndDates" Name="expectedStartDate" />
+          <Column Table="vw_SiconExpectedOperationEndDates" Name="OperationDueDate" />
+          <Column Table="vw_SiconExpectedOperationEndDates" Name="ExpectedHours" Alias="vw_SiconExpectedOperationEndDates_ExpectedHours" />
+          <Column Table="vw_SiconExpectedOperationEndDates" Name="Sequence" Alias="vw_SiconExpectedOperationEndDates_Sequence" />
+        </Columns>
+        <Filter>Not [SiWorksOrder.WOStatus] In ('Suggested', 'On Hold', 'Estimate', 'Template', 'Completed', 'Booked', 'Deleted')</Filter>
+        <GroupFilter></GroupFilter>
+      </Query>
+      <Query Type="SelectQuery" Name="SiWorksOrder_1">
+        <Tables>
+          <Table Name="SiWorksOrder" X="30" Y="30" Width="125" Height="1388" />
+          <Table Name="SiWorksOrderLine" X="185" Y="30" Width="125" Height="1768" />
+          <Table Name="StockItem" X="340" Y="30" Width="125" Height="1806" />
+          <Table Name="SiWorksOrderLineType" X="495" Y="30" Width="125" Height="96" />
+          <Table Name="WarehouseItem" X="650" Y="30" Width="125" Height="438" />
+          <Relation Type="Inner" Parent="SiWorksOrder" Nested="SiWorksOrderLine">
+            <KeyColumn Parent="SiWorksOrderID" Nested="SiWorksOrderID" />
+          </Relation>
+          <Relation Type="Inner" Parent="SiWorksOrderLine" Nested="SiWorksOrderLineType">
+            <KeyColumn Parent="LineTypeID" Nested="SiWorksOrderLineTypeID" />
+          </Relation>
+          <Relation Type="Inner" Parent="StockItem" Nested="WarehouseItem">
+            <KeyColumn Parent="ItemID" Nested="ItemID" />
+          </Relation>
+          <Relation Type="Inner" Parent="SiWorksOrderLine" Nested="StockItem">
+            <KeyColumn Parent="ItemID" Nested="ItemID" />
+          </Relation>
+        </Tables>
+        <Columns>
+          <Column Table="SiWorksOrder" Name="WOName" />
+          <Column Table="SiWorksOrder" Name="WONumber" />
+          <Column Table="StockItem" Name="Code" />
+          <Column Table="SiWorksOrderLine" Name="LineNumber" />
+          <Column Table="SiWorksOrderLine" Name="Quantity" />
+          <Column Table="SiWorksOrderLineType" Name="Name" />
+          <Column Table="SiWorksOrderLine" Name="QuantityAllocated" />
+          <Column Table="SiWorksOrderLine" Name="QuantityIssued" />
+          <Column Table="SiWorksOrderLine" Name="SpareNumber4" />
+          <Column Table="WarehouseItem" Name="QuantityOnPOPOrder" Aggregate="Sum" Alias="Sum_QuantityOnPOPOrder" />
+          <Column Table="SiWorksOrderLine" Name="SiWorksOrderLineID" />
+        </Columns>
+        <Grouping>
+          <Column Table="SiWorksOrderLine" Name="SiWorksOrderLineID" />
+          <Column Table="SiWorksOrder" Name="WOName" />
+          <Column Table="SiWorksOrder" Name="WONumber" />
+          <Column Table="StockItem" Name="Code" />
+          <Column Table="SiWorksOrderLine" Name="LineNumber" />
+          <Column Table="SiWorksOrderLine" Name="Quantity" />
+          <Column Table="SiWorksOrderLineType" Name="Name" />
+          <Column Table="SiWorksOrderLine" Name="QuantityAllocated" />
+          <Column Table="SiWorksOrderLine" Name="QuantityIssued" />
+          <Column Table="SiWorksOrderLine" Name="SpareNumber4" />
+        </Grouping>
+        <Filter>Not [SiWorksOrderLine.LineTypeID] In (3L, 4L, 7L) And [SiWorksOrderLine.Deleted] = False</Filter>
+        <GroupFilter></GroupFilter>
+      </Query>
+      <ResultSchema>
+        <DataSet Name="SQL Data Source 1">
+          <View Name="SiWorksOrder">
+            <Field Name="RemainingHours" Type="Decimal" />
+            <Field Name="BookedHours" Type="Decimal" />
+            <Field Name="ExpectedEndDate" Type="DateTime" />
+            <Field Name="OperationDate" Type="DateTime" />
+            <Field Name="Sequence" Type="Int32" />
+            <Field Name="ID" Type="String" />
+            <Field Name="Name" Type="String" />
+            <Field Name="SiWOQuantityCompleted" Type="Decimal" />
+            <Field Name="TotalQuantity" Type="Decimal" />
+            <Field Name="WOCreatedDate" Type="DateTime" />
+            <Field Name="WOName" Type="String" />
+            <Field Name="WONumber" Type="String" />
+            <Field Name="WOStatus" Type="String" />
+            <Field Name="WODueDate" Type="DateTime" />
+            <Field Name="Code" Type="String" />
+            <Field Name="ScrappedQuantity" Type="Decimal" />
+            <Field Name="Quantity" Type="Decimal" />
+            <Field Name="QuantityBooked" Type="Decimal" />
+            <Field Name="OperationType" Type="String" />
+            <Field Name="Description" Type="String" />
+            <Field Name="Status" Type="String" />
+            <Field Name="ExpectedHours" Type="Decimal" />
+            <Field Name="expectedStartDate" Type="DateTime" />
+            <Field Name="OperationDueDate" Type="DateTime" />
+            <Field Name="vw_SiconExpectedOperationEndDates_ExpectedHours" Type="Decimal" />
+            <Field Name="vw_SiconExpectedOperationEndDates_Sequence" Type="Int32" />
+          </View>
+          <View Name="SiWorksOrder_1">
+            <Field Name="WOName" Type="String" />
+            <Field Name="WONumber" Type="String" />
+            <Field Name="Code" Type="String" />
+            <Field Name="LineNumber" Type="Decimal" />
+            <Field Name="Quantity" Type="Decimal" />
+            <Field Name="Name" Type="String" />
+            <Field Name="QuantityAllocated" Type="Decimal" />
+            <Field Name="QuantityIssued" Type="Decimal" />
+            <Field Name="SpareNumber4" Type="Decimal" />
+            <Field Name="Sum_QuantityOnPOPOrder" Type="Decimal" />
+            <Field Name="SiWorksOrderLineID" Type="Int64" />
+          </View>
+        </DataSet>
+      </ResultSchema>
+      <ConnectionOptions CloseConnection="true" />
+      <CalculatedFields>
+        <CalculatedField Name="Quantity Scrapped" Expression="IsNull([ScrappedQuantity], 0)" DataType="Auto" DataMember="SiWorksOrder" />
+        <CalculatedField Name="Quantity Remaining" Expression="[Quantity] - [QuantityBooked] - [Quantity Scrapped]" DataType="Auto" DataMember="SiWorksOrder" />
+        <CalculatedField Name="DueDate" Expression="IsNull([ExpectedEndDate], [WODueDate])" DataType="Auto" DataMember="SiWorksOrder" />
+        <CalculatedField Name="OperationLateStatus" Expression="Iif(GetDateHourMinute([ExpectedEndDate]) &gt; GetDateHourMinute([OperationDueDate]), 'Late', 'On Time')" DataType="Auto" DataMember="SiWorksOrder" />
+        <CalculatedField Name="Hours Over" Expression="IsNull([BookedHours] - [ExpectedHours] * ([SiWOQuantityCompleted] / [TotalQuantity]), 0)" DataType="Auto" DataMember="SiWorksOrder" />
+        <CalculatedField Name="Free Stock" Expression="IsNull([SpareNumber4], 0)" DataType="Auto" DataMember="SiWorksOrder_1" />
+        <CalculatedField Name="On Time Status" Expression="Iif([WOStatus] = 'Booked', 'Booked', [WOStatus] = 'On Hold', 'On Hold', GetDate([WODueDate]) &gt; GetDate(Now()), 'Due after today', GetDate([WODueDate]) &lt; GetDate(Now()), 'Late', 'Due today')" DataType="Auto" DataMember="SiWorksOrder" />
+      </CalculatedFields>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <ComboBox ComponentName="comboBoxDashboardItem1" Name="BOM Name" DataSource="dashboardSqlDataSource1" DataMember="SiWorksOrder" IsMasterFilterCrossDataSource="true" ComboBoxType="Checked">
+      <DataItems>
+        <Dimension DataMember="WOName" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ComboBox>
+    <Grid ComponentName="gridDashboardItem1" Name="Works Orders" Group="dashboardItemGroup2" DataSource="dashboardSqlDataSource1" DataMember="SiWorksOrder" IsMasterFilterCrossDataSource="true">
+      <InteractivityOptions MasterFilterMode="Single" />
+      <DataItems>
+        <Dimension DataMember="WONumber" DefaultId="DataItem0" />
+        <Dimension DataMember="WOName" DefaultId="DataItem1" />
+        <Dimension DataMember="WOStatus" DefaultId="DataItem2" />
+        <Dimension DataMember="WODueDate" DateTimeGroupInterval="DateHourMinuteSecond" DefaultId="DataItem7" />
+        <Measure DataMember="DueDate" SummaryType="Max" DefaultId="DataItem9">
+          <DateTimeFormat ExactDateFormat="Second" />
+        </Measure>
+        <Dimension DataMember="WOCreatedDate" DateTimeGroupInterval="DateHourMinuteSecond" DefaultId="DataItem8" />
+        <Measure DataMember="ID" SummaryType="Count" DefaultId="DataItem10" />
+        <Measure DataMember="Hours Over" DefaultId="DataItem11">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Dimension DataMember="On Time Status" DefaultId="DataItem12" />
+        <Measure DataMember="Quantity" Name="Quantity" SummaryType="Max" DefaultId="DataItem4">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Quantity Remaining" Name="Quantity Remaining" SummaryType="Max" DefaultId="DataItem3">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="QuantityBooked" SummaryType="Max" DefaultId="DataItem5">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Quantity Scrapped" Name="Quantity Scrapped" SummaryType="Max" DefaultId="DataItem6">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+      </DataItems>
+      <FormatRules>
+        <GridItemFormatRule Name="FormatRule 1" DataItem="DataItem9">
+          <FormatConditionExpression Expression="GetDate([DataItem9]) = GetDate([DataItem7])">
+            <AppearanceSettings AppearanceType="PaleYellow" />
+          </FormatConditionExpression>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="FormatRule 2" DataItem="DataItem9">
+          <FormatConditionExpression Expression="GetDate([DataItem9]) &lt; GetDate([DataItem7])">
+            <AppearanceSettings AppearanceType="PaleGreen" />
+          </FormatConditionExpression>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="FormatRule 3" DataItem="DataItem9">
+          <FormatConditionExpression Expression="GetDate([DataItem9]) &gt; GetDate([DataItem7])">
+            <AppearanceSettings AppearanceType="PaleRed" />
+          </FormatConditionExpression>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="FormatRule 4" DataItem="DataItem12">
+          <FormatConditionValue>
+            <AppearanceSettings AppearanceType="PaleRed" />
+            <Value1 Type="System.String" Value="Late" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="FormatRule 5" DataItem="DataItem12">
+          <FormatConditionValue>
+            <AppearanceSettings AppearanceType="PaleGreen" />
+            <Value1 Type="System.String" Value="Due after today" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+      </FormatRules>
+      <GridColumns>
+        <GridDimensionColumn Name="WO Number" Weight="133.70612708772256">
+          <Dimension DefaultId="DataItem0" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="WO Name" Weight="90.34197776197469">
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="WO Status" Weight="50.591507546705827">
+          <Dimension DefaultId="DataItem2" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Weight="37.341350808282868">
+          <Measure DefaultId="DataItem4" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Weight="74.682701616565737">
+          <Measure DefaultId="DataItem3" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Quantity Booked" Weight="65.046223988621776">
+          <Measure DefaultId="DataItem5" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Weight="72.273582209579757">
+          <Measure DefaultId="DataItem6" />
+        </GridMeasureColumn>
+        <GridDimensionColumn Name="WO Created Date" Weight="73.478141913072747">
+          <Dimension DefaultId="DataItem8" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="WO Due Date" Weight="73.478141913072747">
+          <Dimension DefaultId="DataItem7" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Last Operation Date" Weight="66.25078369211478">
+          <Measure DefaultId="DataItem9" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Operation Count" Weight="73.478141913072747">
+          <Measure DefaultId="DataItem10" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Hours Over" Weight="73.478141913072747">
+          <Measure DefaultId="DataItem11" />
+        </GridMeasureColumn>
+        <GridDimensionColumn Weight="72.273582209579757">
+          <Dimension DefaultId="DataItem12" />
+        </GridDimensionColumn>
+      </GridColumns>
+      <GridOptions EnableBandedRows="true" ColumnWidthMode="Manual" />
+    </Grid>
+    <ComboBox ComponentName="comboBoxDashboardItem2" Name="WO Status" DataSource="dashboardSqlDataSource1" DataMember="SiWorksOrder" ComboBoxType="Checked">
+      <DataItems>
+        <Dimension DataMember="WOStatus" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ComboBox>
+    <Grid ComponentName="gridDashboardItem2" Name="Operations" Group="dashboardItemGroup2" DataSource="dashboardSqlDataSource1" DataMember="SiWorksOrder">
+      <DataItems>
+        <Dimension DataMember="ID" DefaultId="DataItem1" />
+        <Dimension DataMember="ExpectedEndDate" DateTimeGroupInterval="DateHourMinute" DefaultId="DataItem0" />
+        <Measure DataMember="BookedHours" DefaultId="DataItem2">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="RemainingHours" DefaultId="DataItem3">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Dimension DataMember="Name" DefaultId="DataItem4" />
+        <Measure DataMember="TotalQuantity" DefaultId="DataItem5">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="ExpectedHours" DefaultId="DataItem6">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Dimension DataMember="Sequence" DefaultId="DataItem7" />
+        <Dimension DataMember="OperationDate" SortOrder="Descending" DateTimeGroupInterval="DateHourMinute" DefaultId="DataItem8" />
+        <Measure DataMember="SiWOQuantityCompleted" DefaultId="DataItem9">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Dimension DataMember="expectedStartDate" DateTimeGroupInterval="DateHourMinute" DefaultId="DataItem10" />
+        <Dimension DataMember="OperationDueDate" DateTimeGroupInterval="DateHourMinute" DefaultId="DataItem11" />
+        <Dimension DataMember="OperationLateStatus" DefaultId="DataItem12" />
+        <Measure DataMember="Hours Over" DefaultId="DataItem13">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+      </DataItems>
+      <FormatRules>
+        <GridItemFormatRule Name="FormatRule 1" ApplyToRow="true" DataItem="DataItem12">
+          <FormatConditionValue>
+            <AppearanceSettings AppearanceType="PaleRed" />
+            <Value1 Type="System.String" Value="Late" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="FormatRule 2" DataItem="DataItem12">
+          <FormatConditionValue>
+            <AppearanceSettings AppearanceType="PaleGreen" />
+            <Value1 Type="System.String" Value="On Time" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+      </FormatRules>
+      <GridColumns>
+        <GridDimensionColumn>
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridDimensionColumn>
+          <Dimension DefaultId="DataItem4" />
+        </GridDimensionColumn>
+        <GridDimensionColumn>
+          <Dimension DefaultId="DataItem7" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Total Quantity ">
+          <Measure DefaultId="DataItem5" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Quantity Completed ">
+          <Measure DefaultId="DataItem9" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Expected Hours ">
+          <Measure DefaultId="DataItem6" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Remaining Hours ">
+          <Measure DefaultId="DataItem3" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Booked Hours">
+          <Measure DefaultId="DataItem2" />
+        </GridMeasureColumn>
+        <GridDimensionColumn Name="Operation Date">
+          <Dimension DefaultId="DataItem8" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Operation Due Date">
+          <Dimension DefaultId="DataItem11" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Expected Start Date">
+          <Dimension DefaultId="DataItem10" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Expected End Date">
+          <Dimension DefaultId="DataItem0" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name=" ">
+          <Dimension DefaultId="DataItem12" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Hours Over">
+          <Measure DefaultId="DataItem13" />
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions EnableBandedRows="true" />
+    </Grid>
+    <RangeFilter ComponentName="rangeFilterDashboardItem1" Name="WO Created Date" ShowCaption="true" Group="dashboardItemGroup2" DataSource="dashboardSqlDataSource1" DataMember="SiWorksOrder" SelectedDateTimePeriodIndex="This Month">
+      <DataItems>
+        <Measure DataMember="WOCreatedDate" SummaryType="Count" DefaultId="DataItem0" />
+        <Dimension DataMember="WOCreatedDate" DateTimeGroupInterval="DayMonthYear" DefaultId="DataItem1" />
+      </DataItems>
+      <Argument DefaultId="DataItem1" />
+      <Series>
+        <Simple>
+          <Value DefaultId="DataItem0" />
+        </Simple>
+      </Series>
+      <DateTimePeriods>
+        <DateTimePeriod Name="This Month">
+          <StartLimit>
+            <FlowDateTimePeriodLimit Interval="Month" />
+          </StartLimit>
+          <EndLimit>
+            <FlowDateTimePeriodLimit Interval="Month" Offset="1" />
+          </EndLimit>
+        </DateTimePeriod>
+      </DateTimePeriods>
+    </RangeFilter>
+    <Grid ComponentName="gridDashboardItem3" Name="Materials" Group="dashboardItemGroup2" DataSource="dashboardSqlDataSource1" DataMember="SiWorksOrder_1">
+      <DataItems>
+        <Dimension DataMember="Code" DefaultId="DataItem3" />
+        <Dimension DataMember="Quantity" DefaultId="DataItem1">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Dimension>
+        <Dimension DataMember="Name" DefaultId="DataItem0" />
+        <Dimension DataMember="QuantityAllocated" DefaultId="DataItem4">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Dimension>
+        <Dimension DataMember="QuantityIssued" DefaultId="DataItem5">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Dimension>
+        <Dimension DataMember="Sum_QuantityOnPOPOrder" DefaultId="DataItem2">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Dimension>
+        <Dimension DataMember="Free Stock" DefaultId="DataItem6">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Dimension>
+      </DataItems>
+      <FormatRules>
+        <GridItemFormatRule Name="FormatRule 1" ApplyToRow="true" DataItem="DataItem2">
+          <FormatConditionExpression Expression="[DataItem6] + [DataItem2] &lt; [DataItem1] - [DataItem4] - [DataItem5]">
+            <AppearanceSettings AppearanceType="PaleRed" />
+          </FormatConditionExpression>
+        </GridItemFormatRule>
+      </FormatRules>
+      <GridColumns>
+        <GridDimensionColumn Name="Line Type" Weight="31.76783540794991">
+          <Dimension DefaultId="DataItem0" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Item Code" Weight="124.82229133743151">
+          <Dimension DefaultId="DataItem3" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Quantity Required" Weight="76.186578721720579">
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Quantity Allocated" Weight="75.06205357453652">
+          <Dimension DefaultId="DataItem4" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Quantity Issued" Weight="75.06205357453652">
+          <Dimension DefaultId="DataItem5" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Free Stock" Weight="75.06205357453652">
+          <Dimension DefaultId="DataItem6" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="On Order" Weight="74.7809222877405">
+          <Dimension DefaultId="DataItem2" />
+        </GridDimensionColumn>
+      </GridColumns>
+      <GridOptions EnableBandedRows="true" ColumnWidthMode="Manual" />
+    </Grid>
+  </Items>
+  <Groups>
+    <Group ComponentName="dashboardItemGroup2" Name="Group 2" ShowCaption="false">
+      <InteractivityOptions IgnoreMasterFilters="false" />
+    </Group>
+  </Groups>
+  <LayoutTree>
+    <LayoutGroup Orientation="Vertical">
+      <LayoutGroup Weight="4.9019607843137258">
+        <LayoutItem DashboardItem="comboBoxDashboardItem1" Weight="49.880895664602193" />
+        <LayoutItem DashboardItem="comboBoxDashboardItem2" Weight="50.119104335397807" />
+      </LayoutGroup>
+      <LayoutGroup Orientation="Vertical" DashboardItem="dashboardItemGroup2" Weight="95.098039215686271">
+        <LayoutItem DashboardItem="rangeFilterDashboardItem1" Weight="24.554826616682288" />
+        <LayoutItem DashboardItem="gridDashboardItem1" Weight="26.148078725398314" />
+        <LayoutItem DashboardItem="gridDashboardItem2" Weight="18.744142455482663" />
+        <LayoutItem DashboardItem="gridDashboardItem3" Weight="30.552952202436739" />
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

@@ -1,0 +1,45 @@
+﻿{
+   "CodeGenerationMode": 2,
+   "ContextClassName": "SAGEContext",
+   "ContextNamespace": " ",
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": null,
+   "OutputContextPath": "Data",
+   "OutputPath": "Models\/TitanEntities",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "Titan.API",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[NewExpedite]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[vw_AWKStockRecords]",
+         "ObjectType": 3
+      }
+   ],
+   "UiHint": "SICONDEV01\\SAGE.Titan",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

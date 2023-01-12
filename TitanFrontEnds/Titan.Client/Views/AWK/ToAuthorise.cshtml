@@ -1,0 +1,137 @@
+﻿@model IEnumerable<AWKHeader>
+
+@{
+    ViewBag.Title = "AWK to Authorise";
+}
+
+<h2>Additional Work Requests for Authorisation</h2>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <thead>
+        <tr>
+            <th>
+                AWK Number
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorksOrderNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CatNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                Authorise
+            </th>
+            <th>
+                Cancel
+            </th>
+            <th>
+                Revert
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WorksOrderNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CatNo)
+                </td>
+                <td class="text-overflow-box">
+                    <div class="text-overflow">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </div>
+                </td>
+                <td>
+                    @using (Html.BeginForm(
+                        nameof(AWKController.Authorise), 
+                        typeof(AWKController).ControllerName(),
+                        new { AWN = item.Id }, 
+                        FormMethod.Post))
+                    {
+                        <button class="btn btn-success">Authorise</button>
+                    }
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" 
+                        data-bs-target="#Cancel_@item.Id">
+                        Cancel
+                    </button>
+
+                    @using (Html.BeginForm(
+                        nameof(AWKController.Cancel),
+                        typeof(AWKController).ControllerName(),
+                        new { AWN = item.Id },
+                        FormMethod.Post))
+                    {
+                        <div class="modal" tabindex="-1" id="Cancel_@item.Id">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Cancel AWK</h5>
+                                        <button type="button" class="btn-close" 
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you wish to cancel this AWK?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" 
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button class="btn btn-danger">Confirm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </td>
+                <td>
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" 
+                        data-bs-target="#Revert_@item.Id">
+                        Revert
+                    </button>
+
+                    @using (Html.BeginForm(
+                        nameof(AWKController.RevertToQuote),
+                        typeof(AWKController).ControllerName(),
+                        new { AWN = item.Id },
+                        FormMethod.Post))
+                    {
+                        <div class="modal" tabindex="-1" id="Revert_@item.Id">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Cancel AWK</h5>
+                                        <button type="button" class="btn-close" 
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to revert this AWK to Quote?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" 
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button class="btn btn-danger">Confirm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $('#sortTable').DataTable();
+</script>

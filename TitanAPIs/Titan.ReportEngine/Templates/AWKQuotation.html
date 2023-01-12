@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        {{{> ReportStyles}}}
+    </style>
+</head>
+<body>
+    <div>
+        <h1 style="text-align: center;">Additional Work Quotation</h1>
+
+        {{#with AWKQuote}}
+        <table class="cellpadding-5"
+               style="border-collapse: collapse; width: 100%; border: 1px solid black;">
+            <tbody>
+                <tr>
+                    <td><b>Client</b></td>
+                    <td>{{Client}}</td>
+                    <td><b>Sabre Order No</b></td>
+                    <td>{{SabreOrderNumber}}</td>
+                </tr>
+                <tr>
+                    <td><b>Client Contact</b></td>
+                    <td>{{ClientContact}}</td>
+                    <td><b>Unit Description</b></td>
+                    <td>{{UnitDescription}}</td>
+                </tr>
+                <tr>
+                    <td><b>Sabre Rail Contact</b></td>
+                    <td>{{SabreRailContact}}</td>
+                    <td><b>Cat Number</b></td>
+                    <td>{{CatNumber}}</td>
+                </tr>
+                <tr>
+                    <td><b>AW Number</b></td>
+                    <td>{{AWNumber}}</td>
+                    <td><b>No of Units</b></td>
+                    <td>{{NoOfUnits}}</td>
+                </tr>
+                <tr>
+                    <td><b>Customer Order No.</b></td>
+                    <td>{{CustomerOrderNumber}}</td>
+                    <td><b>Date</b></td>
+                    <td>{{Date}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br />
+
+        <table class="cellpadding-5"
+               style="border-collapse: collapse; width: 100%; border: 1px solid black;">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Part Number</th>
+                    <th>Fault</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each Items }}
+                <tr>
+                    <td>
+                        {{inc @index}}
+                    </td>
+                    <td class="breaktext">
+                        {{Description}}
+                    </td>
+                    <td>
+                        {{PartNumber}}
+                    </td>
+                    <td>
+                        {{Fault}}
+                    </td>
+                    <td>
+                        {{Price}}
+                    </td>
+                    <td>
+                        {{Quantity}}
+                    </td>
+                    <td>
+                        {{Total}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6" style="text-align: right;">
+                        <b>Total:</b>
+                    </td>
+                    <td>
+                        {{GrandTotal}}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        {{/with}}
+    </div>
+</body>
+</html>

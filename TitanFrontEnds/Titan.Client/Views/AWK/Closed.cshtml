@@ -1,0 +1,61 @@
+﻿@model IEnumerable<AWKHeader>
+
+@{
+    ViewBag.Title = "Closed AWKs";
+}
+
+<h2>Closed Additional Work Requests</h2>
+<br />
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <thead>
+        <tr>
+            <th>
+                AWK Number
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorksOrderNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CatNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                View
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(Model => Item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => Item.WorksOrderNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => Item.CatNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => Item.Description)
+                </td>
+                <td>
+                    @Html.ActionLink(
+                        "View", 
+                        nameof(AWKController.ViewClosed),
+                        new { AWN = Item.Id }, 
+                        new { @class = "btn btn-success" }
+                    )
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $('#sortTable').DataTable();
+</script>

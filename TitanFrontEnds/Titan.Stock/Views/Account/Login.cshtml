@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+@if (ViewBag.FailedLogin == true)
+{
+    <script>
+        ShowNotification("<h3 class='text-danger'>Login failed</h3>");
+    </script>
+}
+
+@using (Html.BeginForm(FormMethod.Post, new { @class = "flexlayout"})) {
+    <div id="pinpad">
+        <div class="input-group">
+            <input class="form-control" id="pin" name="pin" type="password" inputmode="numeric">
+            <div class="input-group-append">
+                <button type="button" class="btn btn-secondary py-3 px-3 medtext" 
+                    onclick="$('#pin').val('')">Clear</button>
+            </div>
+        </div>
+        
+
+        <button type="button" class="btn btn-outline-secondary py-3 px-3 medtext" 
+            onclick="$('#pin').val($('#pin').val() + '1');">1</button>
+        <button type="button" class="btn btn-outline-secondary py-3 px-3 medtext" 
+            onclick="$('#pin').val($('#pin').val() + '2');">2</button>
+        <button type="button" class="btn btn-outline-secondary py-3 px-3 medtext" 
+            onclick="$('#pin').val($('#pin').val() + '3');">3</button>
+        
+        <button type="button" class="btn btn-outline-secondary py-3 px-3 medtext" 
+            onclick="$('#pin').val($('#pin').val() + '4');">4</button>
+        <button type="button" class="btn btn-outline-secondary py-3 px-3 medtext" 
+            onclick="$('#pin').val($('#pin').val() + '5');">5</button>
+        <button type="button" class="btn btn-outline-secondary py-3 px-3 medtext" 
+            onclick="$('#pin').val($('#pin').val() + '6');">6</button>
+        
+        <button type="button" class="btn btn-outline-secondary py-3 px-3 medtext" 
+            onclick="$('#pin').val($('#pin').val() + '7');">7</button>
+        <button type="button" class="btn btn-outline-secondary py-3 px-3 medtext" 
+            onclick="$('#pin').val($('#pin').val() + '8');">8</button>
+        <button type="button" class="btn btn-outline-secondary py-3 px-3 medtext" 
+            onclick="$('#pin').val($('#pin').val() + '9');">9</button>
+        
+        <button type="button" class="btn btn-outline-secondary py-3 px-3 medtext" 
+            onclick="$('#pin').val($('#pin').val().slice(0, -1));">&lt;</button>
+        <button type="button" class="btn btn-outline-secondary py-3 px-3 medtext" 
+            onclick="$('#pin').val($('#pin').val() + '0');">0</button>
+        <input type="submit" class="btn btn-primary py-3 px-3 titanbutton" value="Enter">
+            
+    </div>
+}

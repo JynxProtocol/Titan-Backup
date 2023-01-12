@@ -1,0 +1,190 @@
+﻿@model StockTakeInfoDTO
+
+@{
+    ViewBag.Title = "Details";
+    string DateDefault = "Never";
+}
+
+<h2>Details</h2>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(model => model.Name)</span>
+    
+    @Html.EditorFor(Model => Model.Name,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(model => model.Status)</span>
+    
+    @Html.EditorFor(Model => Model.Status,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(model => model.Status)</span>
+    
+    @Html.EditorFor(Model => Model.Status,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(model => model.DateCreated)</span>
+    
+    @if (Model.DateCreated != null)
+    {
+        @Html.EditorFor(Model => Model.DateCreated,
+            new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+    }
+    else
+    {
+        @Html.EditorFor(Model => DateDefault,
+            new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+    }
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(model => model.CreatedBy)</span>
+    
+    @Html.EditorFor(Model => Model.CreatedBy,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(model => model.Completion)</span>
+    
+    @Html.EditorFor(Model => Model.Completion,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(model => model.DateCompleted)</span>
+    
+    @if (Model.DateCompleted != null)
+    {
+        @Html.EditorFor(Model => Model.DateCompleted,
+            new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+    }
+    else
+    {
+        @Html.EditorFor(Model => DateDefault,
+            new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+    }
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(model => model.CompletedBy)</span>
+    
+    @Html.EditorFor(Model => Model.CompletedBy,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<h3>Items</h3>
+<hr />
+
+<table class="table table-bordered table-repsonsive table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Items.FirstOrDefault().Code)
+            </th>
+            <th>
+                @Html.LabelFor(model => model.Items.FirstOrDefault().Description)
+            </th>
+            <th>
+                @Html.LabelFor(model => model.Items.FirstOrDefault().Location)
+            </th>
+            <th>
+                @Html.LabelFor(model => model.Items.FirstOrDefault().FreeStock)
+            </th>
+            <th>
+                @Html.LabelFor(model => model.Items.FirstOrDefault().RecordedDate)
+            </th>
+            <th>
+                @Html.LabelFor(model => model.Items.FirstOrDefault().RecordedBy)
+            </th>
+            <th>
+                @Html.LabelFor(model => model.Items.FirstOrDefault().RecordedValue)
+            </th>
+            <th>
+                @Html.LabelFor(model => model.Items.FirstOrDefault().Adjustment)
+            </th>
+            <th>
+                @Html.LabelFor(model => model.Items.FirstOrDefault().AdjustmentValue)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (StockTakeItemInfoDTO Item in Model.Items)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => Item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => Item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => Item.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => Item.FreeStock)
+                </td>
+                <td>
+                    @if (Item.RecordedDate != null)
+                    {
+                        @Html.DisplayFor(model => Item.RecordedDate)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(model => DateDefault)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(model => Item.RecordedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => Item.RecordedValue)
+                </td>
+                @{
+                    string cellstyle;
+                    if (Item.Adjustment > 0)
+                    {
+                        cellstyle = "table-success";
+                    }
+                    else if (Item.Adjustment < 0)
+                    {
+                        cellstyle = "table-danger";
+                    }
+                    else
+                    {
+                        cellstyle = "";
+                    }
+                }
+                <td class="@cellstyle">
+                    @(((decimal)(Item.Adjustment ?? 0)).ToString("F2"))
+                </td>
+                <td class="@cellstyle">
+                    @(((decimal)(Item.AdjustmentValue ?? 0)).ToString("C2"))
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!(new string[] { "Completed", "Deleted", "Selecting items" }.Contains(Model.Status)))
+{
+    var CanProceed = ViewContext.ViewData.ModelState.IsValid;
+    <div style="display:flex">
+        @Html.ValidationSummary()
+        @Html.ActionLink(
+            "Generate adjustments", 
+            nameof(StockTakeController.GetAdjustments), 
+            new { id = Model.Id },
+            new {
+                @class = "btn btn-primary",
+                style = "margin-left: auto"
+            }
+        )
+    </div>
+}

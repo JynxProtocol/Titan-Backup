@@ -1,0 +1,67 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "ReportsContext",
+   "ContextNamespace": "Data",
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": "",
+   "OutputContextPath": "Data\/Reports",
+   "OutputPath": "Models\/Reports",
+   "ProjectRootNamespace": "Titan.ReportEngine",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[ActionSetting]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[FreeAction]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ReportAction]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ReportActionSetting]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ReportConfig]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ReportDocument]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ReportDocumentHeader]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ReturnAction]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "WIN-46Q9LV8FF4C\\SAGEDEV.Reports",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}

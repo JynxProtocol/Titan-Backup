@@ -1,0 +1,175 @@
+﻿@model OrderDTO
+
+@{
+    ViewBag.Title = "Authorise Order";
+}
+
+<h2>Confirm order</h2>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">GRN</span>
+    
+    @Html.EditorFor(Model => Model.Grn,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">Customer Order Number</span>
+    
+    @Html.EditorFor(Model => Model.OrdCustomerRef,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">Despatch Method</span>
+    
+    @Html.EditorFor(Model => Model.DespatchMethod,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">Delivery Terms</span>
+    
+    @Html.EditorFor(Model => Model.DeliveryTerms,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">Customer</span>
+    
+    @Html.EditorFor(Model => Model.CustomerName,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<hr />
+<h4>Address</h4>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(Model => Model.PostalName)</span>
+    
+    @Html.EditorFor(Model => Model.PostalName,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine1)</span>
+    
+    @Html.EditorFor(Model => Model.AddressLine1,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine2)</span>
+    
+    @Html.EditorFor(Model => Model.AddressLine2,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine3)</span>
+    
+    @Html.EditorFor(Model => Model.AddressLine3,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(Model => Model.AddressLine4)</span>
+    
+    @Html.EditorFor(Model => Model.AddressLine4,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(Model => Model.City)</span>
+    
+    @Html.EditorFor(Model => Model.City,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(Model => Model.County)</span>
+    
+    @Html.EditorFor(Model => Model.County,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<div class="input-group mb-3">
+    <span class="input-group-text">@Html.LabelFor(Model => Model.PostCode)</span>
+    @Html.EditorFor(Model => Model.PostCode,
+        new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+</div>
+
+<hr />
+<h4>Items</h4>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped">
+    <thead>
+        <tr>
+            <th>StockCode</th>
+            <th>DirtyStockCode</th>
+            <th>Quantity recieved</th>
+            <th>Quantity expected</th>
+            <th>Colour</th>
+            <th>Warrantry</th>
+            <th>Leadtime</th>
+            <th>Unit price</th>
+            <th>Serial number</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var OrderLine in Model.OrderDetails)
+        {
+            <tr class="@(OrderLine.QtyReceived == OrderLine.ExpectedQty ? "" : "bg-danger")">
+                <td>
+                    @Html.DisplayFor(Model => OrderLine.StockCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => OrderLine.DirtyStockCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => OrderLine.QtyReceived)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => OrderLine.ExpectedQty)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => OrderLine.Colour)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => OrderLine.Warranty)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => OrderLine.LeadTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => OrderLine.UnitPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => OrderLine.SerialNumber)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+<div>
+    @Html.ActionLink(
+        "Edit",
+        nameof(OrdersController.Edit),
+        typeof(OrdersController).ControllerName(),
+        new { OrderID = Model.OrderID }, 
+        new { @class = "btn btn-success" }
+    )
+
+    @using (Html.BeginForm(
+        nameof(OrdersController.ConfirmGenerateSOR),
+        typeof(OrdersController).ControllerName(),
+        new { Model.OrderID },
+        FormMethod.Post,
+        false,
+        new { style = "display: inline;" }))
+    {
+        <input type="submit" class="btn btn-danger" id="submit" value="Authorise and generate SOR"/>
+    }
+</div>

@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        {{{> ReportStyles}}}
+    </style>
+</head>
+<body>
+
+    <h1>Stock levels report</h1>
+    <hr />
+
+    <h2>Overview</h2>
+    <hr />
+
+    {{#with Stock}}
+    <p>Total value of stock: {{TotalValueOfStock}}</p>
+    <p>Number of parts with ongoing allocations: {{OngoingAllocations}}</p>
+    <p>Number of parts with low stock: {{PartsLow}}</p>
+    <hr />
+
+    <h2>Parts list</h2>
+    <hr />
+
+    <table style="border-collapse: collapse; width: 100%; border: 2px solid black;">
+        <thead>
+            <tr>
+                <th class="table-primary">Code</th>
+                <th class="table-primary" style="min-width: 50%;">Description</th>
+                <th class="table-primary">UnitCost</th>
+                <th class="table-primary">NumberInStock</th>
+                <th class="table-primary">TotalValue</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each Parts}}
+            <tr>
+                <td>{{Code}}</td>
+                <td>{{Description}}</td>
+                <td>{{UnitCost}}</td>
+                <td>{{NumberInStock}}</td>
+                <td>{{TotalValue}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    {{/with}}
+
+    <hr />
+
+</body>
+</html>

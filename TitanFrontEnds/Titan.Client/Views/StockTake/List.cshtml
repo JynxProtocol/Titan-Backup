@@ -1,0 +1,167 @@
+﻿@model StockTakeListDTO
+
+@{
+    ViewBag.Title = "Completed stock takes";
+    string DateDefault = "Never";
+}
+
+<h2>Stocktakes</h2>
+
+<p>
+    @Html.ActionLink(
+        "Create New",
+        nameof(StockTakeController.Create),
+        new { },
+        new { @class = "btn btn-success" }
+    )
+</p>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Active.FirstOrDefault().Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Active.FirstOrDefault().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Active.FirstOrDefault().Warehouse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Active.FirstOrDefault().DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Active.FirstOrDefault().CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Active.FirstOrDefault().Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Active.FirstOrDefault().Completion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Active.FirstOrDefault().DateCompleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Active.FirstOrDefault().CompletedBy)
+            </th>
+            <th>
+
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (StockTakeDTO item in Model.Active)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(x => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.Warehouse)
+                </td>
+                <td>
+                    @if (item.DateCreated != null)
+                    {
+                        @Html.DisplayFor(x => item.DateCreated)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(Model => DateDefault)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.Completion)
+                </td>
+                <td>
+                    @if (item.DateCompleted != null)
+                    {
+                        @Html.DisplayFor(x => item.DateCompleted)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(Model => DateDefault)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(x => item.CompletedBy)
+                </td>
+                <td>
+                    @if (item.Status == "Selecting items")
+                    {
+                        @Html.ActionLink(
+                            "Edit", 
+                            nameof(StockTakeController.SelectItems), 
+                            new { id = item.Id }, 
+                            new { @class = "btn btn-warning" }
+                        )
+                    }
+                        else
+                    {
+                        @Html.ActionLink(
+                            "View", 
+                            nameof(StockTakeController.Details), 
+                            new { id = item.Id }, 
+                            new { @class = "btn btn-primary" }
+                        )
+                    }
+                </td> 
+                <td>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" 
+                        data-bs-target="#DeleteModal@(item.Id)">
+                        Delete
+                    </button>
+
+                    <div class="modal fade" id="DeleteModal@(item.Id)" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Delete Stocktake</h5>
+                                    <button type="button" class="btn-close" 
+                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Please confirm stocktake deletion</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" 
+                                        data-bs-dismiss="modal">Close</button>
+                                    @using (Html.BeginForm(
+                                        nameof(StockTakeController.Delete), 
+                                        typeof(StockTakeController).ControllerName(), 
+                                        new { id = item.Id }))
+                                    {
+                                        <input type="submit" 
+                                            class="btn btn-danger" value="Confirm"/>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td> 
+            </tr>
+        }
+    </tbody>
+</table>

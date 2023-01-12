@@ -1,0 +1,22 @@
+﻿@model int
+
+@{
+    ViewBag.Title = "Add document to contract";
+}
+
+<h2>Add contract document</h2>
+
+@using (Html.BeginForm(
+    nameof(ContractsController.AddDocument),
+    typeof(ContractsController).ControllerName(),
+    new { ConID = @Model },
+    FormMethod.Post,
+    false,
+    new { enctype = "multipart/form-data" }))
+{
+    <div class="input-group mb-3">
+        <input name="Document" id="Document" type="file" class="form-control" />
+    </div>
+
+    <input type="submit" class="btn btn-success" id="submit" value="Add item" />
+}

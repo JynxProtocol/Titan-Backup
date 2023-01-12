@@ -1,0 +1,101 @@
+﻿@model AWDetail
+
+@{
+    ViewBag.Title = "Update AWK Detail";
+}
+
+<h2>Edit detail</h2>
+
+@using (Html.BeginForm(
+    nameof(AWKController.EditDetail),
+    typeof(AWKController).ControllerName(),
+    new { 
+        AWN = Model.Id,
+        AWDID = Model.Awdid,
+        ReturnUrl = ViewBag.ReturnUrl
+    }, 
+    FormMethod.Post))
+{
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.StockCode)</span>
+    
+        @Html.EditorFor(Model => Model.StockCode,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.Description)</span>
+    
+        @Html.EditorFor(Model => Model.Description,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.RequiredQty)</span>
+    
+        @Html.EditorFor(Model => Model.RequiredQty,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+        
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.Fault)</span>
+
+        @Html.DropDownListFor(
+            Model => Model.Fault, 
+            (IEnumerable<SelectListItem>)ViewBag.Faults,
+            new { @class = "form-control" }
+        )
+    </div>
+            
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.WorkRequired)</span>
+
+        @Html.DropDownListFor(
+            Model => Model.WorkRequired, 
+            (IEnumerable<SelectListItem>)ViewBag.WorkRequireds,
+            new { @class = "form-control" }
+        )
+    </div>
+        
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.RepairDetail)</span>
+    
+        @Html.EditorFor(Model => Model.RepairDetail,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.SabreStock)</span>
+
+        @Html.DropDownListFor(
+            Model => Model.SabreStock, 
+            LookupHelpers.YesNoFromBool,
+            new { @class = "form-control" }
+        )
+    </div>
+
+    if (await TitanAdmin.UserHasPermission("SeeRepairCost"))
+    {
+        <div class="input-group mb-3">
+            <span class="input-group-text">@Html.LabelFor(Model => Model.RepairCost)</span>
+    
+            @Html.EditorFor(Model => Model.RepairCost,
+                new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    }
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Commercially Accepted</span>
+
+        @Html.DropDownListFor(
+            Model => Model.ComAccepted, 
+            LookupHelpers.YesNoFromBool,
+            new { @class = "form-control" }
+        )
+    </div>
+
+    @Html.HiddenFor(Model => Model.StkID)
+    @Html.HiddenFor(Model => Model.Did)
+
+    <input type="submit" class="btn btn-success " value="Update Part" />
+}

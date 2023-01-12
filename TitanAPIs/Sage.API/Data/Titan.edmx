@@ -1,0 +1,843 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TitanModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AWKDetail">
+          <Key>
+            <PropertyRef Name="AWDID" />
+          </Key>
+          <Property Name="AWDID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DID" Type="int" />
+          <Property Name="StkID" Type="int" />
+          <Property Name="StockCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="RequiredQty" Type="int" />
+          <Property Name="Fault" Type="nvarchar" MaxLength="255" />
+          <Property Name="WorkRequired" Type="nvarchar" MaxLength="255" />
+          <Property Name="RepairDetail" Type="nvarchar" MaxLength="255" />
+          <Property Name="RepairCost" Type="money" />
+          <Property Name="ProductGroup" Type="nvarchar" MaxLength="50" />
+          <Property Name="SabreStock" Type="bit" />
+          <Property Name="LastUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateLastUpdated" Type="datetime" />
+          <Property Name="ComAccepted" Type="bit" />
+        </EntityType>
+        <EntityType Name="AWKHeader">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorksOrderNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccountNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustOrderNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccountName" Type="nvarchar" MaxLength="60" />
+          <Property Name="CatNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="SOR" Type="nvarchar" MaxLength="30" />
+          <Property Name="Qty" Type="decimal" Precision="18" Scale="5" />
+          <Property Name="AWKQty" Type="int" />
+          <Property Name="Approved" Type="bit" />
+          <Property Name="ApprovedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateApproved" Type="datetime" />
+          <Property Name="Authorised" Type="bit" />
+          <Property Name="AuthorisedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateAuthorised" Type="datetime" />
+          <Property Name="TicketID" Type="int" />
+          <Property Name="EMailMessage" Type="nvarchar(max)" />
+          <Property Name="AWKQuoted" Type="bit" />
+          <Property Name="AWKQuotedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="AWKQuotedDate" Type="datetime" />
+          <Property Name="ContractName" Type="nvarchar" MaxLength="50" />
+          <Property Name="EMail" Type="nvarchar" MaxLength="255" />
+          <Property Name="SendMail" Type="bit" />
+          <Property Name="AWKSalesType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Canceled" Type="bit" />
+          <Property Name="Comments" Type="varchar(max)" />
+          <Property Name="TotalPrice" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="AWKSettings">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="AWKStorage" Type="nvarchar" MaxLength="255" />
+          <Property Name="DatabaseStorage" Type="bit" Nullable="false" />
+          <Property Name="UpdatePriceBookFromDetail" Type="bit" Nullable="false" />
+          <Property Name="PixelSize" Type="int" Nullable="false" />
+          <Property Name="EmailOnApproval" Type="bit" Nullable="false" />
+          <Property Name="EmailAddresses" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="AWKStockHeader">
+          <Key>
+            <PropertyRef Name="StkID" />
+          </Key>
+          <Property Name="StkID" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="StockCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Price" Type="money" />
+          <Property Name="LastUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateLastUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ContractDetails">
+          <Key>
+            <PropertyRef Name="ConDetID" />
+          </Key>
+          <Property Name="ConDetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConID" Type="int" />
+          <Property Name="SageStkID" Type="int" />
+          <Property Name="WONumber" Type="bigint" />
+          <Property Name="DirtyStockCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="StockCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="WorkRequired" Type="nvarchar" MaxLength="50" />
+          <Property Name="Colour" Type="nvarchar" MaxLength="50" />
+          <Property Name="Warranty" Type="nvarchar" MaxLength="30" />
+          <Property Name="LeadTime" Type="int" />
+          <Property Name="DeliveryTerms" Type="nvarchar" MaxLength="50" />
+          <Property Name="DespatchMethod" Type="nvarchar" MaxLength="50" />
+          <Property Name="DeliveryDays" Type="int" />
+          <Property Name="QtyRequired" Type="int" />
+          <Property Name="UnitPrice" Type="money" />
+          <Property Name="IsSerialised" Type="int" />
+          <Property Name="TotalQty" Type="int" />
+          <Property Name="TotalQtyReceived" Type="int" />
+          <Property Name="SpecialInstruction" Type="nvarchar" MaxLength="255" />
+          <Property Name="QuotationNumber" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="LastUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateLastUpdated" Type="datetime" />
+          <Property Name="AlternativePart" Type="int" />
+          <Property Name="APTConID" Type="int" />
+          <Property Name="ParentPart" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ContractHeader">
+          <Key>
+            <PropertyRef Name="ConID" />
+          </Key>
+          <Property Name="ConID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="conCusID" Type="bigint" />
+          <Property Name="ContractName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="255" />
+          <Property Name="CustomerOrderNumber" Type="nvarchar" MaxLength="255" />
+          <Property Name="DeliveriesReceived" Type="int" />
+          <Property Name="Active" Type="int" />
+          <Property Name="PostalName" Type="nvarchar" MaxLength="60" />
+          <Property Name="AddressLine1" Type="nvarchar" MaxLength="60" />
+          <Property Name="AddressLine2" Type="nvarchar" MaxLength="60" />
+          <Property Name="AddressLine3" Type="nvarchar" MaxLength="60" />
+          <Property Name="AddressLine4" Type="varchar" MaxLength="60" />
+          <Property Name="City" Type="nvarchar" MaxLength="60" />
+          <Property Name="County" Type="nvarchar" MaxLength="60" />
+          <Property Name="PostCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="DeliveryTerms" Type="nvarchar" MaxLength="50" />
+          <Property Name="DespatchMethod" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="LastUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateLastUpdated" Type="datetime" />
+          <Property Name="Authorised" Type="int" />
+          <Property Name="Acknowledged" Type="int" />
+          <Property Name="CustomerOrderDate" Type="date" />
+          <Property Name="BookingInInstructions" Type="nvarchar" MaxLength="255" />
+          <Property Name="IsCasualty" Type="bit" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CusID" />
+          </Key>
+          <Property Name="CusID" Type="bigint" Nullable="false" />
+          <Property Name="CustomerAccountNumber" Type="varchar" MaxLength="8" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ImageData" Type="image" />
+          <Property Name="ContentType" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="OrderDetails">
+          <Key>
+            <PropertyRef Name="DetID" />
+          </Key>
+          <Property Name="DetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrdID" Type="int" />
+          <Property Name="SageStkID" Type="int" />
+          <Property Name="WONumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="DirtyStockCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="StockCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="WorkRequired" Type="nvarchar" MaxLength="50" />
+          <Property Name="Colour" Type="nvarchar" MaxLength="50" />
+          <Property Name="Warranty" Type="nvarchar" MaxLength="30" />
+          <Property Name="LeadTime" Type="int" />
+          <Property Name="DeliveryTerms" Type="nvarchar" MaxLength="50" />
+          <Property Name="DespatchMethod" Type="nvarchar" MaxLength="50" />
+          <Property Name="DeliveryDays" Type="int" />
+          <Property Name="QtyReceived" Type="int" />
+          <Property Name="UnitPrice" Type="money" />
+          <Property Name="SpecialInstruction" Type="nvarchar" MaxLength="255" />
+          <Property Name="SerialNumber" Type="nvarchar" MaxLength="255" />
+          <Property Name="Location" Type="nvarchar" MaxLength="10" />
+          <Property Name="DetSODID" Type="bigint" />
+          <Property Name="QuotationNumber" Type="varchar" MaxLength="50" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="DateRepsReceived" Type="datetime" />
+          <Property Name="LastUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateLastUpdated" Type="datetime" />
+          <Property Name="ExpectedQty" Type="int" />
+          <Property Name="QtyOutstanding" Type="int" />
+          <Property Name="ConDetID" Type="int" />
+          <Property Name="AssetNumber" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="OrderHeader">
+          <Key>
+            <PropertyRef Name="OrdID" />
+          </Key>
+          <Property Name="OrdID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConID" Type="int" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateReceived" Type="datetime2" Precision="7" />
+          <Property Name="CusOrderNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="255" />
+          <Property Name="GRN" Type="nvarchar" MaxLength="50" />
+          <Property Name="BatchCount" Type="int" />
+          <Property Name="OrdIsCasualty" Type="int" />
+          <Property Name="OrdIsAuthorised" Type="int" />
+          <Property Name="OrdStatus" Type="int" />
+          <Property Name="SOR" Type="nvarchar" MaxLength="50" />
+          <Property Name="CusID" Type="int" />
+          <Property Name="OrdCustomerRef" Type="nvarchar" MaxLength="50" />
+          <Property Name="OrdSpecialInstruction" Type="nvarchar" MaxLength="255" />
+          <Property Name="PostalName" Type="nvarchar" MaxLength="60" />
+          <Property Name="AddressLine1" Type="nvarchar" MaxLength="60" />
+          <Property Name="AddressLine2" Type="nvarchar" MaxLength="60" />
+          <Property Name="AddressLine3" Type="nvarchar" MaxLength="60" />
+          <Property Name="AddressLine4" Type="varchar" MaxLength="60" />
+          <Property Name="City" Type="nvarchar" MaxLength="60" />
+          <Property Name="County" Type="nvarchar" MaxLength="60" />
+          <Property Name="PostCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="DeliveryTerms" Type="nvarchar" MaxLength="50" />
+          <Property Name="DespatchMethod" Type="nvarchar" MaxLength="50" />
+          <Property Name="ApprovedBy" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Settings">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="DocumentStorage" Type="nvarchar" MaxLength="255" />
+          <Property Name="LogLevel" Type="int" Nullable="false" />
+          <Property Name="CommentLine" Type="int" Nullable="false" />
+          <Property Name="DeliveryTermsLine" Type="int" Nullable="false" />
+          <Property Name="OrderAck" Type="int" Nullable="false" />
+          <Property Name="ContractAuth" Type="int" Nullable="false" />
+          <Property Name="WRTest" Type="bit" Nullable="false" />
+          <Property Name="RndValue" Type="int" />
+          <Property Name="POStorage" Type="nvarchar" MaxLength="255" />
+          <Property Name="POPrefix" Type="nvarchar" MaxLength="10" />
+          <Property Name="OrderAckTestEmail" Type="int" />
+          <Property Name="AWKStorage" Type="nvarchar" MaxLength="255" />
+          <Property Name="PixelSize" Type="int" />
+          <Property Name="AWKTestMail" Type="bit" />
+          <Property Name="AWKUseReportEngine" Type="bit" />
+          <Property Name="OrderAckUseReportEngine" Type="bit" />
+          <Property Name="AWKEmailDirect" Type="bit" />
+          <Property Name="TestEmailServer" Type="nvarchar" MaxLength="50" />
+          <Property Name="TestEmailPort" Type="int" />
+          <Property Name="EmailServer" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailPort" Type="int" />
+          <Property Name="OrderAckEmailDirect" Type="bit" />
+        </EntityType>
+        <EntityType Name="StockSettings">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="MainWarehouse" Type="nvarchar" MaxLength="60" />
+          <Property Name="SabreStockWarehouse" Type="nvarchar" MaxLength="60" />
+          <Property Name="MainRepairablesWarehouse" Type="nvarchar" MaxLength="60" />
+          <Property Name="VTGRepairablesWarehouse" Type="nvarchar" MaxLength="60" />
+        </EntityType>
+        <EntityContainer Name="TitanModelStoreContainer">
+          <EntitySet Name="AWKDetail" EntityType="Self.AWKDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AWKHeader" EntityType="Self.AWKHeader" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AWKSettings" EntityType="Self.AWKSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AWKStockHeader" EntityType="Self.AWKStockHeader" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ContractDetails" EntityType="Self.ContractDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ContractHeader" EntityType="Self.ContractHeader" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderHeader" EntityType="Self.OrderHeader" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StockSettings" EntityType="Self.StockSettings" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TitanModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ContractDetail">
+          <Key>
+            <PropertyRef Name="ConDetID" />
+          </Key>
+          <Property Name="ConDetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConID" Type="Int32" />
+          <Property Name="SageStkID" Type="Int32" />
+          <Property Name="WONumber" Type="Int64" />
+          <Property Name="DirtyStockCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StockCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WorkRequired" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Colour" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Warranty" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="LeadTime" Type="Int32" />
+          <Property Name="DeliveryTerms" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DespatchMethod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeliveryDays" Type="Int32" />
+          <Property Name="QtyRequired" Type="Int32" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="IsSerialised" Type="Int32" />
+          <Property Name="TotalQty" Type="Int32" />
+          <Property Name="TotalQtyReceived" Type="Int32" />
+          <Property Name="SpecialInstruction" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="QuotationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateLastUpdated" Type="DateTime" Precision="3" />
+          <Property Name="AlternativePart" Type="Int32" />
+          <Property Name="APTConID" Type="Int32" />
+          <Property Name="ParentPart" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ContractHeader">
+          <Key>
+            <PropertyRef Name="ConID" />
+          </Key>
+          <Property Name="ConID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="conCusID" Type="Int64" />
+          <Property Name="ContractName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerOrderNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DeliveriesReceived" Type="Int32" />
+          <Property Name="Active" Type="Int32" />
+          <Property Name="PostalName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine1" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine2" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine3" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine4" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="County" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="PostCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DeliveryTerms" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DespatchMethod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateLastUpdated" Type="DateTime" Precision="3" />
+          <Property Name="Authorised" Type="Int32" />
+          <Property Name="Acknowledged" Type="Int32" />
+          <Property Name="CustomerOrderDate" Type="DateTime" Precision="0" />
+          <Property Name="BookingInInstructions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IsCasualty" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CusID" />
+          </Key>
+          <Property Name="CusID" Type="Int64" Nullable="false" />
+          <Property Name="CustomerAccountNumber" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ContentType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="OrderHeader">
+          <Key>
+            <PropertyRef Name="OrdID" />
+          </Key>
+          <Property Name="OrdID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConID" Type="Int32" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateReceived" Type="DateTime" Precision="7" />
+          <Property Name="CusOrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="GRN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BatchCount" Type="Int32" />
+          <Property Name="OrdIsCasualty" Type="Int32" />
+          <Property Name="OrdIsAuthorised" Type="Int32" />
+          <Property Name="OrdStatus" Type="Int32" />
+          <Property Name="SOR" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CusID" Type="Int32" />
+          <Property Name="OrdCustomerRef" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrdSpecialInstruction" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PostalName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine1" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine2" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine3" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine4" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="County" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="PostCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="DeliveryTerms" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DespatchMethod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ApprovedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Setting">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="DocumentStorage" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LogLevel" Type="Int32" Nullable="false" />
+          <Property Name="CommentLine" Type="Int32" Nullable="false" />
+          <Property Name="DeliveryTermsLine" Type="Int32" Nullable="false" />
+          <Property Name="OrderAck" Type="Int32" Nullable="false" />
+          <Property Name="ContractAuth" Type="Int32" Nullable="false" />
+          <Property Name="WRTest" Type="Boolean" Nullable="false" />
+          <Property Name="RndValue" Type="Int32" />
+          <Property Name="POStorage" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="POPrefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="OrderAckTestEmail" Type="Int32" />
+          <Property Name="AWKStorage" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PixelSize" Type="Int32" />
+          <Property Name="AWKTestMail" Type="Boolean" />
+          <Property Name="AWKUseReportEngine" Type="Boolean" />
+          <Property Name="OrderAckUseReportEngine" Type="Boolean" />
+          <Property Name="AWKEmailDirect" Type="Boolean" />
+          <Property Name="TestEmailServer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TestEmailPort" Type="Int32" />
+          <Property Name="EmailServer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailPort" Type="Int32" />
+          <Property Name="OrderAckEmailDirect" Type="Boolean" />
+        </EntityType>
+        <EntityContainer Name="TitanEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ContractDetails" EntityType="Self.ContractDetail" />
+          <EntitySet Name="ContractHeaders" EntityType="Self.ContractHeader" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="OrderHeaders" EntityType="Self.OrderHeader" />
+          <EntitySet Name="Settings" EntityType="Self.Setting" />
+          <EntitySet Name="OrderDetails" EntityType="TitanModel.OrderDetail" />
+          <EntitySet Name="AWKDetails" EntityType="TitanModel.AWKDetail" />
+          <EntitySet Name="AWKHeaders" EntityType="TitanModel.AWKHeader" />
+          <EntitySet Name="AWKSettings" EntityType="TitanModel.AWKSetting" />
+          <EntitySet Name="AWKStockHeaders" EntityType="TitanModel.AWKStockHeader" />
+          <EntitySet Name="StockSettings" EntityType="TitanModel.StockSetting" />
+        </EntityContainer>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="DetID" />
+          </Key>
+          <Property Name="DetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrdID" Type="Int32" />
+          <Property Name="SageStkID" Type="Int32" />
+          <Property Name="WONumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DirtyStockCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StockCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WorkRequired" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Colour" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Warranty" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="LeadTime" Type="Int32" />
+          <Property Name="DeliveryTerms" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DespatchMethod" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DeliveryDays" Type="Int32" />
+          <Property Name="QtyReceived" Type="Int32" />
+          <Property Name="UnitPrice" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SpecialInstruction" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SerialNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DetSODID" Type="Int64" />
+          <Property Name="QuotationNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="DateRepsReceived" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateLastUpdated" Type="DateTime" Precision="3" />
+          <Property Name="ExpectedQty" Type="Int32" />
+          <Property Name="QtyOutstanding" Type="Int32" />
+          <Property Name="ConDetID" Type="Int32" />
+          <Property Name="AssetNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="AWKDetail">
+          <Key>
+            <PropertyRef Name="AWDID" />
+          </Key>
+          <Property Name="AWDID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DID" Type="Int32" />
+          <Property Name="StkID" Type="Int32" />
+          <Property Name="StockCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RequiredQty" Type="Int32" />
+          <Property Name="Fault" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="WorkRequired" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RepairDetail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RepairCost" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ProductGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SabreStock" Type="Boolean" />
+          <Property Name="LastUpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateLastUpdated" Type="DateTime" Precision="3" />
+          <Property Name="ComAccepted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="AWKHeader">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorksOrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustOrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="CatNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SOR" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Qty" Type="Decimal" Precision="18" Scale="5" />
+          <Property Name="AWKQty" Type="Int32" />
+          <Property Name="Approved" Type="Boolean" />
+          <Property Name="ApprovedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateApproved" Type="DateTime" Precision="3" />
+          <Property Name="Authorised" Type="Boolean" />
+          <Property Name="AuthorisedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateAuthorised" Type="DateTime" Precision="3" />
+          <Property Name="TicketID" Type="Int32" />
+          <Property Name="EMailMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AWKQuoted" Type="Boolean" />
+          <Property Name="AWKQuotedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AWKQuotedDate" Type="DateTime" Precision="3" />
+          <Property Name="ContractName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SendMail" Type="Boolean" />
+          <Property Name="AWKSalesType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Canceled" Type="Boolean" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TotalPrice" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="AWKSetting">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="AWKStorage" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DatabaseStorage" Type="Boolean" Nullable="false" />
+          <Property Name="UpdatePriceBookFromDetail" Type="Boolean" Nullable="false" />
+          <Property Name="PixelSize" Type="Int32" Nullable="false" />
+          <Property Name="EmailOnApproval" Type="Boolean" Nullable="false" />
+          <Property Name="EmailAddresses" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AWKStockHeader">
+          <Key>
+            <PropertyRef Name="StkID" />
+          </Key>
+          <Property Name="StkID" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="StockCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LastUpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateLastUpdated" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="StockSetting">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="MainWarehouse" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="SabreStockWarehouse" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="MainRepairablesWarehouse" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="VTGRepairablesWarehouse" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TitanModelStoreContainer" CdmEntityContainer="TitanEntities">
+          <EntitySetMapping Name="ContractDetails">
+            <EntityTypeMapping TypeName="TitanModel.ContractDetail">
+              <MappingFragment StoreEntitySet="ContractDetails">
+                <ScalarProperty Name="ConDetID" ColumnName="ConDetID" />
+                <ScalarProperty Name="ConID" ColumnName="ConID" />
+                <ScalarProperty Name="SageStkID" ColumnName="SageStkID" />
+                <ScalarProperty Name="WONumber" ColumnName="WONumber" />
+                <ScalarProperty Name="DirtyStockCode" ColumnName="DirtyStockCode" />
+                <ScalarProperty Name="StockCode" ColumnName="StockCode" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="WorkRequired" ColumnName="WorkRequired" />
+                <ScalarProperty Name="Colour" ColumnName="Colour" />
+                <ScalarProperty Name="Warranty" ColumnName="Warranty" />
+                <ScalarProperty Name="LeadTime" ColumnName="LeadTime" />
+                <ScalarProperty Name="DeliveryTerms" ColumnName="DeliveryTerms" />
+                <ScalarProperty Name="DespatchMethod" ColumnName="DespatchMethod" />
+                <ScalarProperty Name="DeliveryDays" ColumnName="DeliveryDays" />
+                <ScalarProperty Name="QtyRequired" ColumnName="QtyRequired" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="IsSerialised" ColumnName="IsSerialised" />
+                <ScalarProperty Name="TotalQty" ColumnName="TotalQty" />
+                <ScalarProperty Name="TotalQtyReceived" ColumnName="TotalQtyReceived" />
+                <ScalarProperty Name="SpecialInstruction" ColumnName="SpecialInstruction" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="AlternativePart" ColumnName="AlternativePart" />
+                <ScalarProperty Name="APTConID" ColumnName="APTConID" />
+                <ScalarProperty Name="ParentPart" ColumnName="ParentPart" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContractHeaders">
+            <EntityTypeMapping TypeName="TitanModel.ContractHeader">
+              <MappingFragment StoreEntitySet="ContractHeader">
+                <ScalarProperty Name="ConID" ColumnName="ConID" />
+                <ScalarProperty Name="conCusID" ColumnName="conCusID" />
+                <ScalarProperty Name="ContractName" ColumnName="ContractName" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerOrderNumber" ColumnName="CustomerOrderNumber" />
+                <ScalarProperty Name="DeliveriesReceived" ColumnName="DeliveriesReceived" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="PostalName" ColumnName="PostalName" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="AddressLine3" ColumnName="AddressLine3" />
+                <ScalarProperty Name="AddressLine4" ColumnName="AddressLine4" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="DeliveryTerms" ColumnName="DeliveryTerms" />
+                <ScalarProperty Name="DespatchMethod" ColumnName="DespatchMethod" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="Authorised" ColumnName="Authorised" />
+                <ScalarProperty Name="Acknowledged" ColumnName="Acknowledged" />
+                <ScalarProperty Name="CustomerOrderDate" ColumnName="CustomerOrderDate" />
+                <ScalarProperty Name="BookingInInstructions" ColumnName="BookingInInstructions" />
+                <ScalarProperty Name="IsCasualty" ColumnName="IsCasualty" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="TitanModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="CusID" ColumnName="CusID" />
+                <ScalarProperty Name="CustomerAccountNumber" ColumnName="CustomerAccountNumber" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderHeaders">
+            <EntityTypeMapping TypeName="TitanModel.OrderHeader">
+              <MappingFragment StoreEntitySet="OrderHeader">
+                <ScalarProperty Name="OrdID" ColumnName="OrdID" />
+                <ScalarProperty Name="ConID" ColumnName="ConID" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="DateReceived" ColumnName="DateReceived" />
+                <ScalarProperty Name="CusOrderNumber" ColumnName="CusOrderNumber" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="GRN" ColumnName="GRN" />
+                <ScalarProperty Name="BatchCount" ColumnName="BatchCount" />
+                <ScalarProperty Name="OrdIsCasualty" ColumnName="OrdIsCasualty" />
+                <ScalarProperty Name="OrdIsAuthorised" ColumnName="OrdIsAuthorised" />
+                <ScalarProperty Name="OrdStatus" ColumnName="OrdStatus" />
+                <ScalarProperty Name="SOR" ColumnName="SOR" />
+                <ScalarProperty Name="CusID" ColumnName="CusID" />
+                <ScalarProperty Name="OrdCustomerRef" ColumnName="OrdCustomerRef" />
+                <ScalarProperty Name="OrdSpecialInstruction" ColumnName="OrdSpecialInstruction" />
+                <ScalarProperty Name="PostalName" ColumnName="PostalName" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="AddressLine3" ColumnName="AddressLine3" />
+                <ScalarProperty Name="AddressLine4" ColumnName="AddressLine4" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="DeliveryTerms" ColumnName="DeliveryTerms" />
+                <ScalarProperty Name="DespatchMethod" ColumnName="DespatchMethod" />
+                <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Settings">
+            <EntityTypeMapping TypeName="TitanModel.Setting">
+              <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DocumentStorage" ColumnName="DocumentStorage" />
+                <ScalarProperty Name="LogLevel" ColumnName="LogLevel" />
+                <ScalarProperty Name="CommentLine" ColumnName="CommentLine" />
+                <ScalarProperty Name="DeliveryTermsLine" ColumnName="DeliveryTermsLine" />
+                <ScalarProperty Name="OrderAck" ColumnName="OrderAck" />
+                <ScalarProperty Name="ContractAuth" ColumnName="ContractAuth" />
+                <ScalarProperty Name="WRTest" ColumnName="WRTest" />
+                <ScalarProperty Name="RndValue" ColumnName="RndValue" />
+                <ScalarProperty Name="POStorage" ColumnName="POStorage" />
+                <ScalarProperty Name="POPrefix" ColumnName="POPrefix" />
+                <ScalarProperty Name="OrderAckTestEmail" ColumnName="OrderAckTestEmail" />
+                <ScalarProperty Name="AWKStorage" ColumnName="AWKStorage" />
+                <ScalarProperty Name="PixelSize" ColumnName="PixelSize" />
+                <ScalarProperty Name="AWKTestMail" ColumnName="AWKTestMail" />
+                <ScalarProperty Name="AWKUseReportEngine" ColumnName="AWKUseReportEngine" />
+                <ScalarProperty Name="OrderAckUseReportEngine" ColumnName="OrderAckUseReportEngine" />
+                <ScalarProperty Name="AWKEmailDirect" ColumnName="AWKEmailDirect" />
+                <ScalarProperty Name="TestEmailServer" ColumnName="TestEmailServer" />
+                <ScalarProperty Name="TestEmailPort" ColumnName="TestEmailPort" />
+                <ScalarProperty Name="EmailServer" ColumnName="EmailServer" />
+                <ScalarProperty Name="EmailPort" ColumnName="EmailPort" />
+                <ScalarProperty Name="OrderAckEmailDirect" ColumnName="OrderAckEmailDirect" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="TitanModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetails">
+                <ScalarProperty Name="AssetNumber" ColumnName="AssetNumber" />
+                <ScalarProperty Name="ConDetID" ColumnName="ConDetID" />
+                <ScalarProperty Name="QtyOutstanding" ColumnName="QtyOutstanding" />
+                <ScalarProperty Name="ExpectedQty" ColumnName="ExpectedQty" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />
+                <ScalarProperty Name="DateRepsReceived" ColumnName="DateRepsReceived" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="QuotationNumber" ColumnName="QuotationNumber" />
+                <ScalarProperty Name="DetSODID" ColumnName="DetSODID" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="SpecialInstruction" ColumnName="SpecialInstruction" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="QtyReceived" ColumnName="QtyReceived" />
+                <ScalarProperty Name="DeliveryDays" ColumnName="DeliveryDays" />
+                <ScalarProperty Name="DespatchMethod" ColumnName="DespatchMethod" />
+                <ScalarProperty Name="DeliveryTerms" ColumnName="DeliveryTerms" />
+                <ScalarProperty Name="LeadTime" ColumnName="LeadTime" />
+                <ScalarProperty Name="Warranty" ColumnName="Warranty" />
+                <ScalarProperty Name="Colour" ColumnName="Colour" />
+                <ScalarProperty Name="WorkRequired" ColumnName="WorkRequired" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StockCode" ColumnName="StockCode" />
+                <ScalarProperty Name="DirtyStockCode" ColumnName="DirtyStockCode" />
+                <ScalarProperty Name="WONumber" ColumnName="WONumber" />
+                <ScalarProperty Name="SageStkID" ColumnName="SageStkID" />
+                <ScalarProperty Name="OrdID" ColumnName="OrdID" />
+                <ScalarProperty Name="DetID" ColumnName="DetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AWKDetails">
+            <EntityTypeMapping TypeName="TitanModel.AWKDetail">
+              <MappingFragment StoreEntitySet="AWKDetail">
+                <ScalarProperty Name="ComAccepted" ColumnName="ComAccepted" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />
+                <ScalarProperty Name="SabreStock" ColumnName="SabreStock" />
+                <ScalarProperty Name="ProductGroup" ColumnName="ProductGroup" />
+                <ScalarProperty Name="RepairCost" ColumnName="RepairCost" />
+                <ScalarProperty Name="RepairDetail" ColumnName="RepairDetail" />
+                <ScalarProperty Name="WorkRequired" ColumnName="WorkRequired" />
+                <ScalarProperty Name="Fault" ColumnName="Fault" />
+                <ScalarProperty Name="RequiredQty" ColumnName="RequiredQty" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StockCode" ColumnName="StockCode" />
+                <ScalarProperty Name="StkID" ColumnName="StkID" />
+                <ScalarProperty Name="DID" ColumnName="DID" />
+                <ScalarProperty Name="AWDID" ColumnName="AWDID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AWKHeaders">
+            <EntityTypeMapping TypeName="TitanModel.AWKHeader">
+              <MappingFragment StoreEntitySet="AWKHeader">
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Canceled" ColumnName="Canceled" />
+                <ScalarProperty Name="AWKSalesType" ColumnName="AWKSalesType" />
+                <ScalarProperty Name="SendMail" ColumnName="SendMail" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="ContractName" ColumnName="ContractName" />
+                <ScalarProperty Name="AWKQuotedDate" ColumnName="AWKQuotedDate" />
+                <ScalarProperty Name="AWKQuotedBy" ColumnName="AWKQuotedBy" />
+                <ScalarProperty Name="AWKQuoted" ColumnName="AWKQuoted" />
+                <ScalarProperty Name="EMailMessage" ColumnName="EMailMessage" />
+                <ScalarProperty Name="TicketID" ColumnName="TicketID" />
+                <ScalarProperty Name="DateAuthorised" ColumnName="DateAuthorised" />
+                <ScalarProperty Name="AuthorisedBy" ColumnName="AuthorisedBy" />
+                <ScalarProperty Name="Authorised" ColumnName="Authorised" />
+                <ScalarProperty Name="DateApproved" ColumnName="DateApproved" />
+                <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+                <ScalarProperty Name="Approved" ColumnName="Approved" />
+                <ScalarProperty Name="AWKQty" ColumnName="AWKQty" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="SOR" ColumnName="SOR" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CatNo" ColumnName="CatNo" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="CustOrderNumber" ColumnName="CustOrderNumber" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="WorksOrderNumber" ColumnName="WorksOrderNumber" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AWKSettings">
+            <EntityTypeMapping TypeName="TitanModel.AWKSetting">
+              <MappingFragment StoreEntitySet="AWKSettings">
+                <ScalarProperty Name="EmailAddresses" ColumnName="EmailAddresses" />
+                <ScalarProperty Name="EmailOnApproval" ColumnName="EmailOnApproval" />
+                <ScalarProperty Name="PixelSize" ColumnName="PixelSize" />
+                <ScalarProperty Name="UpdatePriceBookFromDetail" ColumnName="UpdatePriceBookFromDetail" />
+                <ScalarProperty Name="DatabaseStorage" ColumnName="DatabaseStorage" />
+                <ScalarProperty Name="AWKStorage" ColumnName="AWKStorage" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AWKStockHeaders">
+            <EntityTypeMapping TypeName="TitanModel.AWKStockHeader">
+              <MappingFragment StoreEntitySet="AWKStockHeader">
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="LastUpdatedBy" ColumnName="LastUpdatedBy" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="StockCode" ColumnName="StockCode" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StkID" ColumnName="StkID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StockSettings">
+            <EntityTypeMapping TypeName="TitanModel.StockSetting">
+              <MappingFragment StoreEntitySet="StockSettings">
+                <ScalarProperty Name="VTGRepairablesWarehouse" ColumnName="VTGRepairablesWarehouse" />
+                <ScalarProperty Name="MainRepairablesWarehouse" ColumnName="MainRepairablesWarehouse" />
+                <ScalarProperty Name="SabreStockWarehouse" ColumnName="SabreStockWarehouse" />
+                <ScalarProperty Name="MainWarehouse" ColumnName="MainWarehouse" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

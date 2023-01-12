@@ -1,0 +1,101 @@
+﻿@media screen {
+    /*!
+    * HTML-Sheets-of-Paper (https://github.com/delight-im/HTML-Sheets-of-Paper)
+    * Copyright (c) delight.im (https://www.delight.im/)
+    * Licensed under the MIT License (https://opensource.org/licenses/MIT)
+    */
+    body {
+        /* Reflect the paper width in the screen rendering (must match size from @page rule) */
+        width: 21cm;
+        /* Reflect the paper height in the screen rendering (must match size from @page rule) */
+        min-height: 29.7cm;
+        /* Reflect the actual page margin/padding on paper in the screen rendering (must match margin from @page rule) */
+        padding-left: 2cm;
+        padding-top: 2cm;
+        padding-right: 2cm;
+        padding-bottom: 2cm;
+        margin: auto;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        box-shadow: 0px 0px 10px grey;
+    }
+
+}
+
+@media print {
+    a::after {
+        content: ", on page " target-counter(attr(href), page)
+    }
+
+    table {
+        /* page-break-inside: avoid; */
+        orphans: 4;
+        widows: 4;
+    }
+}
+
+@media all {
+    th, td, tr, tbody, thead, tfoot {
+        border: inherit;
+    }
+
+    .cellpadding-10 th, .cellpadding-10 td {
+        padding: 10px;
+    }
+
+    .cellpadding-5 th, .cellpadding-5 td {
+        padding: 5px;
+    }
+
+    .breaktext {
+        hyphens: none;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+}
+
+@page {
+    size: a4;
+    --header-footer-size: 2.5cm;
+    margin: 2cm;
+    margin-top: var(--header-footer-size);
+    margin-bottom: var(--header-footer-size);
+
+    @top-left {
+        content: "";
+        width: 224.719px;
+        height: 50px;
+        background-image: url("file:///{{{TemplatesDir}}}/sabre-rail-logo.png");
+        background-size: auto 50px;
+        background-repeat: no-repeat;
+        padding-top: 1em;
+    }
+
+    @top-right {
+        content: "Sabre Rail Services Ltd, Grindon Way, Heighington Lane Business Park, Newton Aycliffe, Co.Durham, DL5 6SH | T +44 (0) 1325 300505 customerservices@sabrerail.com";
+        font-size: small;
+        white-space: normal;
+        padding-top: 1em;
+    }
+
+    @bottom-left {
+        content: "";
+        width: 200px;
+        height: 46.47px;
+        background-image: url("file:///{{{TemplatesDir}}}/QALogos.png");
+        background-size: 200px auto;
+        background-repeat: no-repeat;
+        margin-top: 2em;
+    }
+
+    @bottom-center {
+        content: "Dynamic Vehicle Components. MAINTAINED. IMPROVED. DELIVERED";
+        font-size: small;
+        white-space: normal;
+        padding-bottom: 1em;
+    }
+
+    @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+    }
+}

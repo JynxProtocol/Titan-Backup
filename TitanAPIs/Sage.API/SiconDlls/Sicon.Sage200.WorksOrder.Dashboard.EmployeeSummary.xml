@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard CurrencyCulture="en-GB">
+  <Title Text="Employee Summary" />
+  <DataSources>
+    <SqlDataSource Name="SQL Data Source 1" ComponentName="dashboardSqlDataSource1">
+      <Connection Name="Sage 200 Database" ConnectionString="data source=SAGE2002020-SP;initial catalog=Sage2002017" />
+      <Query Type="StoredProcQuery" Name="sp_EmployeeActiveTimes">
+        <Parameter Name="@from" Type="DevExpress.DataAccess.Expression">(System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)([Parameters.From])</Parameter>
+        <Parameter Name="@to" Type="DevExpress.DataAccess.Expression">(System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)([Parameters.To])</Parameter>
+        <ProcName>sp_EmployeeActiveTimes</ProcName>
+      </Query>
+      <ResultSchema>
+        <DataSet Name="SQL Data Source 1">
+          <View Name="sp_EmployeeActiveTimes">
+            <Field Name="Resource Reference" Type="String" />
+            <Field Name="Team Name" Type="String" />
+            <Field Name="Worked Hours" Type="Decimal" />
+            <Field Name="Expected Work Hours" Type="Decimal" />
+            <Field Name="Downtime Hours" Type="Decimal" />
+            <Field Name="Available Hours" Type="Decimal" />
+          </View>
+        </DataSet>
+      </ResultSchema>
+      <ConnectionOptions CloseConnection="true" />
+      <CalculatedFields>
+        <CalculatedField Name="Remaining Hours" Expression="[Available Hours] - [Downtime Hours] - [Expected Work Hours] - [Worked Hours]" DataType="Auto" DataMember="sp_EmployeeActiveTimes" />
+      </CalculatedFields>
+    </SqlDataSource>
+  </DataSources>
+  <Parameters>
+    <Parameter Name="From" Type="System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" Value="2021-03-11T00:00:00+00:00" Description="From Date" />
+    <Parameter Name="To" Type="System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" Value="2021-03-11T00:00:00+00:00" Description="To Date" />
+  </Parameters>
+  <Items>
+    <Grid ComponentName="gridDashboardItem1" Name="Employee Summary Grid" DataSource="dashboardSqlDataSource1" DataMember="sp_EmployeeActiveTimes">
+      <DataItems>
+        <Dimension DataMember="Team Name" DefaultId="DataItem0" />
+        <Measure DataMember="Available Hours" DefaultId="DataItem2">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Downtime Hours" DefaultId="DataItem3">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Expected Work Hours" DefaultId="DataItem4">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Worked Hours" DefaultId="DataItem5">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Remaining Hours" DefaultId="DataItem6">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Dimension DataMember="Resource Reference" DefaultId="DataItem1" />
+      </DataItems>
+      <GridColumns>
+        <GridDimensionColumn Name="Employee Name">
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridDimensionColumn>
+          <Dimension DefaultId="DataItem0" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Available Hours">
+          <Measure DefaultId="DataItem2" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Expected Work Hours">
+          <Measure DefaultId="DataItem4" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Worked Hours">
+          <Measure DefaultId="DataItem5" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Downtime Hours">
+          <Measure DefaultId="DataItem3" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Remaining Hours">
+          <Measure DefaultId="DataItem6" />
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions />
+    </Grid>
+    <Chart ComponentName="chartDashboardItem1" Name="Employees Chart" DataSource="dashboardSqlDataSource1" DataMember="sp_EmployeeActiveTimes">
+      <DataItems>
+        <Dimension DataMember="Resource Reference" DefaultId="DataItem0" />
+        <Measure DataMember="Available Hours" DefaultId="DataItem1">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Expected Work Hours" DefaultId="DataItem2">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Worked Hours" DefaultId="DataItem3">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Downtime Hours" DefaultId="DataItem4">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Remaining Hours" DefaultId="DataItem5">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem0" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <AxisY Title="Hours" />
+          <Series>
+            <Simple Name="Available Hours">
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple Name="Expected Work Hours">
+              <Value DefaultId="DataItem2" />
+            </Simple>
+            <Simple Name="Worked Hours">
+              <Value DefaultId="DataItem3" />
+            </Simple>
+            <Simple Name="Downtime Hours">
+              <Value DefaultId="DataItem4" />
+            </Simple>
+            <Simple Name="Remaining Hours">
+              <Value DefaultId="DataItem5" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <ComboBox ComponentName="comboBoxDashboardItem1" Name="Team" DataSource="dashboardSqlDataSource1" DataMember="sp_EmployeeActiveTimes" ComboBoxType="Checked">
+      <DataItems>
+        <Dimension DataMember="Team Name" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ComboBox>
+    <Chart ComponentName="chartDashboardItem2" Name="Team Chart" DataSource="dashboardSqlDataSource1" DataMember="sp_EmployeeActiveTimes">
+      <DataItems>
+        <Dimension DataMember="Team Name" DefaultId="DataItem0" />
+        <Measure DataMember="Available Hours" DefaultId="DataItem1">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Expected Work Hours" DefaultId="DataItem2">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Worked Hours" DefaultId="DataItem3">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Downtime Hours" DefaultId="DataItem4">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="Remaining Hours" DefaultId="DataItem5">
+          <NumericFormat FormatType="Number" Precision="5" Unit="Ones" />
+        </Measure>
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem0" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <AxisY Title="Hours" />
+          <Series>
+            <Simple Name="Available Hours">
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple Name="Expected Work Hours">
+              <Value DefaultId="DataItem2" />
+            </Simple>
+            <Simple Name="Worked Hours">
+              <Value DefaultId="DataItem3" />
+            </Simple>
+            <Simple Name="Downtime Hours">
+              <Value DefaultId="DataItem4" />
+            </Simple>
+            <Simple Name="Remaining Hours">
+              <Value DefaultId="DataItem5" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutGroup Orientation="Vertical" Weight="49.973725696269049">
+        <LayoutItem DashboardItem="comboBoxDashboardItem1" Weight="5.1935788479697829" />
+        <LayoutItem DashboardItem="gridDashboardItem1" Weight="94.806421152030211" />
+      </LayoutGroup>
+      <LayoutGroup Orientation="Vertical" Weight="50.026274303730951">
+        <LayoutItem DashboardItem="chartDashboardItem2" Weight="36.449480642115205" />
+        <LayoutItem DashboardItem="chartDashboardItem1" Weight="63.550519357884795" />
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

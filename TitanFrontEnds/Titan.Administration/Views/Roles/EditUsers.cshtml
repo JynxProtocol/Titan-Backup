@@ -1,0 +1,46 @@
+﻿@using TitanAPIAdminConnection
+@model ViewRoleUsers
+
+@{
+    ViewBag.Title = "Edit Users";
+}
+
+<h2>Edit Users</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+    <table class="table table-bordered table-repsonsive table-hover table-striped">
+        <thead>
+            <tr>
+                <th>
+                    User
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var UserKVP in Model.Users)
+            {
+                <tr>
+                    <td>
+                        @UserKVP.Key
+                    </td>
+                    <td>
+                        @*<input class="check-box form-control" type="checkbox" name="@("Model.Roles[\"" + @UserKVP.Key + "\"]")" @(UserKVP.Value ? "checked=checked" : "") />*@
+                        @Html.CheckBox(string.Format("Users[{0}]", UserKVP.Key), UserKVP.Value, new { @class = "check-box form-control" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Submit" class="btn btn-warning" />
+            @Html.ActionLink("Back to List", nameof(RolesController.Index), new { }, new { @class = "btn btn-success" })
+        </div>
+    </div>
+}

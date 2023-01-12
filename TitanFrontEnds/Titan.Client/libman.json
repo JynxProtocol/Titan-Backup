@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jqueryui@1.13.2",
+      "destination": "wwwroot/lib/jquery-ui/"
+    },
+    {
+      "library": "bootstrap@5.2.2",
+      "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "library": "datatables.net-bs5@1.12.1",
+      "destination": "wwwroot/lib/datatables.net-bs5/"
+    },
+    {
+      "library": "datatables.net@2.1.1",
+      "destination": "wwwroot/lib/datatables.net/"
+    }
+  ]
+}

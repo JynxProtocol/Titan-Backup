@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\StockTake\Confirm.cshtml" />
+    <Content Remove="Views\StockTake\Create.cshtml" />
+    <Content Remove="Views\StockTake\List.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <OpenApiReference Include="OpenAPIs\swagger.json" CodeGenerator="NSwagCSharp" Namespace="TitanAuthConnection" ClassName="TitanAuth">
+      <SourceUri>https://localhost:44338/swagger/v1/swagger.json</SourceUri>
+		<Options>/UseBaseUrl:false /arrayType:"System.Collections.Generic.List" /dictionaryType:"System.Collections.Generic.Dictionary" /arrayBaseType:"System.Collections.Generic.List" /dictionaryBaseType:"System.Collections.Generic.Dictionary" /dateType:"System.DateTime" /dateTimeType:"System.DateTime" /AdditionalNamespaceUsages:Titan.OpenAPIs /GenerateExceptionClasses:false</Options>
+	</OpenApiReference>
+    <OpenApiReference Include="OpenAPIs\swagger1.json" CodeGenerator="NSwagCSharp" Namespace="TitanAPIConnection" ClassName="TitanAPI">
+      <SourceUri>http://localhost:25458/swagger/v1/swagger.json</SourceUri>
+		<Options>/UseBaseUrl:false /arrayType:"System.Collections.Generic.List" /dictionaryType:"System.Collections.Generic.Dictionary" /arrayBaseType:"System.Collections.Generic.List" /dictionaryBaseType:"System.Collections.Generic.Dictionary" /dateType:"System.DateTime" /dateTimeType:"System.DateTime" /AdditionalNamespaceUsages:Titan.OpenAPIs /GenerateExceptionClasses:false</Options>
+	</OpenApiReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HtmlSanitizer" Version="7.0.473" />
+    <PackageReference Include="jQuery" Version="3.6.0" />
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NSwag.ApiDescription.Client" Version="13.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="5.7.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Shared\ErrorPage.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

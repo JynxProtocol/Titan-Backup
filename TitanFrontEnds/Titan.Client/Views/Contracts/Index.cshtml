@@ -1,0 +1,151 @@
+﻿@model List<ContractOverview>
+
+@{
+    ViewBag.Title = "Contracts";
+}
+
+<h2>Open Contracts</h2>
+
+<hr />
+<div class="mb-3">
+    @Html.ActionLink(
+        "Create new contract",
+        nameof(ContractsController.CreateContract),
+        new {},
+        new { @class = "btn btn-success" }
+    )
+
+    @if (await User.UserHasPermission("BalanceContracts"))
+    {
+        @using (Html.BeginForm(
+            nameof(ContractsController.BalanceFromSORs),
+            typeof(ContractsController).ControllerName(),
+            FormMethod.Post, 
+            new { style = "display:inline; float:right" }))
+        {
+            <input type="submit" value="Balance contracts from SORs" class="btn btn-danger" />
+        }
+    }
+</div>
+<hr />
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <thead>
+        <tr>
+            <th>Contract Number</th>
+            <th>Contract Name</th>
+            <th>Customer</th>
+            <th>Customer Order Number</th>
+            <th>Contract Value</th>
+            <th>Remaining Contract Value</th>
+            <th>Date Created</th>
+            <th>Edit</th>
+            <th>Acknowledge</th>
+            <th>Deactivate</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Contract in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(Model => Contract.ConID)</td>
+                <td>@Html.DisplayFor(Model => Contract.ContractName)</td>
+                <td>@Html.DisplayFor(Model => Contract.CustomerName)</td>
+                <td>@Html.DisplayFor(Model => Contract.CustomerOrderNumber)</td>
+                <td>@Contract.TotalValue.ToString("C")</td>
+                <td>@Contract.RemainingValue.ToString("C")</td>
+                <td>@Html.DisplayFor(Model => Contract.DateCreated)</td>
+
+                <td>
+                    @Html.ActionLink(
+                        "Edit",
+                        nameof(ContractsController.EditContract),
+                        new { ConID = Contract.ConID },
+                        new { @class = "btn btn-success" }
+                    )
+                </td>
+
+                <td>
+                    @using (Html.BeginForm(
+                        nameof(ContractsController.AcknowledgeContract),
+                        typeof(ContractsController).ControllerName(),
+                        new { Contract.ConID },
+                        FormMethod.Post))
+                    {
+                        @if (Contract.Acknowledged == 0)
+                        {
+                            <button class="btn btn-success">Acknowledge Contract</button>
+                        }
+                        else 
+                        {
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" 
+                                data-bs-target="#Acknowledge_@Contract.ConID">
+                                Reacknowledge Contract
+                            </button>
+
+                            <div class="modal" tabindex="-1" id="Acknowledge_@Contract.ConID">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Reacknowledge Order</h5>
+                                            <button type="button" class="btn-close" 
+                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Please confirm order re-acknowledgement</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" 
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button class="btn btn-danger">Confirm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </td>
+
+                <td>
+                    @using (Html.BeginForm(
+                        nameof(ContractsController.DeactivateContract),
+                        typeof(ContractsController).ControllerName(),
+                        new { Contract.ConID }, 
+                        FormMethod.Post))
+                    {
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" 
+                            data-bs-target="#Deactivate_@Contract.ConID">
+                            Deactivate Contract
+                        </button>
+
+                        <div class="modal" tabindex="-1" id="Deactivate_@Contract.ConID">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Deactivate Contract</h5>
+                                        <button type="button" class="btn-close" 
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you wish to deactivate this contract?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" 
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button class="btn btn-danger">Confirm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $('#sortTable').DataTable({
+        "order": [[0, "desc"]]
+    });
+</script>

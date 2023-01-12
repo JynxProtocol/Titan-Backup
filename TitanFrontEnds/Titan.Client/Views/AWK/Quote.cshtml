@@ -1,0 +1,207 @@
+﻿@model AWHeader
+
+@{
+    ViewBag.Title = "Quote AWK";
+}
+
+<h2>Quote AWK</h2>
+
+@using (Html.BeginForm(
+    nameof(AWKController.Quote), 
+    typeof(AWKController).ControllerName(),
+    new { AWN = Model.Id },
+    FormMethod.Post))
+{
+    <div class="input-group mb-3">
+        <span class="input-group-text">@Html.LabelFor(Model => Model.WorksOrderNumber)</span>
+    
+        @Html.EditorFor(Model => Model.WorksOrderNumber,
+            new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Customer</span>
+    
+        @Html.EditorFor(Model => Model.AccountName,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">AWK Contact</span>
+    
+        @Html.EditorFor(Model => Model.ContractName,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">AWK Contact Email</span>
+    
+        @Html.EditorFor(Model => Model.EMail,
+            new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Customer Order Number</span>
+    
+        @Html.EditorFor(Model => Model.CusOrderNumber,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">Sabre Order Number</span>
+    
+        @Html.EditorFor(Model => Model.LinkedTo,
+            new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+    </div>
+        
+    <div class="input-group mb-3">
+        <span class="input-group-text">Cat Number</span>
+
+        @Html.EditorFor(Model => Model.BomReference,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Description</span>
+
+        @Html.EditorFor(Model => Model.BomDescription,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+    
+    <div class="input-group mb-3">
+        <span class="input-group-text">Quantity</span>
+
+        @Html.EditorFor(Model => Model.QtyRequired,
+            new { htmlAttributes = new { @class = "form-control", disabled = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">AWK Quantity</span>
+
+        @Html.EditorFor(Model => Model.NumberOfConsolidatedAffectedItems,
+            new { htmlAttributes = new { @class = "form-control", @readonly = "" } })
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Sales Type</span>
+
+        @Html.DropDownListFor(
+            Model => Model.AwkSalesType,
+            (IEnumerable<SelectListItem>)ViewBag.SalesTypes,
+            new { @class = "form-control" }
+        )
+    </div>
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Send email?</span>
+
+        @Html.DropDownListFor(
+            Model => Model.SendMail,
+            LookupHelpers.YesNoFromBool,
+            new { @class = "form-control send-email-hide" }
+        )
+    </div>
+
+    <div class="input-group mb-3 email-message">
+        @Html.TextAreaFor(
+            model => model.EmailMessage,
+            new { 
+                cols = "100", 
+                rows = "8", 
+                style = "width:100%;",
+                @class = "form-control",
+                placeholder = "Email message"
+            }
+        )
+    </div>
+    @Html.ValidationMessageFor(model => model.EmailMessage)
+
+    <hr />
+    <h4>Items</h4>
+
+    <table class="table table-bordered table-repsonsive table-hover table-striped" 
+        id="sortTable">
+        <thead>
+            <tr>
+                <th>StockCode</th>
+                <th>Description</th>
+                <th>Required Qty</th>
+                <th>Free Stock</th>
+                <th>Free Sabre Stock</th>
+                <th>Quantity on Order</th>
+                <th>Sabre Stock</th>
+                <th>Fault</th>
+                <th>Work Required</th>
+                <th>Repair Detail</th>
+                <th>Unit Price</th>
+                <th>Quote Price</th>
+                <th>Commercialy Accepted</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var Item in Model.AwDetails)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(Model => Item.StockCode)</td>
+                    <td>@Html.DisplayFor(Model => Item.Description)</td>
+                    <td>@Html.DisplayFor(Model => Item.RequiredQty)</td>
+                    <td>@Html.DisplayFor(Model => Item.FreeStock)</td>
+                    <td>@Html.DisplayFor(Model => Item.FreeSabreStock)</td>
+                    <td>@Html.DisplayFor(Model => Item.QtyonOrder)</td>
+                    <td>
+                        @Html.DropDownListFor(
+                            Model => Item.SabreStock,
+                            LookupHelpers.YesNoFromBool,
+                            new { @class = "form-control", disabled = "" }
+                        )
+                    </td>
+                    <td>@Html.DisplayFor(Model => Item.Fault)</td>
+                    <td>@Html.DisplayFor(Model => Item.WorkRequired)</td>
+                    <td>@Html.DisplayFor(Model => Item.RepairDetail)</td>
+                    <td>@Html.DisplayFor(Model => Item.UnitPrice)</td>
+                    <td>@Html.DisplayFor(Model => Item.RepairCost)</td>
+                    <td>
+                        @Html.DropDownListFor(
+                            Model => Item.ComAccepted,
+                            LookupHelpers.YesNoFromBool,
+                            new { @class = "form-control", disabled = "" }
+                        )
+                    </td>
+
+                    <td>
+                        @Html.ActionLink(
+                            "Edit", 
+                            nameof(AWKController.EditDetail),
+                            new { 
+                                AWN = Model.Id, 
+                                AWDID = Item.Awdid, 
+                                ReturnUrl = Context.CurrentUrl() 
+                            },
+                            new { @class = "btn btn-success" }
+                        )
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <hr />
+    <div>
+        @Html.ActionLink(
+            "Edit AWK", 
+            nameof(AWKController.Approve),
+            new { AWN = Model.Id },
+            new { @class = "btn btn-success" }
+        )
+
+        <input type="submit" class="btn btn-warning" value="Generate AWK Quote" />
+    </div>
+}
+
+<script>
+    $('#sortTable').DataTable({
+        "order": [[2, "desc"]]
+    });
+</script>

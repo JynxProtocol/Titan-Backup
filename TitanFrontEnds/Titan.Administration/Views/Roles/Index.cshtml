@@ -1,0 +1,94 @@
+﻿@using TitanAPIAdminConnection
+@model IEnumerable<ViewRole>
+
+@{
+    ViewBag.Title = "Roles List";
+}
+
+<p>
+    @Html.ActionLink("Create New", nameof(RolesController.Create), new { }, new { @class = "btn btn-success" })
+</p>
+<hr />
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleName)
+            </th>
+            @foreach (string featureArea in (from kvp in Model.FirstOrDefault().FeatureAreas select kvp.Key))
+            {
+                <th>
+                    @featureArea
+                </th>
+            }
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoleName)
+                    </td>
+                    @foreach (var kvp in item.FeatureAreas)
+                    {
+
+                        @if (kvp.Value == Trinary.None)
+                        {
+                            <td>
+                                <p style="visibility: hidden; display: none;">2</p>
+                                <input class="check-box form-control unchecked" disabled="disabled" type="checkbox">
+                            </td>
+                        }
+                        else if (kvp.Value == Trinary.All)
+                        {
+                            <td>
+                                <p style="visibility: hidden; display: none;">0</p>
+                                <input class="check-box form-control checked" disabled="disabled" type="checkbox">
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <p style="visibility: hidden; display: none;">1</p>
+                                <input class="check-box form-control indeterminate" disabled="disabled" type="checkbox">
+                            </td>
+                        }
+                    }
+                    <td>
+                        @Html.ActionLink("Details", nameof(RolesController.Details), new { id = item.Id }, new { @class = "btn btn-success" })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", nameof(RolesController.Edit), new { id = item.Id }, new { @class = "btn btn-warning" })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", nameof(RolesController.Delete), new { id = item.Id }, new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<script>
+    $(".unchecked").prop("checked", false);
+    $(".checked").prop("checked", true);
+    $(".indeterminate").prop("indeterminate", true);
+    $('#sortTable').DataTable();
+</script>

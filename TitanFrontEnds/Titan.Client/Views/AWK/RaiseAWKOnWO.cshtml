@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Raise AWK On WO";
+}
+
+<div class="card">
+    <div class="card-body">
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <p>
+                            <img src="~/content/images/sabre-rail-logo.png"
+                                 style="width: 250px" />
+                        </p>
+                        <p>
+                            <img src="~/content/images/Train_Logo.png" 
+                                style="padding-right: 1em;" />
+                        </p>
+                    </td>
+                    <td>
+                        <h2>Raise AWK</h2>
+
+                        @using (Html.BeginForm(nameof(AWKController.Raise),
+                            typeof(AWKController).ControllerName(), FormMethod.Post))
+                        {
+                            <div class="input-group">
+                                <span class="input-group-text">WO Number</span>
+                                <input type="text" name="WO" id="WO" 
+                                    class="form-control wo-autocomplete" data-callback="GetWONumber"
+                                    placeholder="Enter a WO Number" />
+
+                                <button class="btn btn-primary" type="submit">Raise AWK</button>
+                            </div>
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="af97065708bf4a83a606b50e77c8362f" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="SABRE_RAIL_LIVEModel.BinItem" Width="1.5" PointX="3" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SABRE_RAIL_LIVEModel.InternalArea" Width="1.5" PointX="5.75" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SABRE_RAIL_LIVEModel.StockItem" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SABRE_RAIL_LIVEModel.Warehouse" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SABRE_RAIL_LIVEModel.WarehouseItem" Width="1.5" PointX="6" PointY="11.125" IsExpanded="true" />
+        <AssociationConnector Association="SABRE_RAIL_LIVEModel.FK_BinItem_StockItem" ManuallyRouted="false" />
+        <AssociationConnector Association="SABRE_RAIL_LIVEModel.FK_BinItem_WarehouseItem" ManuallyRouted="false" />
+        <AssociationConnector Association="SABRE_RAIL_LIVEModel.FK_WarehouseItem_StockItem" ManuallyRouted="false" />
+        <AssociationConnector Association="SABRE_RAIL_LIVEModel.FK_WarehouseItem_Warehouse" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

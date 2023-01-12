@@ -1,0 +1,826 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SABRE_RAIL_LIVEModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BinItem">
+          <Key>
+            <PropertyRef Name="BinItemID" />
+          </Key>
+          <Property Name="BinItemID" Type="bigint" Nullable="false" />
+          <Property Name="BinName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+          <Property Name="WarehouseItemID" Type="bigint" Nullable="false" />
+          <Property Name="DateOfLastStockCount" Type="datetime" />
+          <Property Name="LastCostPrice" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="OpeningBalanceDate" Type="datetime" />
+          <Property Name="UnspecifiedBin" Type="bit" Nullable="false" />
+          <Property Name="ConfirmedQtyInStock" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="UnconfirmedQtyInStock" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityAllocatedSOP" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityAllocatedStock" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityAllocatedBOM" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityReserved" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="OpLock" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="DateTimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="SpareText1" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SpareText2" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SpareText3" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SpareNumber1" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareNumber2" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareNumber3" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareDate1" Type="datetime" />
+          <Property Name="SpareDate2" Type="datetime" />
+          <Property Name="SpareDate3" Type="datetime" />
+          <Property Name="SpareBit1" Type="bit" Nullable="false" />
+          <Property Name="SpareBit2" Type="bit" Nullable="false" />
+          <Property Name="SpareBit3" Type="bit" Nullable="false" />
+          <Property Name="AllocationPriority" Type="bigint" Nullable="false" />
+          <Property Name="DateTimeUpdated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InternalArea">
+          <Key>
+            <PropertyRef Name="InternalAreaID" />
+          </Key>
+          <Property Name="InternalAreaID" Type="bigint" Nullable="false" />
+          <Property Name="InternalAreaName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ThisIsDefault" Type="bit" Nullable="false" />
+          <Property Name="NominalCodeID" Type="bigint" Nullable="false" />
+          <Property Name="OpLock" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="DateTimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="DateTimeUpdated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StockItem">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="ProductGroupID" Type="bigint" Nullable="false" />
+          <Property Name="UseDescriptionOnDocs" Type="bit" Nullable="false" />
+          <Property Name="TaxCodeID" Type="bigint" Nullable="false" />
+          <Property Name="StandardCost" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SOPItemPrice" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="StockItemStatusID" Type="bigint" />
+          <Property Name="InactiveDate" Type="datetime" />
+          <Property Name="Manufacturer" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="PartNumber" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="StocktakeCyclePeriod" Type="smallint" Nullable="false" />
+          <Property Name="CommodityCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Weight" Type="decimal" Precision="15" Scale="4" Nullable="false" />
+          <Property Name="SuppressNetMass" Type="bit" Nullable="false" />
+          <Property Name="StockUnitName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="BaseUnitName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="StockMultOfBaseUnit" Type="decimal" Precision="18" Scale="9" Nullable="false" />
+          <Property Name="Barcode" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="StdCostVarianceLastReset" Type="datetime" />
+          <Property Name="AverageBuyingPrice" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="TraceableTypeID" Type="bigint" Nullable="false" />
+          <Property Name="SaleFromSingleBatch" Type="bit" Nullable="false" />
+          <Property Name="AllowDuplicateNumbers" Type="bit" Nullable="false" />
+          <Property Name="UsesAlternativeRef" Type="bit" Nullable="false" />
+          <Property Name="UsesSellByDate" Type="bit" Nullable="false" />
+          <Property Name="UsesUseByDate" Type="bit" Nullable="false" />
+          <Property Name="RecordNosOnGoodsReceived" Type="bit" Nullable="false" />
+          <Property Name="LastArchivedUpTo" Type="datetime" />
+          <Property Name="FreeStockQuantity" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="BOMItemTypeID" Type="bigint" />
+          <Property Name="SOPOrderFulfilmentMethodID" Type="bigint" Nullable="false" />
+          <Property Name="DefaultDespatchNoteComment" Type="varchar" MaxLength="160" Nullable="false" />
+          <Property Name="DefaultPickingListComment" Type="varchar" MaxLength="160" Nullable="false" />
+          <Property Name="QuantityReserved" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="LastTraceArchivedUpTo" Type="datetime" />
+          <Property Name="OpLock" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="DateTimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="LandedCostsTypeID" Type="bigint" Nullable="false" />
+          <Property Name="LandedCostsValue" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareText1" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SpareText2" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SpareText3" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SpareNumber1" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareNumber2" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareNumber3" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareDate1" Type="datetime" />
+          <Property Name="SpareDate2" Type="datetime" />
+          <Property Name="SpareDate3" Type="datetime" />
+          <Property Name="SpareBit1" Type="bit" Nullable="false" />
+          <Property Name="SpareBit2" Type="bit" Nullable="false" />
+          <Property Name="SpareBit3" Type="bit" Nullable="false" />
+          <Property Name="AllowSalesOrder" Type="bit" Nullable="false" />
+          <Property Name="STKAutoGenerateOptionTypeID" Type="bigint" Nullable="false" />
+          <Property Name="AutoGeneratePrefix" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="AutoGenerateNextNumber" Type="bigint" Nullable="false" />
+          <Property Name="STKLabelPrintingOptionTypeID" Type="bigint" Nullable="false" />
+          <Property Name="STKFulfilmentSequenceTypeID" Type="bigint" Nullable="false" />
+          <Property Name="ShelfLife" Type="int" Nullable="false" />
+          <Property Name="STKShelfLifeTypeID" Type="bigint" />
+          <Property Name="AllowOutOfDate" Type="bit" Nullable="false" />
+          <Property Name="STKAutoGenerateSeparatorID" Type="bigint" Nullable="false" />
+          <Property Name="AutoGeneratePadding" Type="int" Nullable="false" />
+          <Property Name="CountryOfOriginID" Type="bigint" />
+          <Property Name="UsesSupplementaryUnit" Type="bit" Nullable="false" />
+          <Property Name="SupplementaryUnitConversionRatio" Type="decimal" Precision="18" Scale="9" Nullable="false" />
+          <Property Name="UsesRCV" Type="bit" Nullable="false" />
+          <Property Name="IsWEEEItem" Type="bit" Nullable="false" />
+          <Property Name="IncludeNosOnCountSheets" Type="bit" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" Nullable="false" />
+          <Property Name="AnalysisCode1" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode2" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode3" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode4" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode5" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="DateTimeUpdated" Type="datetime" Nullable="false" />
+          <Property Name="AnalysisCode6" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode7" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode8" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode9" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode10" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode11" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode12" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode13" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode14" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode15" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode16" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode17" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode18" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode19" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AnalysisCode20" Type="varchar" MaxLength="60" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Warehouse">
+          <Key>
+            <PropertyRef Name="WarehouseID" />
+          </Key>
+          <Property Name="WarehouseID" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UseForSalesTrading" Type="bit" Nullable="false" />
+          <Property Name="PostalName" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AddressLine1" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AddressLine2" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AddressLine3" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="AddressLine4" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="PostCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Contact" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TelephoneNo" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="FaxNo" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="EmailAddress" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="WebAddress" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="LastCompletedStocktake" Type="datetime" />
+          <Property Name="CountryCodeID" Type="bigint" />
+          <Property Name="WarehouseTypeID" Type="bigint" Nullable="false" />
+          <Property Name="OpLock" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="DateTimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="SpareText1" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SpareText2" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SpareText3" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SpareNumber1" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareNumber2" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareNumber3" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareDate1" Type="datetime" />
+          <Property Name="SpareDate2" Type="datetime" />
+          <Property Name="SpareDate3" Type="datetime" />
+          <Property Name="SpareBit1" Type="bit" Nullable="false" />
+          <Property Name="SpareBit2" Type="bit" Nullable="false" />
+          <Property Name="SpareBit3" Type="bit" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="County" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="Country" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="DateTimeUpdated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WarehouseItem">
+          <Key>
+            <PropertyRef Name="WarehouseItemID" />
+          </Key>
+          <Property Name="WarehouseItemID" Type="bigint" Nullable="false" />
+          <Property Name="WarehouseID" Type="bigint" Nullable="false" />
+          <Property Name="ItemID" Type="bigint" Nullable="false" />
+          <Property Name="ReorderLevel" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="MinimumLevel" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="MaximumLevel" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="DateOfLastSale" Type="datetime" />
+          <Property Name="ConfirmedQtyInStock" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="UnconfirmedQtyInStock" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityAllocatedSOP" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityAllocatedStock" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityOnPOPOrder" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="HoldingValueAtBuyPrice" Type="decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="DateOfLastStockCount" Type="datetime" />
+          <Property Name="PreReceiptAllocationQty" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityAllocatedBOM" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityReserved" Type="decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="OpLock" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="DateTimeCreated" Type="datetime" Nullable="false" />
+          <Property Name="DateTimeUpdated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BinItem_StockItem">
+          <End Role="StockItem" Type="Self.StockItem" Multiplicity="1" />
+          <End Role="BinItem" Type="Self.BinItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockItem">
+              <PropertyRef Name="ItemID" />
+            </Principal>
+            <Dependent Role="BinItem">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BinItem_WarehouseItem">
+          <End Role="WarehouseItem" Type="Self.WarehouseItem" Multiplicity="1" />
+          <End Role="BinItem" Type="Self.BinItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WarehouseItem">
+              <PropertyRef Name="WarehouseItemID" />
+            </Principal>
+            <Dependent Role="BinItem">
+              <PropertyRef Name="WarehouseItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WarehouseItem_StockItem">
+          <End Role="StockItem" Type="Self.StockItem" Multiplicity="1" />
+          <End Role="WarehouseItem" Type="Self.WarehouseItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockItem">
+              <PropertyRef Name="ItemID" />
+            </Principal>
+            <Dependent Role="WarehouseItem">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WarehouseItem_Warehouse">
+          <End Role="Warehouse" Type="Self.Warehouse" Multiplicity="1" />
+          <End Role="WarehouseItem" Type="Self.WarehouseItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Warehouse">
+              <PropertyRef Name="WarehouseID" />
+            </Principal>
+            <Dependent Role="WarehouseItem">
+              <PropertyRef Name="WarehouseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SABRE_RAIL_LIVEModelStoreContainer">
+          <EntitySet Name="BinItem" EntityType="Self.BinItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InternalArea" EntityType="Self.InternalArea" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StockItem" EntityType="Self.StockItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Warehouse" EntityType="Self.Warehouse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WarehouseItem" EntityType="Self.WarehouseItem" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BinItem_StockItem" Association="Self.FK_BinItem_StockItem">
+            <End Role="StockItem" EntitySet="StockItem" />
+            <End Role="BinItem" EntitySet="BinItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BinItem_WarehouseItem" Association="Self.FK_BinItem_WarehouseItem">
+            <End Role="WarehouseItem" EntitySet="WarehouseItem" />
+            <End Role="BinItem" EntitySet="BinItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WarehouseItem_StockItem" Association="Self.FK_WarehouseItem_StockItem">
+            <End Role="StockItem" EntitySet="StockItem" />
+            <End Role="WarehouseItem" EntitySet="WarehouseItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WarehouseItem_Warehouse" Association="Self.FK_WarehouseItem_Warehouse">
+            <End Role="Warehouse" EntitySet="Warehouse" />
+            <End Role="WarehouseItem" EntitySet="WarehouseItem" />
+          </AssociationSet>
+          </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SABRE_RAIL_LIVEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BinItem">
+          <Key>
+            <PropertyRef Name="BinItemID" />
+          </Key>
+          <Property Name="BinItemID" Type="Int64" Nullable="false" />
+          <Property Name="BinName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="WarehouseItemID" Type="Int64" Nullable="false" />
+          <Property Name="DateOfLastStockCount" Type="DateTime" Precision="3" />
+          <Property Name="LastCostPrice" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="OpeningBalanceDate" Type="DateTime" Precision="3" />
+          <Property Name="UnspecifiedBin" Type="Boolean" Nullable="false" />
+          <Property Name="ConfirmedQtyInStock" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="UnconfirmedQtyInStock" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityAllocatedSOP" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityAllocatedStock" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityAllocatedBOM" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityReserved" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="OpLock" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="DateTimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SpareText1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SpareText2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SpareText3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SpareNumber1" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareNumber2" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareNumber3" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareDate1" Type="DateTime" Precision="3" />
+          <Property Name="SpareDate2" Type="DateTime" Precision="3" />
+          <Property Name="SpareDate3" Type="DateTime" Precision="3" />
+          <Property Name="SpareBit1" Type="Boolean" Nullable="false" />
+          <Property Name="SpareBit2" Type="Boolean" Nullable="false" />
+          <Property Name="SpareBit3" Type="Boolean" Nullable="false" />
+          <Property Name="AllocationPriority" Type="Int64" Nullable="false" />
+          <Property Name="DateTimeUpdated" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="StockItem" Relationship="Self.FK_BinItem_StockItem" FromRole="BinItem" ToRole="StockItem" />
+          <NavigationProperty Name="WarehouseItem" Relationship="Self.FK_BinItem_WarehouseItem" FromRole="BinItem" ToRole="WarehouseItem" />
+        </EntityType>
+        <EntityType Name="InternalArea">
+          <Key>
+            <PropertyRef Name="InternalAreaID" />
+          </Key>
+          <Property Name="InternalAreaID" Type="Int64" Nullable="false" />
+          <Property Name="InternalAreaName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ThisIsDefault" Type="Boolean" Nullable="false" />
+          <Property Name="NominalCodeID" Type="Int64" Nullable="false" />
+          <Property Name="OpLock" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="DateTimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateTimeUpdated" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="StockItem">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProductGroupID" Type="Int64" Nullable="false" />
+          <Property Name="UseDescriptionOnDocs" Type="Boolean" Nullable="false" />
+          <Property Name="TaxCodeID" Type="Int64" Nullable="false" />
+          <Property Name="StandardCost" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SOPItemPrice" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="StockItemStatusID" Type="Int64" />
+          <Property Name="InactiveDate" Type="DateTime" Precision="3" />
+          <Property Name="Manufacturer" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PartNumber" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StocktakeCyclePeriod" Type="Int16" Nullable="false" />
+          <Property Name="CommodityCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Weight" Type="Decimal" Precision="15" Scale="4" Nullable="false" />
+          <Property Name="SuppressNetMass" Type="Boolean" Nullable="false" />
+          <Property Name="StockUnitName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BaseUnitName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StockMultOfBaseUnit" Type="Decimal" Precision="18" Scale="9" Nullable="false" />
+          <Property Name="Barcode" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StdCostVarianceLastReset" Type="DateTime" Precision="3" />
+          <Property Name="AverageBuyingPrice" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="TraceableTypeID" Type="Int64" Nullable="false" />
+          <Property Name="SaleFromSingleBatch" Type="Boolean" Nullable="false" />
+          <Property Name="AllowDuplicateNumbers" Type="Boolean" Nullable="false" />
+          <Property Name="UsesAlternativeRef" Type="Boolean" Nullable="false" />
+          <Property Name="UsesSellByDate" Type="Boolean" Nullable="false" />
+          <Property Name="UsesUseByDate" Type="Boolean" Nullable="false" />
+          <Property Name="RecordNosOnGoodsReceived" Type="Boolean" Nullable="false" />
+          <Property Name="LastArchivedUpTo" Type="DateTime" Precision="3" />
+          <Property Name="FreeStockQuantity" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="BOMItemTypeID" Type="Int64" />
+          <Property Name="SOPOrderFulfilmentMethodID" Type="Int64" Nullable="false" />
+          <Property Name="DefaultDespatchNoteComment" Type="String" MaxLength="160" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DefaultPickingListComment" Type="String" MaxLength="160" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="QuantityReserved" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="LastTraceArchivedUpTo" Type="DateTime" Precision="3" />
+          <Property Name="OpLock" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="DateTimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LandedCostsTypeID" Type="Int64" Nullable="false" />
+          <Property Name="LandedCostsValue" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareText1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SpareText2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SpareText3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SpareNumber1" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareNumber2" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareNumber3" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareDate1" Type="DateTime" Precision="3" />
+          <Property Name="SpareDate2" Type="DateTime" Precision="3" />
+          <Property Name="SpareDate3" Type="DateTime" Precision="3" />
+          <Property Name="SpareBit1" Type="Boolean" Nullable="false" />
+          <Property Name="SpareBit2" Type="Boolean" Nullable="false" />
+          <Property Name="SpareBit3" Type="Boolean" Nullable="false" />
+          <Property Name="AllowSalesOrder" Type="Boolean" Nullable="false" />
+          <Property Name="STKAutoGenerateOptionTypeID" Type="Int64" Nullable="false" />
+          <Property Name="AutoGeneratePrefix" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AutoGenerateNextNumber" Type="Int64" Nullable="false" />
+          <Property Name="STKLabelPrintingOptionTypeID" Type="Int64" Nullable="false" />
+          <Property Name="STKFulfilmentSequenceTypeID" Type="Int64" Nullable="false" />
+          <Property Name="ShelfLife" Type="Int32" Nullable="false" />
+          <Property Name="STKShelfLifeTypeID" Type="Int64" />
+          <Property Name="AllowOutOfDate" Type="Boolean" Nullable="false" />
+          <Property Name="STKAutoGenerateSeparatorID" Type="Int64" Nullable="false" />
+          <Property Name="AutoGeneratePadding" Type="Int32" Nullable="false" />
+          <Property Name="CountryOfOriginID" Type="Int64" />
+          <Property Name="UsesSupplementaryUnit" Type="Boolean" Nullable="false" />
+          <Property Name="SupplementaryUnitConversionRatio" Type="Decimal" Precision="18" Scale="9" Nullable="false" />
+          <Property Name="UsesRCV" Type="Boolean" Nullable="false" />
+          <Property Name="IsWEEEItem" Type="Boolean" Nullable="false" />
+          <Property Name="IncludeNosOnCountSheets" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode1" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode2" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode3" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode4" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode5" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateTimeUpdated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AnalysisCode6" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode7" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode8" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode9" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode10" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode11" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode12" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode13" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode14" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode15" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode16" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode17" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode18" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode19" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AnalysisCode20" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="BinItems" Relationship="Self.FK_BinItem_StockItem" FromRole="StockItem" ToRole="BinItem" />
+          <NavigationProperty Name="WarehouseItems" Relationship="Self.FK_WarehouseItem_StockItem" FromRole="StockItem" ToRole="WarehouseItem" />
+        </EntityType>
+        <EntityType Name="Warehouse">
+          <Key>
+            <PropertyRef Name="WarehouseID" />
+          </Key>
+          <Property Name="WarehouseID" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UseForSalesTrading" Type="Boolean" Nullable="false" />
+          <Property Name="PostalName" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AddressLine1" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AddressLine2" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AddressLine3" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AddressLine4" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PostCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TelephoneNo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FaxNo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="WebAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastCompletedStocktake" Type="DateTime" Precision="3" />
+          <Property Name="CountryCodeID" Type="Int64" />
+          <Property Name="WarehouseTypeID" Type="Int64" Nullable="false" />
+          <Property Name="OpLock" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="DateTimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SpareText1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SpareText2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SpareText3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SpareNumber1" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareNumber2" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareNumber3" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="SpareDate1" Type="DateTime" Precision="3" />
+          <Property Name="SpareDate2" Type="DateTime" Precision="3" />
+          <Property Name="SpareDate3" Type="DateTime" Precision="3" />
+          <Property Name="SpareBit1" Type="Boolean" Nullable="false" />
+          <Property Name="SpareBit2" Type="Boolean" Nullable="false" />
+          <Property Name="SpareBit3" Type="Boolean" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="County" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Country" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateTimeUpdated" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="WarehouseItems" Relationship="Self.FK_WarehouseItem_Warehouse" FromRole="Warehouse" ToRole="WarehouseItem" />
+        </EntityType>
+        <EntityType Name="WarehouseItem">
+          <Key>
+            <PropertyRef Name="WarehouseItemID" />
+          </Key>
+          <Property Name="WarehouseItemID" Type="Int64" Nullable="false" />
+          <Property Name="WarehouseID" Type="Int64" Nullable="false" />
+          <Property Name="ItemID" Type="Int64" Nullable="false" />
+          <Property Name="ReorderLevel" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="MinimumLevel" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="MaximumLevel" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="DateOfLastSale" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmedQtyInStock" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="UnconfirmedQtyInStock" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityAllocatedSOP" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityAllocatedStock" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityOnPOPOrder" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="HoldingValueAtBuyPrice" Type="Decimal" Precision="18" Scale="5" Nullable="false" />
+          <Property Name="DateOfLastStockCount" Type="DateTime" Precision="3" />
+          <Property Name="PreReceiptAllocationQty" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityAllocatedBOM" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="QuantityReserved" Type="Decimal" Precision="15" Scale="5" Nullable="false" />
+          <Property Name="OpLock" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="DateTimeCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateTimeUpdated" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="BinItems" Relationship="Self.FK_BinItem_WarehouseItem" FromRole="WarehouseItem" ToRole="BinItem" />
+          <NavigationProperty Name="StockItem" Relationship="Self.FK_WarehouseItem_StockItem" FromRole="WarehouseItem" ToRole="StockItem" />
+          <NavigationProperty Name="Warehouse" Relationship="Self.FK_WarehouseItem_Warehouse" FromRole="WarehouseItem" ToRole="Warehouse" />
+        </EntityType>
+        <Association Name="FK_BinItem_StockItem">
+          <End Role="StockItem" Type="Self.StockItem" Multiplicity="1" />
+          <End Role="BinItem" Type="Self.BinItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockItem">
+              <PropertyRef Name="ItemID" />
+            </Principal>
+            <Dependent Role="BinItem">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BinItem_WarehouseItem">
+          <End Role="WarehouseItem" Type="Self.WarehouseItem" Multiplicity="1" />
+          <End Role="BinItem" Type="Self.BinItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WarehouseItem">
+              <PropertyRef Name="WarehouseItemID" />
+            </Principal>
+            <Dependent Role="BinItem">
+              <PropertyRef Name="WarehouseItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WarehouseItem_StockItem">
+          <End Role="StockItem" Type="Self.StockItem" Multiplicity="1" />
+          <End Role="WarehouseItem" Type="Self.WarehouseItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockItem">
+              <PropertyRef Name="ItemID" />
+            </Principal>
+            <Dependent Role="WarehouseItem">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WarehouseItem_Warehouse">
+          <End Role="Warehouse" Type="Self.Warehouse" Multiplicity="1" />
+          <End Role="WarehouseItem" Type="Self.WarehouseItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Warehouse">
+              <PropertyRef Name="WarehouseID" />
+            </Principal>
+            <Dependent Role="WarehouseItem">
+              <PropertyRef Name="WarehouseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SabreLive" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BinItems" EntityType="Self.BinItem" />
+          <EntitySet Name="InternalAreas" EntityType="Self.InternalArea" />
+          <EntitySet Name="StockItems" EntityType="Self.StockItem" />
+          <EntitySet Name="Warehouses" EntityType="Self.Warehouse" />
+          <EntitySet Name="WarehouseItems" EntityType="Self.WarehouseItem" />
+          <AssociationSet Name="FK_BinItem_StockItem" Association="Self.FK_BinItem_StockItem">
+            <End Role="StockItem" EntitySet="StockItems" />
+            <End Role="BinItem" EntitySet="BinItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BinItem_WarehouseItem" Association="Self.FK_BinItem_WarehouseItem">
+            <End Role="WarehouseItem" EntitySet="WarehouseItems" />
+            <End Role="BinItem" EntitySet="BinItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WarehouseItem_StockItem" Association="Self.FK_WarehouseItem_StockItem">
+            <End Role="StockItem" EntitySet="StockItems" />
+            <End Role="WarehouseItem" EntitySet="WarehouseItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WarehouseItem_Warehouse" Association="Self.FK_WarehouseItem_Warehouse">
+            <End Role="Warehouse" EntitySet="Warehouses" />
+            <End Role="WarehouseItem" EntitySet="WarehouseItems" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SABRE_RAIL_LIVEModelStoreContainer" CdmEntityContainer="SabreLive">
+          <EntitySetMapping Name="BinItems">
+            <EntityTypeMapping TypeName="SABRE_RAIL_LIVEModel.BinItem">
+              <MappingFragment StoreEntitySet="BinItem">
+                <ScalarProperty Name="BinItemID" ColumnName="BinItemID" />
+                <ScalarProperty Name="BinName" ColumnName="BinName" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="WarehouseItemID" ColumnName="WarehouseItemID" />
+                <ScalarProperty Name="DateOfLastStockCount" ColumnName="DateOfLastStockCount" />
+                <ScalarProperty Name="LastCostPrice" ColumnName="LastCostPrice" />
+                <ScalarProperty Name="OpeningBalanceDate" ColumnName="OpeningBalanceDate" />
+                <ScalarProperty Name="UnspecifiedBin" ColumnName="UnspecifiedBin" />
+                <ScalarProperty Name="ConfirmedQtyInStock" ColumnName="ConfirmedQtyInStock" />
+                <ScalarProperty Name="UnconfirmedQtyInStock" ColumnName="UnconfirmedQtyInStock" />
+                <ScalarProperty Name="QuantityAllocatedSOP" ColumnName="QuantityAllocatedSOP" />
+                <ScalarProperty Name="QuantityAllocatedStock" ColumnName="QuantityAllocatedStock" />
+                <ScalarProperty Name="QuantityAllocatedBOM" ColumnName="QuantityAllocatedBOM" />
+                <ScalarProperty Name="QuantityReserved" ColumnName="QuantityReserved" />
+                <ScalarProperty Name="OpLock" ColumnName="OpLock" />
+                <ScalarProperty Name="DateTimeCreated" ColumnName="DateTimeCreated" />
+                <ScalarProperty Name="SpareText1" ColumnName="SpareText1" />
+                <ScalarProperty Name="SpareText2" ColumnName="SpareText2" />
+                <ScalarProperty Name="SpareText3" ColumnName="SpareText3" />
+                <ScalarProperty Name="SpareNumber1" ColumnName="SpareNumber1" />
+                <ScalarProperty Name="SpareNumber2" ColumnName="SpareNumber2" />
+                <ScalarProperty Name="SpareNumber3" ColumnName="SpareNumber3" />
+                <ScalarProperty Name="SpareDate1" ColumnName="SpareDate1" />
+                <ScalarProperty Name="SpareDate2" ColumnName="SpareDate2" />
+                <ScalarProperty Name="SpareDate3" ColumnName="SpareDate3" />
+                <ScalarProperty Name="SpareBit1" ColumnName="SpareBit1" />
+                <ScalarProperty Name="SpareBit2" ColumnName="SpareBit2" />
+                <ScalarProperty Name="SpareBit3" ColumnName="SpareBit3" />
+                <ScalarProperty Name="AllocationPriority" ColumnName="AllocationPriority" />
+                <ScalarProperty Name="DateTimeUpdated" ColumnName="DateTimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InternalAreas">
+            <EntityTypeMapping TypeName="SABRE_RAIL_LIVEModel.InternalArea">
+              <MappingFragment StoreEntitySet="InternalArea">
+                <ScalarProperty Name="InternalAreaID" ColumnName="InternalAreaID" />
+                <ScalarProperty Name="InternalAreaName" ColumnName="InternalAreaName" />
+                <ScalarProperty Name="ThisIsDefault" ColumnName="ThisIsDefault" />
+                <ScalarProperty Name="NominalCodeID" ColumnName="NominalCodeID" />
+                <ScalarProperty Name="OpLock" ColumnName="OpLock" />
+                <ScalarProperty Name="DateTimeCreated" ColumnName="DateTimeCreated" />
+                <ScalarProperty Name="DateTimeUpdated" ColumnName="DateTimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StockItems">
+            <EntityTypeMapping TypeName="SABRE_RAIL_LIVEModel.StockItem">
+              <MappingFragment StoreEntitySet="StockItem">
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ProductGroupID" ColumnName="ProductGroupID" />
+                <ScalarProperty Name="UseDescriptionOnDocs" ColumnName="UseDescriptionOnDocs" />
+                <ScalarProperty Name="TaxCodeID" ColumnName="TaxCodeID" />
+                <ScalarProperty Name="StandardCost" ColumnName="StandardCost" />
+                <ScalarProperty Name="SOPItemPrice" ColumnName="SOPItemPrice" />
+                <ScalarProperty Name="StockItemStatusID" ColumnName="StockItemStatusID" />
+                <ScalarProperty Name="InactiveDate" ColumnName="InactiveDate" />
+                <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
+                <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
+                <ScalarProperty Name="StocktakeCyclePeriod" ColumnName="StocktakeCyclePeriod" />
+                <ScalarProperty Name="CommodityCode" ColumnName="CommodityCode" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="SuppressNetMass" ColumnName="SuppressNetMass" />
+                <ScalarProperty Name="StockUnitName" ColumnName="StockUnitName" />
+                <ScalarProperty Name="BaseUnitName" ColumnName="BaseUnitName" />
+                <ScalarProperty Name="StockMultOfBaseUnit" ColumnName="StockMultOfBaseUnit" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="StdCostVarianceLastReset" ColumnName="StdCostVarianceLastReset" />
+                <ScalarProperty Name="AverageBuyingPrice" ColumnName="AverageBuyingPrice" />
+                <ScalarProperty Name="TraceableTypeID" ColumnName="TraceableTypeID" />
+                <ScalarProperty Name="SaleFromSingleBatch" ColumnName="SaleFromSingleBatch" />
+                <ScalarProperty Name="AllowDuplicateNumbers" ColumnName="AllowDuplicateNumbers" />
+                <ScalarProperty Name="UsesAlternativeRef" ColumnName="UsesAlternativeRef" />
+                <ScalarProperty Name="UsesSellByDate" ColumnName="UsesSellByDate" />
+                <ScalarProperty Name="UsesUseByDate" ColumnName="UsesUseByDate" />
+                <ScalarProperty Name="RecordNosOnGoodsReceived" ColumnName="RecordNosOnGoodsReceived" />
+                <ScalarProperty Name="LastArchivedUpTo" ColumnName="LastArchivedUpTo" />
+                <ScalarProperty Name="FreeStockQuantity" ColumnName="FreeStockQuantity" />
+                <ScalarProperty Name="BOMItemTypeID" ColumnName="BOMItemTypeID" />
+                <ScalarProperty Name="SOPOrderFulfilmentMethodID" ColumnName="SOPOrderFulfilmentMethodID" />
+                <ScalarProperty Name="DefaultDespatchNoteComment" ColumnName="DefaultDespatchNoteComment" />
+                <ScalarProperty Name="DefaultPickingListComment" ColumnName="DefaultPickingListComment" />
+                <ScalarProperty Name="QuantityReserved" ColumnName="QuantityReserved" />
+                <ScalarProperty Name="LastTraceArchivedUpTo" ColumnName="LastTraceArchivedUpTo" />
+                <ScalarProperty Name="OpLock" ColumnName="OpLock" />
+                <ScalarProperty Name="DateTimeCreated" ColumnName="DateTimeCreated" />
+                <ScalarProperty Name="LandedCostsTypeID" ColumnName="LandedCostsTypeID" />
+                <ScalarProperty Name="LandedCostsValue" ColumnName="LandedCostsValue" />
+                <ScalarProperty Name="SpareText1" ColumnName="SpareText1" />
+                <ScalarProperty Name="SpareText2" ColumnName="SpareText2" />
+                <ScalarProperty Name="SpareText3" ColumnName="SpareText3" />
+                <ScalarProperty Name="SpareNumber1" ColumnName="SpareNumber1" />
+                <ScalarProperty Name="SpareNumber2" ColumnName="SpareNumber2" />
+                <ScalarProperty Name="SpareNumber3" ColumnName="SpareNumber3" />
+                <ScalarProperty Name="SpareDate1" ColumnName="SpareDate1" />
+                <ScalarProperty Name="SpareDate2" ColumnName="SpareDate2" />
+                <ScalarProperty Name="SpareDate3" ColumnName="SpareDate3" />
+                <ScalarProperty Name="SpareBit1" ColumnName="SpareBit1" />
+                <ScalarProperty Name="SpareBit2" ColumnName="SpareBit2" />
+                <ScalarProperty Name="SpareBit3" ColumnName="SpareBit3" />
+                <ScalarProperty Name="AllowSalesOrder" ColumnName="AllowSalesOrder" />
+                <ScalarProperty Name="STKAutoGenerateOptionTypeID" ColumnName="STKAutoGenerateOptionTypeID" />
+                <ScalarProperty Name="AutoGeneratePrefix" ColumnName="AutoGeneratePrefix" />
+                <ScalarProperty Name="AutoGenerateNextNumber" ColumnName="AutoGenerateNextNumber" />
+                <ScalarProperty Name="STKLabelPrintingOptionTypeID" ColumnName="STKLabelPrintingOptionTypeID" />
+                <ScalarProperty Name="STKFulfilmentSequenceTypeID" ColumnName="STKFulfilmentSequenceTypeID" />
+                <ScalarProperty Name="ShelfLife" ColumnName="ShelfLife" />
+                <ScalarProperty Name="STKShelfLifeTypeID" ColumnName="STKShelfLifeTypeID" />
+                <ScalarProperty Name="AllowOutOfDate" ColumnName="AllowOutOfDate" />
+                <ScalarProperty Name="STKAutoGenerateSeparatorID" ColumnName="STKAutoGenerateSeparatorID" />
+                <ScalarProperty Name="AutoGeneratePadding" ColumnName="AutoGeneratePadding" />
+                <ScalarProperty Name="CountryOfOriginID" ColumnName="CountryOfOriginID" />
+                <ScalarProperty Name="UsesSupplementaryUnit" ColumnName="UsesSupplementaryUnit" />
+                <ScalarProperty Name="SupplementaryUnitConversionRatio" ColumnName="SupplementaryUnitConversionRatio" />
+                <ScalarProperty Name="UsesRCV" ColumnName="UsesRCV" />
+                <ScalarProperty Name="IsWEEEItem" ColumnName="IsWEEEItem" />
+                <ScalarProperty Name="IncludeNosOnCountSheets" ColumnName="IncludeNosOnCountSheets" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="AnalysisCode1" ColumnName="AnalysisCode1" />
+                <ScalarProperty Name="AnalysisCode2" ColumnName="AnalysisCode2" />
+                <ScalarProperty Name="AnalysisCode3" ColumnName="AnalysisCode3" />
+                <ScalarProperty Name="AnalysisCode4" ColumnName="AnalysisCode4" />
+                <ScalarProperty Name="AnalysisCode5" ColumnName="AnalysisCode5" />
+                <ScalarProperty Name="DateTimeUpdated" ColumnName="DateTimeUpdated" />
+                <ScalarProperty Name="AnalysisCode6" ColumnName="AnalysisCode6" />
+                <ScalarProperty Name="AnalysisCode7" ColumnName="AnalysisCode7" />
+                <ScalarProperty Name="AnalysisCode8" ColumnName="AnalysisCode8" />
+                <ScalarProperty Name="AnalysisCode9" ColumnName="AnalysisCode9" />
+                <ScalarProperty Name="AnalysisCode10" ColumnName="AnalysisCode10" />
+                <ScalarProperty Name="AnalysisCode11" ColumnName="AnalysisCode11" />
+                <ScalarProperty Name="AnalysisCode12" ColumnName="AnalysisCode12" />
+                <ScalarProperty Name="AnalysisCode13" ColumnName="AnalysisCode13" />
+                <ScalarProperty Name="AnalysisCode14" ColumnName="AnalysisCode14" />
+                <ScalarProperty Name="AnalysisCode15" ColumnName="AnalysisCode15" />
+                <ScalarProperty Name="AnalysisCode16" ColumnName="AnalysisCode16" />
+                <ScalarProperty Name="AnalysisCode17" ColumnName="AnalysisCode17" />
+                <ScalarProperty Name="AnalysisCode18" ColumnName="AnalysisCode18" />
+                <ScalarProperty Name="AnalysisCode19" ColumnName="AnalysisCode19" />
+                <ScalarProperty Name="AnalysisCode20" ColumnName="AnalysisCode20" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Warehouses">
+            <EntityTypeMapping TypeName="SABRE_RAIL_LIVEModel.Warehouse">
+              <MappingFragment StoreEntitySet="Warehouse">
+                <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="UseForSalesTrading" ColumnName="UseForSalesTrading" />
+                <ScalarProperty Name="PostalName" ColumnName="PostalName" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="AddressLine3" ColumnName="AddressLine3" />
+                <ScalarProperty Name="AddressLine4" ColumnName="AddressLine4" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="TelephoneNo" ColumnName="TelephoneNo" />
+                <ScalarProperty Name="FaxNo" ColumnName="FaxNo" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="WebAddress" ColumnName="WebAddress" />
+                <ScalarProperty Name="LastCompletedStocktake" ColumnName="LastCompletedStocktake" />
+                <ScalarProperty Name="CountryCodeID" ColumnName="CountryCodeID" />
+                <ScalarProperty Name="WarehouseTypeID" ColumnName="WarehouseTypeID" />
+                <ScalarProperty Name="OpLock" ColumnName="OpLock" />
+                <ScalarProperty Name="DateTimeCreated" ColumnName="DateTimeCreated" />
+                <ScalarProperty Name="SpareText1" ColumnName="SpareText1" />
+                <ScalarProperty Name="SpareText2" ColumnName="SpareText2" />
+                <ScalarProperty Name="SpareText3" ColumnName="SpareText3" />
+                <ScalarProperty Name="SpareNumber1" ColumnName="SpareNumber1" />
+                <ScalarProperty Name="SpareNumber2" ColumnName="SpareNumber2" />
+                <ScalarProperty Name="SpareNumber3" ColumnName="SpareNumber3" />
+                <ScalarProperty Name="SpareDate1" ColumnName="SpareDate1" />
+                <ScalarProperty Name="SpareDate2" ColumnName="SpareDate2" />
+                <ScalarProperty Name="SpareDate3" ColumnName="SpareDate3" />
+                <ScalarProperty Name="SpareBit1" ColumnName="SpareBit1" />
+                <ScalarProperty Name="SpareBit2" ColumnName="SpareBit2" />
+                <ScalarProperty Name="SpareBit3" ColumnName="SpareBit3" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="DateTimeUpdated" ColumnName="DateTimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WarehouseItems">
+            <EntityTypeMapping TypeName="SABRE_RAIL_LIVEModel.WarehouseItem">
+              <MappingFragment StoreEntitySet="WarehouseItem">
+                <ScalarProperty Name="WarehouseItemID" ColumnName="WarehouseItemID" />
+                <ScalarProperty Name="WarehouseID" ColumnName="WarehouseID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ReorderLevel" ColumnName="ReorderLevel" />
+                <ScalarProperty Name="MinimumLevel" ColumnName="MinimumLevel" />
+                <ScalarProperty Name="MaximumLevel" ColumnName="MaximumLevel" />
+                <ScalarProperty Name="DateOfLastSale" ColumnName="DateOfLastSale" />
+                <ScalarProperty Name="ConfirmedQtyInStock" ColumnName="ConfirmedQtyInStock" />
+                <ScalarProperty Name="UnconfirmedQtyInStock" ColumnName="UnconfirmedQtyInStock" />
+                <ScalarProperty Name="QuantityAllocatedSOP" ColumnName="QuantityAllocatedSOP" />
+                <ScalarProperty Name="QuantityAllocatedStock" ColumnName="QuantityAllocatedStock" />
+                <ScalarProperty Name="QuantityOnPOPOrder" ColumnName="QuantityOnPOPOrder" />
+                <ScalarProperty Name="HoldingValueAtBuyPrice" ColumnName="HoldingValueAtBuyPrice" />
+                <ScalarProperty Name="DateOfLastStockCount" ColumnName="DateOfLastStockCount" />
+                <ScalarProperty Name="PreReceiptAllocationQty" ColumnName="PreReceiptAllocationQty" />
+                <ScalarProperty Name="QuantityAllocatedBOM" ColumnName="QuantityAllocatedBOM" />
+                <ScalarProperty Name="QuantityReserved" ColumnName="QuantityReserved" />
+                <ScalarProperty Name="OpLock" ColumnName="OpLock" />
+                <ScalarProperty Name="DateTimeCreated" ColumnName="DateTimeCreated" />
+                <ScalarProperty Name="DateTimeUpdated" ColumnName="DateTimeUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,203 @@
+﻿@model StockTakeItemsDTOPagedList
+
+@{ 
+    ViewBag.Title = "Select items to check";
+    string DateDefault = "Never";
+}
+
+@using (Html.BeginForm(
+    nameof(StockTakeController.SelectItems), 
+    typeof(StockTakeController).ControllerName(), 
+    new { id = ViewBag.StockTakeID }, 
+    FormMethod.Get, 
+    false,
+    new { 
+        @class = "form-inline", 
+        style = "gap: 1em; max-width: 1110px", 
+        id ="searchInformation" 
+    }))
+{
+    <div class="input-group">
+        <span class="input-group-text">Warehouse: </span>
+
+        @Html.DropDownList("Warehouse", 
+            new SelectList(ViewBag.Warehouses, ViewBag.SelectedWarehouse))
+
+        @Html.Hidden("ID", (int)ViewBag.StockTakeID)
+
+        <script>
+            $(function () {
+                $("#Warehouse").data('current', $("#Warehouse").val());
+            });
+
+            $("#Warehouse").change(function () {
+                var proceed = confirm("Changing the warehouse will reset the current stock" + 
+                    " take. Are you sure you want to proceed?")
+                if (proceed) {
+                    $(this).data('current', $(this).val());
+                    $("#searchInformation").attr('action', 
+                        "@Url.Action(nameof(StockTakeController.Reset))");
+                    $("#searchInformation").attr('method', "post");
+                    $("#searchInformation").submit();
+                }
+                else {
+                    $(this).val($(this).data('current'));
+                }
+            })
+        </script>
+    </div>
+
+    <div class="input-group">
+        <span class="input-group-text">Size: </span>
+
+        @Html.EditorFor(model => model.PageSize, 
+            new { htmlAttributes = new { min = "1", max = "20" } })
+    </div>
+
+    <div class="input-group">
+        <span class="input-group-text">Page: </span>
+
+        @Html.EditorFor(model => model.CurrentPage, 
+            new { htmlAttributes = new { min = "1", max = Model.TotalPages.ToString() } })
+    </div>
+
+    <div class="input-group">
+        <span class="input-group-text">Search: </span>
+
+        @Html.EditorFor(model => model.SearchTerm)
+    </div>
+
+    <input type="submit" value="Update" class="btn btn-secondary"
+            formaction="@Url.Action(nameof(StockTakeController.SelectItems))" />
+
+    <div style="align-self: flex-end;">
+        @if (Model.HasPrevious)
+        {
+            <input type="submit" value="Previous" class="btn btn-secondary" 
+                onclick="$('#CurrentPage').get(0).value--;return true;"
+                formaction="@Url.Action(nameof(StockTakeController.SelectItems))" />
+        }
+        @if (Model.HasNext)
+        {
+            <input type="submit" value="Next" class="btn btn-secondary" 
+                onclick="$('#CurrentPage').get(0).value++;return true;"
+                formaction="@Url.Action(nameof(StockTakeController.SelectItems))" />
+        }
+    </div>
+
+    <script>
+        $("#PageSize,#CurrentPage,#SearchTerm")
+            .change(function () { $("#searchInformation").submit(); });
+    </script>
+}
+
+<hr />
+<h4>Items to check</h4>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Items.FirstOrDefault().Code)</th>
+            <th>@Html.DisplayNameFor(model => model.Items.FirstOrDefault().Description)</th>
+            <th>Allocations</th>
+            <th>Product Group</th>
+            <th>Last Count</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Item in Model.Items)
+        {
+            <tr title="@(Item.QuantityAllocated > 0 ? 
+                "Cannot stock take items with ongoing allocations" : "")" 
+                class="@(Item.QuantityAllocated > 0 ? "table-warning" : "")">
+
+                <td>
+                    @Html.DisplayFor(modelItem => Item.Code, new { htmlAttributes = 
+                        new { style = "word-break: break-all;"}})
+                    @Html.HiddenFor(modelItem => Item.Code)
+                </td>
+                <td class="text-overflow-box">
+                    <div class="text-overflow">
+                        @Html.DisplayFor(modelItem => Item.Description)
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Item.QuantityAllocated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Item.ProductGroup)
+                </td>
+                <td>
+                    @if (Item.DateOfLastStockCount != null)
+                    {
+                        @Html.DisplayFor(model => Item.DateOfLastStockCount)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(model => DateDefault)
+                    }
+                </td>
+                <td class="td-center">
+                    @if (Item.Selected)
+                    {
+                        <input type="submit" value="Remove" class="btn btn-danger" 
+                            formaction="@Url.Action(nameof(StockTakeController.Remove), 
+                            new { Code = Item.Code })" 
+                            formmethod="post" 
+                            form="searchInformation" />
+                    }
+                    else if (Item.QuantityAllocated > 0)
+                    {
+                        <input type="submit" value="Add" class="btn btn-success" 
+                            formaction="@Url.Action(nameof(StockTakeController.Add), 
+                            new { Code = Item.Code })" 
+                            formmethod="post"
+                            form="searchInformation"
+                            disabled="disabled" 
+                            title="Cannot stock take items with ongoing allocations" 
+                            style="cursor: not-allowed" />
+                    }
+                    else
+                    {
+                        <input type="submit" value="Add" class="btn btn-success"
+                            formaction="@Url.Action(nameof(StockTakeController.Add), 
+                            new { Code = Item.Code })" 
+                            formmethod="post"
+                            form="searchInformation" />
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+</table>
+
+@using (Html.BeginForm(
+    nameof(StockTakeController.Confirm), 
+    typeof(StockTakeController).ControllerName(), 
+    new { id = ViewBag.StockTakeID }, 
+    FormMethod.Get))
+{
+    @Html.Hidden("Warehouse", (string)ViewBag.SelectedWarehouse)
+
+    <div class="input-group">
+        <span class="input-group-text" style="height: auto;">Selected</span>
+
+        <div class="tag-box form-control">
+            @foreach (string SelectedCode in ViewBag.SelectedItems)
+            {
+                <span class="tag btn btn-secondary">
+                    <span class="d-inline">@Html.Encode(SelectedCode)</span>
+
+                    <input type="submit" class="close-button" value="&times;" 
+                        formaction="@Url.Action(nameof(StockTakeController.Remove), 
+                        new { Code = SelectedCode })"
+                        formmethod="post"
+                        form="searchInformation" />
+                </span>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-primary">Next</button>
+    </div>
+}

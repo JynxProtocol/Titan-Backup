@@ -1,0 +1,34 @@
+﻿@using Titan.Client.Models
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">An error occured while processing your request</h1>
+
+<div><a class="btn btn-primary" id="back-link">Go Back</a></div>
+<br />
+
+<h3 class="text-danger error-trace">@Html.Raw(Model.Message)</h3>
+<br />
+
+<h4 class="text-danger">Please contact an administrator if this is a recurring problem</h4>
+<h4 class="text-danger">Reference: <code>@Model.CorrelationId</code></h4>
+
+<script>
+    $('#back-link').attr('href', document.referrer);
+
+    $('#back-link').click(function() {
+        history.back();
+        return false;
+    });
+</script>
+
+<style>
+    .error-trace div {
+        margin-left: 4rem;
+        border-left: 1px dashed black;
+        padding-left: 1px;
+        border-top: 1px dashed black;
+    }
+</style>

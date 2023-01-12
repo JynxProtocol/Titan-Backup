@@ -1,0 +1,114 @@
+﻿@model StockTakeListDTO
+
+@{
+    ViewBag.Title = "Completed stock takes";
+    string DateDefault = "Never";
+}
+
+<h2>Completed stocktakes</h2>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Complete.FirstOrDefault().Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Complete.FirstOrDefault().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Complete.FirstOrDefault().Warehouse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Complete.FirstOrDefault().DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Complete.FirstOrDefault().CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Complete.FirstOrDefault().Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Complete.FirstOrDefault().Completion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Complete.FirstOrDefault().DateCompleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(StockTakes => 
+                    StockTakes.Complete.FirstOrDefault().CompletedBy)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (StockTakeDTO Item in Model.Complete)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(x => Item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => Item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => Item.Warehouse)
+                </td>
+                <td>
+                    @if (Item.DateCreated != null)
+                    {
+                        @Html.DisplayFor(Model => Item.DateCreated)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(Model => DateDefault)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(x => Item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => Item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => Item.Completion)
+                </td>
+                <td>
+                    @if (Item.DateCompleted != null)
+                    {
+                        @Html.DisplayFor(Model => Item.DateCompleted)
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(Model => DateDefault)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(x => Item.CompletedBy)
+                </td>
+                <td>
+                    @Html.ActionLink(
+                        "View", 
+                        nameof(StockTakeController.Details), 
+                        new { id = Item.Id }, 
+                        new { @class = "btn btn-primary" }
+                    )
+                </td> 
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $('#sortTable').DataTable();
+</script>

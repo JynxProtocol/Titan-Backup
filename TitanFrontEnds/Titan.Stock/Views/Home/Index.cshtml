@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@using System.Web
+@using TitanAPIConnection
+@using Titan.Stock.Controllers
+@model StockResponseDTO
+
+<div class="flexlayout">
+    @Html.ActionLink("Kanban", "", typeof(KanbanController).ControllerName(), new { },
+        new { @class = "btn btn-primary py-3 px-3 titanbutton"})
+
+    @Html.ActionLink("Issue", "", typeof(IssueController).ControllerName(), new { },
+        new { @class = "btn btn-primary py-3 px-3 titanbutton", style="visibility: hidden;" })
+
+    @Html.ActionLink("Stock Take", "", typeof(StockTakeController).ControllerName(), new { },
+        new { @class = "btn btn-primary py-3 px-3 titanbutton" })
+
+    @Html.ActionLink("Logout", nameof(AccountController.Logout),
+        typeof(AccountController).ControllerName(), new { }, 
+        new { @class = "btn btn-secondary py-3 px-3 titanbutton"})
+
+    @if (Model != null){
+        <script>
+            $(document).ready(ShowNotification("@Html.Raw(
+                HttpUtility.JavaScriptStringEncode(@Model.Message)
+            )"));
+        </script>
+    }
+</div>

@@ -1,0 +1,5847 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Titan.API",
+    "description": "An ASP.NET Core Web API for Titan functions",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/AWK/GetWOInfo": {
+      "get": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "GetWOInfo",
+        "parameters": [
+          {
+            "name": "WONumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns information about a WO and its parts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WOInformation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid WO number"
+          },
+          "404": {
+            "description": "Could not find BOM reference or linked WO info"
+          },
+          "422": {
+            "description": "Could not find parts list for CatNumber"
+          }
+        }
+      }
+    },
+    "/api/AWK/{WONumber}/RaiseAWK": {
+      "post": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "RaiseAWK",
+        "parameters": [
+          {
+            "name": "WONumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PartsListItem"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PartsListItem"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PartsListItem"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully raised AWK"
+          },
+          "400": {
+            "description": "Invalid WO number"
+          },
+          "404": {
+            "description": "Could not find BOM reference or linked WO info"
+          }
+        }
+      }
+    },
+    "/api/AWK/ToApprove": {
+      "get": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "ListAWKToApprove",
+        "responses": {
+          "200": {
+            "description": "Returns the list of AWK to approve",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AWKHeader"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/AWK/ToQuote": {
+      "get": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "ListAWKToQuote",
+        "responses": {
+          "200": {
+            "description": "Returns the list of AWK to quote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AWKHeader"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/AWK/ToAuthorise": {
+      "get": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "ListAWKToAuthorise",
+        "responses": {
+          "200": {
+            "description": "Returns the list of AWK to authorise",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AWKHeader"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/AWK/Closed": {
+      "get": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "ListClosedAWK",
+        "responses": {
+          "200": {
+            "description": "Returns the list of closed AWK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AWKHeader"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/AWK/{AWN}/Approve": {
+      "get": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "GetAWKToApprove",
+        "parameters": [
+          {
+            "name": "AWN",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns informaton about AWK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AWHeader"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "ApproveAWK",
+        "parameters": [
+          {
+            "name": "AWN",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "AWKQty",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully approved AWK"
+          },
+          "400": {
+            "description": "Cannot approve AWK with a total quantity of zero"
+          }
+        }
+      }
+    },
+    "/api/AWK/Details/{AWDID}": {
+      "get": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "GetAWKDetail",
+        "parameters": [
+          {
+            "name": "AWDID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the AWDetail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AWDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/AWK/Details": {
+      "post": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "ModifyAWKDetail",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AWDetail"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AWDetail"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AWDetail"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully updated AWK details"
+          }
+        }
+      }
+    },
+    "/api/AWK/{AWN}/Quote": {
+      "get": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "GetAWKToQuote",
+        "parameters": [
+          {
+            "name": "AWN",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns informaton about AWK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AWHeader"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "QuoteAWK",
+        "parameters": [
+          {
+            "name": "AWN",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AWHeader"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AWHeader"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AWHeader"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully quoted AWK"
+          },
+          "400": {
+            "description": "Invalid WO number"
+          },
+          "404": {
+            "description": "Could not find BOM reference or linked WO info"
+          },
+          "409": {
+            "description": "Cannot Quote AWK item with zero price"
+          },
+          "502": {
+            "description": "Could not send email"
+          },
+          "503": {
+            "description": "Could not generate required report"
+          }
+        }
+      }
+    },
+    "/api/AWK/Authorise": {
+      "post": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "AWKAuthorise",
+        "parameters": [
+          {
+            "name": "awn",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully authorised AWK"
+          },
+          "400": {
+            "description": "Invalid WO number"
+          },
+          "404": {
+            "description": "Could not find BOM reference or linked WO info"
+          }
+        }
+      }
+    },
+    "/api/AWK/Closed/{AWN}": {
+      "get": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "GetClosedAWK",
+        "parameters": [
+          {
+            "name": "AWN",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns informaton about closed AWK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AWHeader"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/AWK/Images/Add/{AWKID}": {
+      "post": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "AddAWKImage",
+        "parameters": [
+          {
+            "name": "AWKID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "image": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully added image"
+          }
+        }
+      }
+    },
+    "/api/AWK/Images/{id}": {
+      "get": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "GetAWKImage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the image",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find image with id"
+          }
+        }
+      }
+    },
+    "/api/AWK/Cancel": {
+      "post": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "CancelAWK",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully canceled AWK"
+          }
+        }
+      }
+    },
+    "/api/AWK/RevertToQuote": {
+      "post": {
+        "tags": [
+          "AWK"
+        ],
+        "operationId": "RevertToQuote",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully canceled AWK"
+          }
+        }
+      }
+    },
+    "/api/AWKPriceBook/Prices": {
+      "get": {
+        "tags": [
+          "AWKPriceBook"
+        ],
+        "operationId": "ListAWKStockPrices",
+        "responses": {
+          "200": {
+            "description": "Succesfully returns a list of stock prices",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AWKItemPrice"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/AWKPriceBook/{StockID}/Price": {
+      "get": {
+        "tags": [
+          "AWKPriceBook"
+        ],
+        "operationId": "GetAWKStockPrice",
+        "parameters": [
+          {
+            "name": "StockID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully returns stock price",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AWKItemPrice"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "AWKPriceBook"
+        ],
+        "operationId": "SetAWKStockPrice",
+        "parameters": [
+          {
+            "name": "StockID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "NewPrice",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully updated stock price"
+          }
+        }
+      }
+    },
+    "/api/Contracts/Open": {
+      "get": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "ListOpenContracts",
+        "responses": {
+          "200": {
+            "description": "Returns the list of Open Sales Contracts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContractOverview"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Contracts/Closed": {
+      "get": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "ListClosedContracts",
+        "responses": {
+          "200": {
+            "description": "Returns the list of Open Sales Contracts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContractOverview"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Contracts/{conID}": {
+      "get": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "GetContract",
+        "parameters": [
+          {
+            "name": "conID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns informaton about Contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contract"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Contracts/Create": {
+      "post": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "CreateContract",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contract"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contract"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contract"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully created contract"
+          },
+          "400": {
+            "description": "Cannot create contract without a valid customer"
+          }
+        }
+      }
+    },
+    "/api/Contracts/{conID}/Update": {
+      "post": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "UpdateContract",
+        "parameters": [
+          {
+            "name": "conID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contract"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contract"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contract"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully updated contract"
+          },
+          "404": {
+            "description": "Cannot find contract to update"
+          },
+          "400": {
+            "description": "Cannot update a contract to have an invalid customer"
+          }
+        }
+      }
+    },
+    "/api/Contracts/{conID}/Acknowledge": {
+      "post": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "AcknowledgeContract",
+        "parameters": [
+          {
+            "name": "conID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully acknowledged contract"
+          },
+          "404": {
+            "description": "Could not get contact address"
+          },
+          "500": {
+            "description": "Could not add attachments to email"
+          },
+          "502": {
+            "description": "Could not send email"
+          },
+          "503": {
+            "description": "Could not generate required report"
+          }
+        }
+      }
+    },
+    "/api/Contracts/{conID}/Details/{conDetID}": {
+      "get": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "GetContractItem",
+        "parameters": [
+          {
+            "name": "conID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "conDetID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns informaton about Contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContractItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Contracts/{conID}/Details/Add": {
+      "post": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "AddItemToContract",
+        "parameters": [
+          {
+            "name": "conID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContractItem"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContractItem"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContractItem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully added item to contract"
+          },
+          "400": {
+            "description": "Could not find stock code"
+          },
+          "404": {
+            "description": "Could not find contract"
+          }
+        }
+      }
+    },
+    "/api/Contracts/{conID}/Details/{ConDetID}": {
+      "delete": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "RemoveItemFromContract",
+        "parameters": [
+          {
+            "name": "conID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "ConDetID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully removed item from contract"
+          },
+          "404": {
+            "description": "Could not find contract"
+          },
+          "409": {
+            "description": "Could not delete contract detail as there are items \r\n            booked in against it"
+          }
+        }
+      }
+    },
+    "/api/Contracts/{conID}/Details/{ConDetId}/Update": {
+      "post": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "UpdateContractItem",
+        "parameters": [
+          {
+            "name": "conID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "ConDetId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContractItem"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContractItem"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContractItem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully updated contract item"
+          },
+          "400": {
+            "description": "Could not find stock code"
+          },
+          "404": {
+            "description": "Could not find contract or contract item"
+          }
+        }
+      }
+    },
+    "/api/Contracts/{conID}/Details/{ConDetID}/AddAlt": {
+      "post": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "AddAltPartToContract",
+        "parameters": [
+          {
+            "name": "conID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "ConDetID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContractItem"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContractItem"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContractItem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully added altpart to contract"
+          },
+          "400": {
+            "description": "Could not find stock code"
+          },
+          "404": {
+            "description": "Could not find contract"
+          }
+        }
+      }
+    },
+    "/api/Contracts/{conID}/Deactivate": {
+      "post": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "DeacivateContract",
+        "parameters": [
+          {
+            "name": "conID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully deactivated contract"
+          },
+          "404": {
+            "description": "Could not find contract"
+          }
+        }
+      }
+    },
+    "/api/Contracts/{conID}/AddDoc": {
+      "post": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "AddDocument",
+        "parameters": [
+          {
+            "name": "conID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "document": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "document": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully addeed document"
+          },
+          "409": {
+            "description": "Could not add docmuent, it already exists"
+          }
+        }
+      }
+    },
+    "/api/Contracts/BalanceSORs": {
+      "post": {
+        "tags": [
+          "Contracts"
+        ],
+        "operationId": "BalanceContractsFromSORs",
+        "responses": {
+          "200": {
+            "description": "Successfully updated N contract records from SORs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EngineeringInstruction/List": {
+      "get": {
+        "tags": [
+          "EngineeringInstruction"
+        ],
+        "operationId": "ListEIs",
+        "responses": {
+          "200": {
+            "description": "Succesfully returns a list of engineering instructions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EngineeringInstruction"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EngineeringInstruction/{EIRef}": {
+      "get": {
+        "tags": [
+          "EngineeringInstruction"
+        ],
+        "operationId": "GetEI",
+        "parameters": [
+          {
+            "name": "EIRef",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully returns an engineering instruction \r\n            and its children",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EngineeringInstructionDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EngineeringInstruction/{EIRef}/Children": {
+      "put": {
+        "tags": [
+          "EngineeringInstruction"
+        ],
+        "operationId": "EditEIChildren",
+        "parameters": [
+          {
+            "name": "EIRef",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully updates engineering instruction children"
+          }
+        }
+      }
+    },
+    "/api/EngineeringInstruction/{EIRef}/Create": {
+      "post": {
+        "tags": [
+          "EngineeringInstruction"
+        ],
+        "operationId": "CreateEI",
+        "parameters": [
+          {
+            "name": "EIRef",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully added an engineering instruction"
+          }
+        }
+      }
+    },
+    "/api/EngineeringInstruction/{EIRef}/AutoComplete": {
+      "get": {
+        "tags": [
+          "EngineeringInstruction"
+        ],
+        "operationId": "AutoCompleteEI",
+        "parameters": [
+          {
+            "name": "EIRef",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns results for autocomplete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Expedite/GetExpediteStatus": {
+      "get": {
+        "tags": [
+          "Expedite"
+        ],
+        "operationId": "GetExpediteStatus",
+        "responses": {
+          "200": {
+            "description": "Succesfully returns expedite status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpediteStatusDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Expedite/StartExpedite": {
+      "post": {
+        "tags": [
+          "Expedite"
+        ],
+        "operationId": "StartExpedite",
+        "responses": {
+          "200": {
+            "description": "Expedite started"
+          },
+          "409": {
+            "description": "Expedite is already running (only one expedite can ran at once)"
+          }
+        }
+      }
+    },
+    "/api/ExtendedStock": {
+      "post": {
+        "tags": [
+          "ExtendedStock"
+        ],
+        "operationId": "GetExtendedStock",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListParameters"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListParameters"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns a page of extended stock results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtendedStockLookupViewPagedList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ExtendedStock/{id}/LookupID": {
+      "put": {
+        "tags": [
+          "ExtendedStock"
+        ],
+        "operationId": "SetExtendedStockLookupId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully set lookup id"
+          },
+          "404": {
+            "description": "The stockitem could not be found"
+          }
+        }
+      }
+    },
+    "/api/Lookup/Colours": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "GetColourList",
+        "responses": {
+          "200": {
+            "description": "Succesfully returns a list of colour options",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DropdownOption"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/SalesType": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "GetSalesTypeList",
+        "responses": {
+          "200": {
+            "description": "Succesfully returns a list of SalesTypes options",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DropdownOption"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/WarrantyTypes": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "GetWarrantyList",
+        "responses": {
+          "200": {
+            "description": "Succesfully returns a list of warranty options",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DropdownOption"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/LeadTimes": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "GetLeadTimesList",
+        "responses": {
+          "200": {
+            "description": "Succesfully returns a list of lead time options",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DropdownOption"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/WorkRequiredOptions": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "GetWorkRequiredOptionsList",
+        "responses": {
+          "200": {
+            "description": "Succesfully returns a list of work required options",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DropdownOption"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/DespatchMethods": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "GetDespatchMethodList",
+        "responses": {
+          "200": {
+            "description": "Succesfully returns a list of despatch method options",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DropdownOption"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/DeliveryTerms": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "GetDeliveryTermsList",
+        "responses": {
+          "200": {
+            "description": "Succesfully returns a list of delivery terms options",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DropdownOption"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/Customers": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "GetCustomersList",
+        "responses": {
+          "200": {
+            "description": "Succesfully returns a list of customer options",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DropdownOption"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/ProductGroups": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "GetProductGroups",
+        "responses": {
+          "200": {
+            "description": "Succesfully returns a list of product group options",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DropdownOption"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/Parts/{TopLevelCode}/Repairable": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "GetRepairableInformation",
+        "parameters": [
+          {
+            "name": "TopLevelCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully returns information about a rapairable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartCodeInformation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find BOM referenced by top-level code"
+          },
+          "409": {
+            "description": "The referenced BOM does not have a specific\r\n            repairable associated with it"
+          }
+        }
+      }
+    },
+    "/api/Lookup/Parts/{Code}": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "GetPartCodeInformation",
+        "parameters": [
+          {
+            "name": "Code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully returns part by Code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartCodeInformation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find the part referenced by the code"
+          }
+        }
+      }
+    },
+    "/api/Lookup/Parts/{StockCode}/Autocomplete": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "AutocompleteStockCode",
+        "parameters": [
+          {
+            "name": "StockCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns stock code options for the partial stock code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/AWKFaults": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "ListAWKFaults",
+        "responses": {
+          "200": {
+            "description": "Succesfully lists AWK fault options",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LookUpAWKFault"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/AWKFaults/{id}": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "GetAWKFault",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully returns an AWK fault option",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookUpAWKFault"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find AWK fault"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "DeleteAWKFault",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully deleted AWK fault option"
+          },
+          "404": {
+            "description": "Could not find AWK fault"
+          }
+        }
+      }
+    },
+    "/api/Lookup/AWKFaults/Add/{FaultText}": {
+      "post": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "AddAWKFault",
+        "parameters": [
+          {
+            "name": "FaultText",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully added and returned \r\n            an AWK fault option",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookUpAWKFault"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/AWKFaults/{id}/FaultText/{FaultText}": {
+      "put": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "EditAWKFault",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "FaultText",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully updated an AWK fault option",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookUpAWKFault"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find AWK fault"
+          }
+        }
+      }
+    },
+    "/api/Lookup/AWKWorkRequireds": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "ListAWKWorkRequireds",
+        "responses": {
+          "200": {
+            "description": "Succesfully lists AWK work required options",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LookUpAWKWorkRequired"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/AWKWorkRequireds/{id}": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "GetAWKWorkRequired",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully returns an AWK work required option",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookUpAWKWorkRequired"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find AWK work required"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "DeleteAWKWorkRequired",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully deleted AWK work required option"
+          },
+          "404": {
+            "description": "Could not find AWK work required"
+          }
+        }
+      }
+    },
+    "/api/Lookup/AWKWorkRequireds/Add/{WorkRequiredText}": {
+      "post": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "AddAWKWorkRequired",
+        "parameters": [
+          {
+            "name": "WorkRequiredText",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully added and returned \r\n            an AWK work required option",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookUpAWKWorkRequired"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Lookup/AWKWorkRequireds/{id}/WorkRequiredText/{WorkRequiredText}": {
+      "put": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "EditAWKWorkRequired",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "WorkRequiredText",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully updated an AWK work required option",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LookUpAWKWorkRequired"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find AWK work required"
+          }
+        }
+      }
+    },
+    "/api/Lookup/WorksOrders/{WONumber}/Autocomplete": {
+      "get": {
+        "tags": [
+          "Lookup"
+        ],
+        "operationId": "AutocompleteWorksOrderNumber",
+        "parameters": [
+          {
+            "name": "WONumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns WONumber options for the partial WONumber",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Orders/ToAuthorise": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "ListOrdersToApprove",
+        "responses": {
+          "200": {
+            "description": "Returns the list of unauthorised Orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Orders/Complete": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "ListCompletedOrders",
+        "responses": {
+          "200": {
+            "description": "Returns the list of completed Orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Orders/{OrderID}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "GetOrderByID",
+        "parameters": [
+          {
+            "name": "OrderID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the Order",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find the Order"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "UpdateOrder",
+        "parameters": [
+          {
+            "name": "OrderID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully order"
+          },
+          "400": {
+            "description": "Cannot update order that is authorised"
+          },
+          "404": {
+            "description": "Could not find the Order"
+          }
+        }
+      }
+    },
+    "/api/Orders/{OrderID}/Details/{OrderDetailID}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "GetOrderDetail",
+        "parameters": [
+          {
+            "name": "OrderID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "OrderDetailID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the Order detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDetailDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find Order or detail"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "UpdateOrderDetail",
+        "parameters": [
+          {
+            "name": "OrderID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "OrderDetailID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDetailDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDetailDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDetailDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns succesfully updated Order detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDetailDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Could not find stock code"
+          },
+          "404": {
+            "description": "Could not find Order or detail to update"
+          }
+        }
+      }
+    },
+    "/api/Orders/{OrderID}/Details/Add": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "AddOrderDetail",
+        "parameters": [
+          {
+            "name": "OrderID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDetailDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDetailDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderDetailDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns succesfully added Order detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDetailDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find Order"
+          },
+          "400": {
+            "description": "Could not find stock code"
+          }
+        }
+      }
+    },
+    "/api/Orders/{ConID}/PartsToBookIn": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "GetOrderPartsSuggestions",
+        "parameters": [
+          {
+            "name": "ConID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the Order detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReceivedPart"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find contract"
+          }
+        }
+      }
+    },
+    "/api/Orders/BookInParts": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "BookInParts",
+        "parameters": [
+          {
+            "name": "ConID",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "DeliveryRef",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "GRN",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ReceivedPart"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ReceivedPart"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ReceivedPart"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns succesfully added Order",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Could not find contract to book in against"
+          },
+          "409": {
+            "description": "Cannot book in a blank GRN"
+          },
+          "422": {
+            "description": "Could not process a recieved part"
+          }
+        }
+      }
+    },
+    "/api/Orders/{OrderID}/GenerateSOR": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "ApproveAndGenerateSORForOrder",
+        "parameters": [
+          {
+            "name": "OrderID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns succesfully created SOR number"
+          },
+          "400": {
+            "description": "Cannot generate SOR for Order without customer"
+          },
+          "404": {
+            "description": "Could not find Order to create SOR from"
+          },
+          "422": {
+            "description": "Could not process order line"
+          }
+        }
+      }
+    },
+    "/api/PartsList/PartsLists": {
+      "get": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "ListPartsLists",
+        "responses": {
+          "200": {
+            "description": "Returns the list of parts lists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PartsListHeader"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PartsList/PartsLists/{FPLHID}/Clone": {
+      "post": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "ClonePartsList",
+        "parameters": [
+          {
+            "name": "FPLHID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the id of the copied parts list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PartsList/PartsLists/{PLHID}": {
+      "get": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "GetPartsList",
+        "parameters": [
+          {
+            "name": "PLHID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the parts list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartsList"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "UpdatePartsList",
+        "parameters": [
+          {
+            "name": "PLHID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Title",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ProductGroup",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully updated parts list"
+          },
+          "404": {
+            "description": "Could not find parts list to update"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "DeletePartsList",
+        "parameters": [
+          {
+            "name": "PLHID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully deleted parts list"
+          }
+        }
+      }
+    },
+    "/api/PartsList/PartsLists/Add/{ProductGroup}/{Title}": {
+      "post": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "AddPartsList",
+        "parameters": [
+          {
+            "name": "ProductGroup",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Title",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the id of the created parts list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PartsList/PartsLists/{PLHID}/Parts/{PLDID}": {
+      "get": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "GetPartsListPart",
+        "parameters": [
+          {
+            "name": "PLHID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PLDID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns part",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartsListItem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "RemovePartFromPartsList",
+        "parameters": [
+          {
+            "name": "PLHID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PLDID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully deleted part"
+          },
+          "404": {
+            "description": "Could not find parts list or parts list detail to delete"
+          }
+        }
+      }
+    },
+    "/api/PartsList/PartsLists/{PLHID}/Parts/Add": {
+      "post": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "AddPartToPartsList",
+        "parameters": [
+          {
+            "name": "PLHID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartsListItem"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartsListItem"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartsListItem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully added part to list"
+          },
+          "400": {
+            "description": "Could not find stock code"
+          },
+          "404": {
+            "description": "Could not find parts list to add to"
+          }
+        }
+      }
+    },
+    "/api/PartsList/PartsLists/{PLHID}/Parts/{PLDID}/Update": {
+      "post": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "UpdatePartsListPart",
+        "parameters": [
+          {
+            "name": "PLHID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PLDID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartsListItem"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartsListItem"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartsListItem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully added part to list"
+          },
+          "400": {
+            "description": "Could not find stock code"
+          },
+          "404": {
+            "description": "Could not find parts list or parts list detail to update"
+          }
+        }
+      }
+    },
+    "/api/PartsList/PartsLists/{PLHID}/Cats/{CATID}": {
+      "get": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "GetCat",
+        "parameters": [
+          {
+            "name": "PLHID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "CATID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully returns information about Cat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartsListCatItem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "UpdateCat",
+        "parameters": [
+          {
+            "name": "PLHID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "CATID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartsListCatItem"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartsListCatItem"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartsListCatItem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Succesfully updated parts list Cat"
+          }
+        }
+      }
+    },
+    "/api/PartsList/PartsLists/{PLHID}/AddCat/{CatNumber}": {
+      "post": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "AddCatToPartsList",
+        "parameters": [
+          {
+            "name": "PLHID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "CatNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Description",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully added Cat"
+          }
+        }
+      }
+    },
+    "/api/PartsList/PartsLists/{PLHID}/Cats/{CATID}/Remove": {
+      "post": {
+        "tags": [
+          "PartsList"
+        ],
+        "operationId": "RemoveCat",
+        "parameters": [
+          {
+            "name": "PLHID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "CATID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succesfully removed parts list Cat"
+          }
+        }
+      }
+    },
+    "/api/Stock/{Code}/Details": {
+      "get": {
+        "tags": [
+          "Stock"
+        ],
+        "operationId": "StockDetails",
+        "parameters": [
+          {
+            "name": "Code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfuly returns stock details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockDetailsDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Stock/Warehouse/{Warehouse}/{Code}/Details": {
+      "get": {
+        "tags": [
+          "Stock"
+        ],
+        "operationId": "StockDetailsByWarehouse",
+        "parameters": [
+          {
+            "name": "Code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Warehouse",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfuly returns stock details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockDetailsDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Stock/{Code}/Exists": {
+      "get": {
+        "tags": [
+          "Stock"
+        ],
+        "operationId": "StockExists",
+        "parameters": [
+          {
+            "name": "Code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns whether the stock code exists in Sage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Stock/{Code}/Issue": {
+      "post": {
+        "tags": [
+          "Stock"
+        ],
+        "operationId": "IssueStock",
+        "parameters": [
+          {
+            "name": "Code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IssueStockDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IssueStockDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/IssueStockDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully issued stock",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Stock/{Code}/Add": {
+      "post": {
+        "tags": [
+          "Stock"
+        ],
+        "operationId": "AddStock",
+        "parameters": [
+          {
+            "name": "Code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddStockDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddStockDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddStockDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added to stock",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Stock/{Code}/Correct": {
+      "put": {
+        "tags": [
+          "Stock"
+        ],
+        "operationId": "CorrectStock",
+        "parameters": [
+          {
+            "name": "Code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StockCorrectDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StockCorrectDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/StockCorrectDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully corrected stock",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/StockTake/Warehouses": {
+      "get": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "ListWarehouses",
+        "responses": {
+          "200": {
+            "description": "Successfully returns list of warehouses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/StockTake/{id}": {
+      "get": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "GetStocktake",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the stocktake with the given id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockTakeInfoDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find stocktake"
+          }
+        }
+      }
+    },
+    "/api/StockTake/{id}/SelectedItems": {
+      "get": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "StocktakeSelectedItems",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of stocktake items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockTakeItemsDTO"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find stocktake"
+          }
+        }
+      }
+    },
+    "/api/StockTake/{Warehouse}/New": {
+      "post": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "CreateStocktake",
+        "parameters": [
+          {
+            "name": "Warehouse",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the created stocktake id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/StockTake/{id}/Add": {
+      "post": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "AddToStockTake",
+        "parameters": [
+          {
+            "name": "Code",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully adds part to stocktake"
+          },
+          "404": {
+            "description": "Could not find stocktake"
+          },
+          "500": {
+            "description": "Could not add part to stocktake"
+          }
+        }
+      }
+    },
+    "/api/StockTake/{id}/Remove": {
+      "delete": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "RemoveFromStockTake",
+        "parameters": [
+          {
+            "name": "Code",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully removed part from stocktake"
+          },
+          "404": {
+            "description": "Could not find stocktake"
+          },
+          "500": {
+            "description": "Could not remove part from stocktake"
+          }
+        }
+      }
+    },
+    "/api/StockTake/{Warehouse}/Items": {
+      "post": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "GetWarehouseItems",
+        "parameters": [
+          {
+            "name": "Warehouse",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListParameters"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListParameters"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PagedListParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully returns a list of items in a warehouse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockTakeItemsDTOPagedList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/StockTake/Submit": {
+      "post": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "SubmitStockTake",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitStockTakeDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitStockTakeDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitStockTakeDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully submitted stocktake"
+          },
+          "404": {
+            "description": "Could not find stocktake"
+          }
+        }
+      }
+    },
+    "/api/StockTake/{id}/Delete": {
+      "delete": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "DeleteStockTake",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted stocktake"
+          },
+          "404": {
+            "description": "Could not find stocktake"
+          }
+        }
+      }
+    },
+    "/api/StockTake/{id}/Reset/{Warehouse}": {
+      "delete": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "ResetStockTake",
+        "parameters": [
+          {
+            "name": "Warehouse",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully removes all items from stocktake"
+          }
+        }
+      }
+    },
+    "/api/StockTake/List": {
+      "get": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "ListStockTakes",
+        "responses": {
+          "200": {
+            "description": "Successfully returns a list of stocktakes,\r\n            and their status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockTakeListDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/StockTake/{id}/Adjust": {
+      "get": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "GetStocktakeAdjustments",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully returns the generated adjustments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StockAdjustDTO"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find stocktake"
+          },
+          "422": {
+            "description": "Could not generate adjustments because a value is missing"
+          }
+        }
+      }
+    },
+    "/api/StockTake/{id}/ApplyStocktakeAdjustments": {
+      "post": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "ApplyStocktakeAdjustments",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/StockAdjustDTO"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/StockAdjustDTO"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/StockAdjustDTO"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully returns a report of what adjustments were applied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdjustResponseReportDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Could not find stocktake"
+          }
+        }
+      }
+    },
+    "/api/StockTake/{Code}/LocationsInActiveStockTake": {
+      "get": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "GetLocationsOfItemInStockTake",
+        "parameters": [
+          {
+            "name": "Code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully returns a list of bins to check for an item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationDetailsDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/StockTake/{Code}/RecordValue/{Location}/{Amount}": {
+      "put": {
+        "tags": [
+          "StockTake"
+        ],
+        "operationId": "StocktakeRecordValue",
+        "parameters": [
+          {
+            "name": "Code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Amount",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Location",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully records part count in stocktake",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AWDetail": {
+        "type": "object",
+        "properties": {
+          "awdid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "did": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stkID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stockCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "requiredQty": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fault": {
+            "type": "string",
+            "nullable": true
+          },
+          "workRequired": {
+            "type": "string",
+            "nullable": true
+          },
+          "repairDetail": {
+            "type": "string",
+            "nullable": true
+          },
+          "unitPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "freeStock": {
+            "type": "number",
+            "format": "double"
+          },
+          "freeSabreStock": {
+            "type": "number",
+            "format": "double"
+          },
+          "qtyonOrder": {
+            "type": "number",
+            "format": "double"
+          },
+          "repairCost": {
+            "type": "number",
+            "format": "double"
+          },
+          "linetotal": {
+            "type": "number",
+            "format": "double"
+          },
+          "aq": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sabreStock": {
+            "type": "boolean"
+          },
+          "comAccepted": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AWHeader": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "worksOrderNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "bomReference": {
+            "type": "string",
+            "nullable": true
+          },
+          "bomDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "qtyRequired": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numberOfConsolidatedAffectedItems": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "linkedTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cusOrderNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contractName": {
+            "type": "string",
+            "nullable": true
+          },
+          "eMail": {
+            "type": "string",
+            "nullable": true
+          },
+          "awkFault": {
+            "type": "string",
+            "nullable": true
+          },
+          "awkWork": {
+            "type": "string",
+            "nullable": true
+          },
+          "awDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AWDetail"
+            },
+            "nullable": true
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Document"
+            },
+            "nullable": true
+          },
+          "emailMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "awkSalesType": {
+            "type": "string",
+            "nullable": true
+          },
+          "sendMail": {
+            "type": "boolean"
+          },
+          "quotationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "quotedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "awkQuoted": {
+            "type": "boolean"
+          },
+          "awkApproved": {
+            "type": "boolean"
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AWKHeader": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "worksOrderNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "custOrderNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountName": {
+            "type": "string",
+            "nullable": true
+          },
+          "catNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "sor": {
+            "type": "string",
+            "nullable": true
+          },
+          "qty": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "awkQty": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "approved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "approvedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateApproved": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "authorised": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "authorisedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateAuthorised": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "ticketID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "eMailMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "awkQuoted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "awkQuotedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "awkQuotedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "contractName": {
+            "type": "string",
+            "nullable": true
+          },
+          "eMail": {
+            "type": "string",
+            "nullable": true
+          },
+          "sendMail": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "awkSalesType": {
+            "type": "string",
+            "nullable": true
+          },
+          "canceled": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "comments": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AWKItemPrice": {
+        "type": "object",
+        "properties": {
+          "stkID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "partNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "dateLastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddStockDTO": {
+        "type": "object",
+        "properties": {
+          "Quantity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Warehouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "BinName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SecondRef": {
+            "type": "string",
+            "nullable": true
+          },
+          "Ref": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdjustResponseDTO": {
+        "type": "object",
+        "properties": {
+          "Code": {
+            "type": "string",
+            "nullable": true
+          },
+          "Bin": {
+            "type": "string",
+            "nullable": true
+          },
+          "Success": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AdjustResponseReportDTO": {
+        "type": "object",
+        "properties": {
+          "Report": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdjustResponseDTO"
+            },
+            "nullable": true
+          },
+          "Success": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "StockTakeClosed": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BinLocationDTO": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "Amount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Contract": {
+        "type": "object",
+        "properties": {
+          "conID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "conCusID": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "customerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contractName": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerOrderNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerOrderDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "postalName": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine1": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine2": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine3": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine4": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "county": {
+            "type": "string",
+            "nullable": true
+          },
+          "postcode": {
+            "type": "string",
+            "nullable": true
+          },
+          "bookingInInstructions": {
+            "type": "string",
+            "nullable": true
+          },
+          "isCasualty": {
+            "type": "boolean"
+          },
+          "deliveryTerms": {
+            "type": "string",
+            "nullable": true
+          },
+          "despatchMethod": {
+            "type": "string",
+            "nullable": true
+          },
+          "contractItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContractItem"
+            },
+            "nullable": true
+          },
+          "contractDocuments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContractDocuments"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContractDocuments": {
+        "type": "object",
+        "properties": {
+          "docID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "documentType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "conID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "documentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "filePath": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContractItem": {
+        "required": [
+          "qtyRequired",
+          "totalQty",
+          "unitPrice"
+        ],
+        "type": "object",
+        "properties": {
+          "conDetID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "conID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "stkID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sageStkID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "woNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "dirtyStockCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "stockCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "workRequired": {
+            "type": "string",
+            "nullable": true
+          },
+          "colour": {
+            "type": "string",
+            "nullable": true
+          },
+          "warranty": {
+            "type": "string",
+            "nullable": true
+          },
+          "leadTime": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "deliveryTerms": {
+            "type": "string",
+            "nullable": true
+          },
+          "despatchMethod": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryDays": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "qtyRequired": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "qtyOutstanding": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unitPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalQty": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalQtyReceived": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "specialInstruction": {
+            "type": "string",
+            "nullable": true
+          },
+          "quotationNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "isSerialised": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "image": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true
+          },
+          "altPart": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "altTo": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "parent": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ContractOverview": {
+        "type": "object",
+        "properties": {
+          "conID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "conCusID": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "contractName": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerOrderNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveriesReceived": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "active": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "remainingValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "acknowledged": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Document": {
+        "type": "object",
+        "properties": {
+          "docID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ticketID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "actionID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "documentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "filePath": {
+            "type": "string",
+            "nullable": true
+          },
+          "conID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "documentType": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "lastUpdatedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateLastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "awkid": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "awkImage": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileType": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DropdownOption": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EngineeringInstruction": {
+        "type": "object",
+        "properties": {
+          "eiRef": {
+            "type": "string",
+            "nullable": true
+          },
+          "isTopLevel": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EngineeringInstructionDTO": {
+        "type": "object",
+        "properties": {
+          "eiRef": {
+            "type": "string",
+            "nullable": true
+          },
+          "isTopLevel": {
+            "type": "boolean"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EngineeringInstructionDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExpediteStatusDTO": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "progress": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastComplete": {
+            "type": "string",
+            "nullable": true
+          },
+          "skippedRecords": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExtendedStockLookupView": {
+        "type": "object",
+        "properties": {
+          "itemID": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "lookupID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productGroup": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExtendedStockLookupViewPagedList": {
+        "type": "object",
+        "properties": {
+          "currentPage": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "searchTerm": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageSize": {
+            "maximum": 20,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPrevious": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "hasNext": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExtendedStockLookupView"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IssueStockDTO": {
+        "type": "object",
+        "properties": {
+          "Quantity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Warehouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "BinName": {
+            "type": "string",
+            "nullable": true
+          },
+          "InternalArea": {
+            "type": "string",
+            "nullable": true
+          },
+          "SecondRef": {
+            "type": "string",
+            "nullable": true
+          },
+          "Ref": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LocationDetailsDTO": {
+        "type": "object",
+        "properties": {
+          "locations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LookUpAWKFault": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lookupText": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LookUpAWKWorkRequired": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lookupText": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderDTO": {
+        "type": "object",
+        "properties": {
+          "orderID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "conID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateReceived": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cusOrderNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "cusID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ordCustomerRef": {
+            "type": "string",
+            "nullable": true
+          },
+          "ordSpecialInstruction": {
+            "type": "string",
+            "nullable": true
+          },
+          "postalName": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine1": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine2": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine3": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLine4": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "county": {
+            "type": "string",
+            "nullable": true
+          },
+          "postCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryTerms": {
+            "type": "string",
+            "nullable": true
+          },
+          "despatchMethod": {
+            "type": "string",
+            "nullable": true
+          },
+          "approved": {
+            "type": "boolean"
+          },
+          "approvedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "sor": {
+            "type": "string",
+            "nullable": true
+          },
+          "grn": {
+            "type": "string",
+            "nullable": true
+          },
+          "orderDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderDetailDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderDetailDTO": {
+        "type": "object",
+        "properties": {
+          "orderDetailID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "conDetID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "expectedQty": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "detSODID": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "woNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "dirtyStockCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "stockCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "workRequired": {
+            "type": "string",
+            "nullable": true
+          },
+          "colour": {
+            "type": "string",
+            "nullable": true
+          },
+          "warranty": {
+            "type": "string",
+            "nullable": true
+          },
+          "leadTime": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "deliveryTerms": {
+            "type": "string",
+            "nullable": true
+          },
+          "despatchMethod": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryDays": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "qtyReceived": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "unitPrice": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "specialInstruction": {
+            "type": "string",
+            "nullable": true
+          },
+          "serialNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PagedListParameters": {
+        "type": "object",
+        "properties": {
+          "currentPage": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "searchTerm": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartCodeInformation": {
+        "type": "object",
+        "properties": {
+          "stockCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "repairableCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "stockID": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartsList": {
+        "type": "object",
+        "properties": {
+          "plhid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroup": {
+            "type": "string",
+            "nullable": true
+          },
+          "partsListItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PartsListItem"
+            },
+            "nullable": true
+          },
+          "partsListCats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PartsListCatItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartsListCatItem": {
+        "type": "object",
+        "properties": {
+          "catid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "plhid": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "sageStkID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "catNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartsListHeader": {
+        "type": "object",
+        "properties": {
+          "plhid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroup": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastUpdatedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateLastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartsListItem": {
+        "type": "object",
+        "properties": {
+          "pldid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "plhid": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "sageStkID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "itemNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "partNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "mandatory": {
+            "type": "boolean"
+          },
+          "stockUnit": {
+            "type": "string",
+            "nullable": true
+          },
+          "manufacturer": {
+            "type": "string",
+            "nullable": true
+          },
+          "manufacturersPartNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "isAlternativePart": {
+            "type": "boolean"
+          },
+          "alternativePartTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "partsListID": {
+            "type": "string",
+            "nullable": true
+          },
+          "qty": {
+            "type": "number",
+            "format": "double"
+          },
+          "workRequiredID": {
+            "type": "string",
+            "nullable": true
+          },
+          "awkWork": {
+            "type": "string",
+            "nullable": true
+          },
+          "awkFault": {
+            "type": "string",
+            "nullable": true
+          },
+          "repairDetail": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroup": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReceivedPart": {
+        "type": "object",
+        "properties": {
+          "stockCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StockAdjustDTO": {
+        "type": "object",
+        "properties": {
+          "SnapshotSageQuantity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "CurrentSageQuantity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Change": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ResultSageQuantity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Code": {
+            "type": "string",
+            "nullable": true
+          },
+          "Warehouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "BinName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SecondRef": {
+            "type": "string",
+            "nullable": true
+          },
+          "Ref": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StockCorrectDTO": {
+        "type": "object",
+        "properties": {
+          "Amount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Warehouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "BinName": {
+            "type": "string",
+            "nullable": true
+          },
+          "InternalArea": {
+            "type": "string",
+            "nullable": true
+          },
+          "SecondRef": {
+            "type": "string",
+            "nullable": true
+          },
+          "Ref": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StockDetailsDTO": {
+        "type": "object",
+        "properties": {
+          "Code": {
+            "type": "string",
+            "nullable": true
+          },
+          "Quantity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "KanbanQuantity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "IsKanban": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "IsEnoughStockToIssue": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "Description": {
+            "type": "string",
+            "nullable": true
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "Locations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BinLocationDTO"
+            },
+            "nullable": true
+          },
+          "InternalAreas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "BestLocation": {
+            "$ref": "#/components/schemas/BinLocationDTO"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StockResponseDTO": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "Changed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "Message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StockTakeDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "warehouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "completedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateCompleted": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "completion": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StockTakeInfoDTO": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StockTakeItemInfoDTO"
+            },
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "warehouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "completedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateCompleted": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "completion": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StockTakeItemInfoDTO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "freeStock": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "recordedValue": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "adjustment": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "adjustmentValue": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "recordedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "recordedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StockTakeItemsDTO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfLastStockCount": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "quantityAllocated": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productGroup": {
+            "type": "string",
+            "nullable": true
+          },
+          "selected": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StockTakeItemsDTOPagedList": {
+        "type": "object",
+        "properties": {
+          "currentPage": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "searchTerm": {
+            "type": "string",
+            "nullable": true
+          },
+          "pageSize": {
+            "maximum": 20,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPrevious": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "hasNext": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StockTakeItemsDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StockTakeListDTO": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StockTakeDTO"
+            },
+            "nullable": true
+          },
+          "complete": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StockTakeDTO"
+            },
+            "nullable": true
+          },
+          "deleted": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StockTakeDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubmitStockTakeDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "warehouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WOInformation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "worksOrderNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "bomReference": {
+            "type": "string",
+            "nullable": true
+          },
+          "bomDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "qtyRequired": {
+            "type": "number",
+            "format": "double"
+          },
+          "linkedTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "cusOrderNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountName": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "awkFault": {
+            "type": "string",
+            "nullable": true
+          },
+          "workRequired": {
+            "type": "string",
+            "nullable": true
+          },
+          "warranty": {
+            "type": "string",
+            "nullable": true
+          },
+          "colour": {
+            "type": "string",
+            "nullable": true
+          },
+          "deliveryDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "awkWork": {
+            "type": "string",
+            "nullable": true
+          },
+          "partsListItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PartsListItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+﻿@using TitanAPIAdminConnection
+@model EditRoleDTO
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+<hr />
+@{
+    int count = 0;
+    int i = 0;
+}
+@foreach (var featureAreaKVP in Model.FeatureAreas)
+{
+    i = (from featureKVP in Model.Features
+         where featureKVP.Key.FeatureArea == featureAreaKVP.Key
+         select featureKVP).Count();
+    if (i > count)
+    {
+        count = i;
+    }
+}
+
+@using (Html.BeginForm())
+{
+    <table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+        <tr>
+            <th scope="colgroup">
+                Feature Area
+            </th>
+            <th colspan="@count">
+                Features
+            </th>
+        </tr>
+
+        @foreach (var featureAreaKVP in Model.FeatureAreas)
+        {
+            <tr>
+                <th scope="rowgroup" style="text-align:center">
+                    <p>@featureAreaKVP.Key</p>
+
+                    @if (featureAreaKVP.Value == Trinary.None)
+                    {
+                        <input class="check-box form-control unchecked featurearea" type="checkbox" featurearea="@featureAreaKVP.Key">
+                    }
+                    else if (featureAreaKVP.Value == Trinary.All)
+                    {
+                        <input class="check-box form-control checked featurearea" type="checkbox" featurearea="@featureAreaKVP.Key">
+                    }
+                    else
+                    {
+                        <input class="check-box form-control indeterminate featurearea" type="checkbox" featurearea="@featureAreaKVP.Key">
+                    }
+                </th>
+                @{ i = 0;}
+                @foreach (var featureKVP in (from featureKVP in Model.Features
+                            where featureKVP.Key.FeatureArea == featureAreaKVP.Key
+                            select featureKVP))
+                {
+                    <td style="text-align:center">
+                        <p>@featureKVP.Key.FeatureName</p>
+
+                        @if (featureKVP.Value == false)
+                        {
+                            @Html.EditorFor(model => model._Features[featureKVP.Key.FeatureName], new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @class = "check-box form-control unchecked feature",
+                                    featurearea = @featureAreaKVP.Key,
+                                    feature = @featureKVP.Key.FeatureName,
+                                    type = "checkbox"
+                                }
+                            })
+                        }
+                        else if (featureKVP.Value == true)
+                        {
+                            @Html.EditorFor(model => model._Features[featureKVP.Key.FeatureName], new
+                            {
+                                htmlAttributes = new
+                                {
+                                    @class = "check-box form-control checked feature",
+                                    featurearea = @featureAreaKVP.Key,
+                                    feature = @featureKVP.Key.FeatureName,
+                                    type = "checkbox"
+                                }
+                            })
+                        }
+                    </td>
+                    i++;
+                }
+                @if (i < count)
+                {
+                    <td colspan="@(count - i)"></td>
+                }
+                @*@for (; i < count; i++)
+                    {
+                        <td></td>
+                    }*@
+            </tr>
+        }
+    </table>
+
+    <hr />
+    @Html.ActionLink("Edit Users", nameof(RolesController.EditUsers), new { id = Model.Id }, new { @class = "btn btn-warning" })
+    <hr />
+
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+        View Users in Role
+    </button>
+    <div class="collapse" id="collapseUsers">
+        <hr />
+        <table class="table table-bordered table-repsonsive table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Users
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @{
+                            <ul style="list-style-type: none">
+                                @foreach (string username in Model.Users)
+                                {
+                                    <li style=" float: left; min-width: 15%; text-align: center">
+                                        @username
+                                    </li>
+                                }
+                            </ul>
+                            if (Model.Users.Count == 0)
+                            {
+                                <p>
+                                    No Users in Role
+                                </p>
+                            }
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <hr />
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button class="btn btn-warning" id="btnSubmit">Submit</button>
+            @Html.ActionLink("Back to List", nameof(RolesController.Index), new { }, new { @class = "btn btn-success" })
+            @Html.ActionLink("Delete", nameof(RolesController.Delete), new { id = Model.Id }, new { @class = "btn btn-danger" })
+        </div>
+    </div>
+}
+
+<script>
+    $(".unchecked").prop("checked", false);
+    $(".checked").prop("checked", true);
+    $(".indeterminate").prop("indeterminate", true);
+
+    // for every featureArea, when it changes, it should change all features with that area
+    $('.featurearea').each(function () {
+        $(this).change(function () {
+            if ((this).checked) {
+                // if checked, set everything to checked
+                $("[featurearea='" + $(this).attr("featurearea") + "']").each(function () {
+                    this.checked = true;
+                })
+            }
+            else {
+                // if unchecked, set everything to unchecked
+                $("[featurearea='" + $(this).attr("featurearea") + "']").each(function () {
+                    this.checked = false;
+                })
+            }
+        })
+    })
+
+    // for every feature, if it is the first one checked or last one unchecked, update the area
+    $('.feature').each(function () {
+        $(this).change(function () {
+            if ($("input:checkbox:checked.feature[featurearea='" + $(this).attr("featurearea") + "']").length > 0) {
+                if ($("input:checkbox:not(:checked).feature[featurearea='" + $(this).attr("featurearea") + "']").length > 0) {
+                    $(".featurearea[featurearea = '" + $(this).attr("featurearea") + "']").each(function () {
+                        $(this).prop("indeterminate", true)
+                    })
+                }
+                else {
+                    $(".featurearea[featurearea = '" + $(this).attr("featurearea") + "']").each(function () {
+                        $(this).prop("indeterminate", false)
+                        this.checked = true;
+                    })
+                }
+            }
+            else {
+                $(".featurearea[featurearea = '" + $(this).attr("featurearea") + "']").each(function () {
+                    $(this).prop("indeterminate", false)
+                    this.checked = false;
+                })
+            }
+        })
+    })
+</script>

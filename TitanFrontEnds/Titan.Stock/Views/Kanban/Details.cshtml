@@ -1,0 +1,148 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using TitanAPIConnection
+@using Titan.Stock.Controllers
+@model StockDetailsDTO
+
+@using (Html.BeginForm("Issue", "Kanban", FormMethod.Post, new { @class="flexlayout" }))
+{
+    <table class="table table-bordered table-repsonsive table-hover table-striped">
+        <tbody>
+            <tr>
+                <td style="text-align: center;">
+                    <h4>Code: @Html.DisplayFor(StockTakeItem => StockTakeItem.Code)</h4>
+                    @Html.HiddenFor(StockTakeItem => StockTakeItem.Code)
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">
+                    <h5>Name: @Html.DisplayFor(StockTakeItem => StockTakeItem.Name)</h5>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Area</span>
+                        </div>
+
+                        <select id="InternalArea" name="InternalArea" style="text-align: center;" 
+                            class="form-control ">
+                            @foreach (var internalArea in Model.InternalAreas)
+                            {
+                                <option value="@(internalArea)">
+                                    @(internalArea)
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">
+                    <h4>Location:</h4>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            @Html.ActionLink("Stock Correct", 
+                                nameof(StockCorrectController.StockCorrect), 
+                                typeof(StockCorrectController).ControllerName(),
+                                new { Code = Model.Code }, 
+                                new { @class="btn btn-warning form-control" })
+                        </div>
+
+                        @{
+                            string padding = "&nbsp;&nbsp;&nbsp;&nbsp;";
+                        }
+
+                        @if (Model.Locations.Count() == 1)
+                        {
+                            var Location = Model.Locations.First();
+
+                            @*Janky but prevents possible attack surface through bin name via sage*@
+                            string name = $"{@Html.Encode(Location.Name)}{padding}|{padding}Amount: {Location.Amount}";
+
+                            <input class="form-control" style="text-align: center;" type="text" 
+                                readonly value="@(Html.Raw(name))">
+
+                            <input class="form-control" type="hidden" value="@(Location.Name)" 
+                                id="BinName" name="BinName" style="text-align: center;">
+                        }
+                        else
+                        {
+                            <select id="BinName" name="BinName" style="text-align: center;" 
+                                class="form-control ">
+                                @foreach (var Location in Model.Locations)
+                                {
+                                    bool isSelected = (Location.Name == Model.BestLocation.Name);
+                                    bool isDisabled = (Location.Amount == 0);
+                                    @*Janky but prevents possible attack surface through bin name via sage*@
+                                    string name = $"{@Html.Encode(Location.Name)}{padding}|{padding}Amount: {Location.Amount}";
+
+                                    if (isSelected)
+                                    {
+                                        if (isDisabled)
+                                        {
+                                            <option value="@(Location.Name)" 
+                                                selected="selected" disabled="disabled">
+                                                @Html.Raw(name)
+                                            </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@(Location.Name)" 
+                                                selected="selected">
+                                                @Html.Raw(name)
+                                            </option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (isDisabled)
+                                        {
+                                            <option value="@(Location.Name)" 
+                                                disabled="disabled">
+                                                @Html.Raw(name)
+                                            </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@(Location.Name)">
+                                                @Html.Raw(name)
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        }
+                        
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;" 
+                    class="@((Model.IsEnoughStockToIssue ?? false) ? "": "text-danger")">
+                    <h4>Amount to issue:</h4>
+
+                    <div class="input-group @((Model.IsEnoughStockToIssue ?? false) ? "": "text-danger")">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Bulk issue: @Model.KanbanQuantity</span>
+                            </div>
+                        <input class="form-control " id="Quantity" name="Quantity" type="number" 
+                            min="0" value="@Model.Quantity" 
+                            @((Model.IsEnoughStockToIssue ?? false) ? "": $"max={Model.Quantity}")>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;" class="input-group">
+                    @Html.ActionLink("Cancel", "", typeof(KanbanController).ControllerName(), new { }, 
+                        new { @class = "btn btn-danger form-control" })
+                    <input type="submit" class="btn btn-success form-control" value="Enter" />
+                </td>
+            </tr>
+        </tbody>
+    </table> 
+}

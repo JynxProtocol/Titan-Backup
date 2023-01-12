@@ -1,0 +1,60 @@
+﻿@model IEnumerable<AWKHeader>
+
+@{
+    ViewBag.Title = "AWK to Approve";
+}
+
+<h2>Additional Work Requests for Approval</h2>
+
+<table class="table table-bordered table-repsonsive table-hover table-striped" id="sortTable">
+    <thead>
+        <tr>
+            <th>
+                AWK Number
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorksOrderNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CatNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                Approve
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => Item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Item.WorksOrderNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Item.CatNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Item.Description)
+                </td>
+                <td>
+                    @Html.ActionLink(
+                        "Approve",
+                        nameof(AWKController.Approve), 
+                        new { AWN = Item.Id },
+                        new { @class = "btn btn-success" }
+                    )
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $('#sortTable').DataTable();
+</script>

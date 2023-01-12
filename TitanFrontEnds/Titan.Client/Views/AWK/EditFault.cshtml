@@ -1,0 +1,32 @@
+﻿@model LookUpAWKFault
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Update AWK fault</h2>
+
+@using (Html.BeginForm(
+   nameof(AWKController.EditFault),
+   typeof(AWKController).ControllerName(),
+   new { Id = Model.Id },
+   FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="input-group mb-3">
+        <span class="input-group-text">Fault Name</span>
+
+        @Html.EditorFor(Model => Model.LookupText,
+    new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <input type="submit" value="Save" class="btn btn-success" />
+
+    @Html.ActionLink(
+        "Back to List",
+        nameof(AWKController.FaultsList),
+        new { },
+        new { @class = "btn btn-success" }
+    )
+}
